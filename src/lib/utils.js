@@ -1,3 +1,6 @@
+// Import the local verbal reasoning questions JSON file
+import verbalQuestions from '../assets/questions.json'; // Corrected path from 'assests' to 'assets'
+
 /**
  * Shuffles array in place. ES6 version
  * @param {Array} a items An array containing the items.
@@ -13,19 +16,16 @@ export function shuffle(a) {
 }
 
 export function getToday() {
-    return ((new Date()).toISOString()).split('T')[0];
+    return (new Date()).toISOString().split('T')[0];
 }
 
-// Fetch quiz questions from the Open Trivia Database API
+// Fetch quiz questions from a local JSON file
 export async function getRemoteData() {
     try {
-        const response = await fetch("https://opentdb.com/api.php?amount=10&category=18&type=multiple");
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return await response.json();
+        // Fetch the questions from the imported JSON file
+        return verbalQuestions; // Return the imported questions directly
     } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error loading data:', error);
         throw error; // Rethrow the error to handle it in the calling function
     }
 }
