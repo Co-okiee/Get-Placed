@@ -5,12 +5,12 @@
       <div class="topics">
         <button @click="goToTopic('data-structures')">Data Structures</button>
         <button @click="goToTopic('algorithms')">Algorithms</button>
-        <button @click="goToTopic('operating-systems')">Operating Systems</button>
-        <button @click="goToTopic('databases')">Databases</button>
+        <button @click="goToTopic('os')">Operating Systems</button>
+        <button @click="goToTopic('dbms')">DBMS</button>
         <button @click="goToTopic('oops')">Object-Oriented Programming</button>
-        <button @click="goToTopic('aptitude')">Aptitude & Reasoning</button>
-        <button @click="goToTopic('networking')">Computer Networks</button>
-        <button @click="goToTopic('system-design')">System Design</button>
+        <button @click="goToTopic('Apt')">Aptitude & Reasoning</button>
+        <button @click="goToTopic('CN')">Computer Networks</button>
+        <button @click="goToTopic('SystemDesign')">System Design</button>
       </div>
     </div>
   </template>

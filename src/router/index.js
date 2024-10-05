@@ -24,6 +24,58 @@ import Heap from "../views/Heap.vue";
 import ADS from "../views/ADS.vue";
 import Map from "../views/Map.vue";
 import Set from "../views/Set.vue";
+import Algorithms from "../views/Algorithms.vue";
+import AnalysisofAlgo from "../views/AnalysisofAlgo.vue";
+import Searching from "../views/Searching.vue";
+import Sorting from "../views/Sorting.vue";
+import DivideandConquer from "../views/DivideandConquer.vue";
+import MathematicalAlgorithms from "../views/MathematicalAlgorithms.vue";
+import GreedyAlgo from "../views/GreedyAlgo.vue";
+import DP from "../views/DP.vue";
+import Geometric from "../views/Geometric.vue";
+import GraphAlgo from "../views/GraphAlgo.vue";
+import Pattern from "../views/Pattern.vue";
+import Recursion from "../views/Recursion.vue";
+import Bitwise from "../views/Bitwise.vue";
+import Backtracking from "../views/Backtracking.vue";
+import Randomised from "../views/Randomised.vue";
+import BranchBound from "../views/BranchBound.vue";
+import OS from "../views/OS.vue";
+import Basics from "../views/Basics.vue";
+import SystemStructure from "../views/SystemStructure.vue";
+import CPU from "../views/CPU.vue";
+import ProcessSyn from "../views/ProcessSyn.vue";
+import Deadlock from "../views/Deadlock.vue";
+import ProcessThreads from "../views/ProcessThreads.vue";
+import Memory from "../views/Memory.vue";
+import Disk from "../views/Disk.vue";
+import Misc from "../views/Misc.vue";
+import DBMS from "../views/DBMS.vue";
+import OOPS from "../views/OOPS.vue";
+import BasicsOOPS from "../views/BasicsOOPS.vue";
+import Encapsulation from "../views/Encapsulation.vue";
+import Abstraction from "../views/Abstraction.vue";
+import Polymorphism from "../views/Polymorphism.vue";
+import Inheritance from "../views/Inheritance.vue";
+import DynamicBinding from "../views/DynamicBinding.vue";
+import CN from "../views/CN.vue";
+import CNBasics from "../views/CNBasics.vue";
+import DataLinkLayer from "../views/DataLinkLayer.vue";
+import NetworkLayer from "../views/NetworkLayer.vue";
+import TransportLayer from "../views/TransportLayer.vue";
+import ApplicationLayer from "../views/ApplicationLayer.vue";
+import NetworkSecurity from "../views/NetworkSecurity.vue";
+import CompressionTech from "../views/CompressionTech.vue";
+import NetworkExp from "../views/NetworkExp.vue";
+import Devices from "../views/Devices.vue";
+import CNMisc from "../views/CNMisc.vue";
+import SystemDesign from "../views/SystemDesign.vue";
+import BasicsSystem from "../views/BasicsSystem.vue";
+import Scalibility from "../views/Scalibility.vue";
+import Database from "../views/Database.vue";
+import HLD from "../views/HLD.vue";
+import LLD from "../views/LLD.vue";
+import AptandResoning from "../views/AptandResoning.vue";
 
 // Create router instance
 const router = createRouter({
@@ -110,6 +162,268 @@ const router = createRouter({
       name: 'ADS',
       component: ADS,
     },
+    {
+      path: '/algorithms', // Add this route for the Matrix component
+      name: 'algorithms',
+      component: Algorithms,
+    },
+    {
+      path: '/analysisofalgo', // Add this route for the Matrix component
+      name: 'analysisofalgo',
+      component: AnalysisofAlgo,
+    },
+    {
+      path: '/searching', // Add this route for the Matrix component
+      name: 'searching',
+      component: Searching,
+    },
+    {
+      path: '/sorting', // Add this route for the Matrix component
+      name: 'sorting',
+      component: Sorting,
+    },
+    {
+      path: '/divide-and-conquer', // Add this route for the Matrix component
+      name: 'divide-and-conquer',
+      component: DivideandConquer,
+    },
+    {
+      path: '/mathematical-algo', // Add this route for the Matrix component
+      name: 'mathematical-algo',
+      component: MathematicalAlgorithms,
+    },
+    {
+      path: '/greedy', // Add this route for the Matrix component
+      name: 'greedy',
+      component: GreedyAlgo,
+    },
+    {
+      path: '/dynamic', // Add this route for the Matrix component
+      name: 'dynamic',
+      component: DP,
+    },
+    {
+      path: '/geometric', // Add this route for the Matrix component
+      name: 'geometric',
+      component: Geometric,
+    },
+    {
+      path: '/graphalgo', // Add this route for the Matrix component
+      name: 'graphalgo',
+      component: GraphAlgo,
+    },
+    {
+      path: '/pattern', // Add this route for the Matrix component
+      name: 'pattern',
+      component: Pattern,
+    },
+    {
+      path: '/recursion', // Add this route for the Matrix component
+      name: 'recursion',
+      component: Recursion,
+    },
+    {
+      path: '/bitwise', // Add this route for the Matrix component
+      name: 'bitwise',
+      component: Bitwise,
+    },
+    {
+      path: '/backtracking', // Add this route for the Matrix component
+      name: 'backtracking',
+      component: Backtracking,
+    },
+    {
+      path: '/randomised', // Add this route for the Matrix component
+      name: 'randomised',
+      component: Randomised,
+    },
+    {
+      path: '/branchbound', // Add this route for the Matrix component
+      name: 'branchbound',
+      component: BranchBound,
+    },
+    {
+      path: '/os', // Add this route for the Matrix component
+      name: 'os',
+      component: OS,
+    },
+    {
+      path: '/basics', // Add this route for the Matrix component
+      name: 'basics',
+      component: Basics,
+    },
+    {
+      path: '/system', // Add this route for the Matrix component
+      name: 'system',
+      component: SystemStructure,
+    },
+    {
+      path: '/CPU', // Add this route for the Matrix component
+      name: 'CPU',
+      component: CPU,
+    },
+    {
+      path: '/processsyn', // Add this route for the Matrix component
+      name: 'processsyn',
+      component: ProcessSyn,
+    },
+    {
+      path: '/deadlock', // Add this route for the Matrix component
+      name: 'deadlock',
+      component: Deadlock,
+    },
+    {
+      path: '/pt', // Add this route for the Matrix component
+      name: 'pt',
+      component: ProcessThreads,
+    },
+    {
+      path: '/memory', // Add this route for the Matrix component
+      name: 'memory',
+      component: Memory,
+    },
+    {
+      path: '/disk', // Add this route for the Matrix component
+      name: 'disk',
+      component: Disk,
+    },
+    {
+      path: '/misc', // Add this route for the Matrix component
+      name: 'misc',
+      component: Misc,
+    },
+    {
+      path: '/dbms', // Add this route for the Matrix component
+      name: 'dbms',
+      component: DBMS,
+    },
+    {
+      path: '/oops', // Add this route for the Matrix component
+      name: 'oops',
+      component: OOPS,
+    },
+    {
+      path: '/OOPSbasic', // Add this route for the Matrix component
+      name: 'OOPSbasic',
+      component: BasicsOOPS,
+    },
+    {
+      path: '/encapsulation', // Add this route for the Matrix component
+      name: 'encapsulation',
+      component: Encapsulation,
+    },
+    {
+      path: '/abstraction', // Add this route for the Matrix component
+      name: 'abstraction',
+      component: Abstraction,
+    },
+    {
+      path: '/polymorphism', // Add this route for the Matrix component
+      name: 'polymorphism',
+      component: Polymorphism,
+    },
+    {
+      path: '/inhertance', // Add this route for the Matrix component
+      name: 'inheritance',
+      component: Inheritance,
+    },
+    {
+      path: '/dynamicbinding', // Add this route for the Matrix component
+      name: 'dynamicbinding',
+      component: DynamicBinding,
+    },
+    {
+      path: '/CN', // Add this route for the Matrix component
+      name: 'CN',
+      component: CN,
+    },
+    {
+      path: '/CNbasics', // Add this route for the Matrix component
+      name: 'CNbasics',
+      component: CNBasics,
+    },
+    {
+      path: '/datalink', // Add this route for the Matrix component
+      name: 'datalink',
+      component: DataLinkLayer,
+    },
+    {
+      path: '/network', // Add this route for the Matrix component
+      name: 'network',
+      component: NetworkLayer,
+    },
+    {
+      path: '/transport', // Add this route for the Matrix component
+      name: 'transport',
+      component: TransportLayer,
+    },
+    {
+      path: '/application', // Add this route for the Matrix component
+      name: 'application',
+      component: ApplicationLayer,
+    },
+    {
+      path: '/networksecurity', // Add this route for the Matrix component
+      name: 'networksecurity',
+      component: NetworkSecurity,
+    },
+    {
+      path: '/compressiontech', // Add this route for the Matrix component
+      name: 'compressiontech',
+      component: CompressionTech,
+    },
+    {
+      path: '/networkexp', // Add this route for the Matrix component
+      name: 'networkexp',
+      component: NetworkExp,
+    },
+    {
+      path: '/devices', // Add this route for the Matrix component
+      name: 'devices',
+      component: Devices,
+    },
+    {
+      path: '/CNmisc', // Add this route for the Matrix component
+      name: 'CNmisc',
+      component: CNMisc,
+    },
+    {
+      path: '/SystemDesign', // Add this route for the Matrix component
+      name: 'SystemDesign',
+      component: SystemDesign,
+    },
+    {
+      path: '/BasicsSystem', // Add this route for the Matrix component
+      name: 'BasicsSystem',
+      component: BasicsSystem,
+    },
+    {
+      path: '/scalability', // Add this route for the Matrix component
+      name: 'scalability',
+      component: Scalibility,
+    },
+    {
+      path: '/database', // Add this route for the Matrix component
+      name: 'database',
+      component: Database,
+    },
+    {
+      path: '/HLD', // Add this route for the Matrix component
+      name: 'HLD',
+      component: HLD,
+    },
+    {
+      path: '/LLD', // Add this route for the Matrix component
+      name: 'LLD',
+      component: LLD,
+    },
+    {
+      path: '/Apt', // Add this route for the Matrix component
+      name: 'Apt',
+      component: AptandResoning,
+    },
+
+
     {
       path: "/topic-wise-quiz",
       name: "topic-wise-quiz",
