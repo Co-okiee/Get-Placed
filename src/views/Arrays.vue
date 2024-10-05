@@ -20,9 +20,9 @@
     <p>Select a programming language to see the declaration syntax:</p>
     
     <div class="button-container">
-      <button @click="showDeclaration('java')" class="declaration-button">Java</button>
-      <button @click="showDeclaration('c')" class="declaration-button">C</button>
-      <button @click="showDeclaration('python')" class="declaration-button">Python</button>
+      <button @click="showDeclaration('java')" class="example-button">Java</button>
+      <button @click="showDeclaration('c')" class="example-button">C</button>
+      <button @click="showDeclaration('python')" class="example-button">Python</button>
     </div>
 
     <pre v-if="declarationCode">
@@ -112,7 +112,7 @@ numbers = [10, 20, 30, 40, 50]`;
 }
 
 .type-title {
-  font-size: 1.8em; /* Larger font size for type titles */
+  font-size: 1.5em; /* Larger font size for type titles */
   color: #e0ce46; /* Bright color for type titles */
   margin-top: 25px; /* Margin for type titles */
 }
@@ -156,20 +156,20 @@ pre {
   margin: 30px 0; /* Increased margin for better spacing */
 }
 
-.declaration-button {
-  background-color: #e0ce46; /* Button color */
-  color: #121212; /* Text color */
-  border: none;
-  border-radius: 5px;
-  padding: 15px 30px; /* Increased padding for better click area */
-  font-size: 1.2em; /* Increased font size for buttons */
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.declaration-button:hover {
-  background-color: #f6f361; /* Change color on hover */
-}
+.example-button {
+    background-color: #ffcc00;
+    color: #121212;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .example-button:hover {
+    background-color: #ffe066;
+  }
 
 a {
   color: #ddc452; /* Link color */

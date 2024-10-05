@@ -2,9 +2,9 @@
     <div class="arrays-quiz">
       <h1 v-if="!quizStarted">Arrays Quiz</h1>
       <p v-if="!quizStarted" class="welcome-message">
-        Welcome to the arrays quiz! 
+        Welcome to the arrays quiz!
         <br />
-        Test your knowledge on arrays and see how much you really know. 
+        Test your knowledge on arrays and see how much you really know.
         <br />
         Click the button below to start and challenge yourself!
       </p>
@@ -15,11 +15,10 @@
         <div v-if="loading">
           <p>Loading questions...</p>
         </div>
-        
+  
         <div v-else-if="questions.length > 0 && currentQuestionIndex < questions.length">
           <h2>Question {{ currentQuestionIndex + 1 }}: {{ questions[currentQuestionIndex].question }}</h2>
   
-          <!-- Check if the snippet exists and display it -->
           <div v-if="questions[currentQuestionIndex].snippet" class="code-snippet">
             <pre><code>{{ questions[currentQuestionIndex].snippet }}</code></pre>
           </div>
@@ -34,7 +33,8 @@
           </ul>
   
           <div class="button-container">
-            <button @click="nextQuestion" :disabled="selectedOption === null">
+            <button @click="quitQuiz" class="quit-button">Quit</button>
+            <button @click="nextQuestion" :disabled="selectedOption === null" style="margin-left: 10px;">
               {{ currentQuestionIndex === questions.length - 1 ? 'Submit' : 'Next' }}
             </button>
           </div>
@@ -48,41 +48,35 @@
             <h3>Explanations for Wrong Answers:</h3>
             <ul class="explanations-list">
               <li v-for="(explanation, index) in explanations" :key="index">
-                <button @click="showWrongAnswerDetails(index)">Question {{ index + 1 }}</button>
+                <button @click="showWrongAnswerDetails(index)">Question {{ explanation.questionIndex + 1 }}</button>
               </li>
             </ul>
           </div>
   
           <div v-if="selectedWrongQuestionIndex !== null" class="details">
-            <h3>Details for Question {{ selectedWrongQuestionIndex + 1 }}</h3>
+            <h3>Details for Question {{ explanations[selectedWrongQuestionIndex].questionIndex + 1 }}</h3>
             <p>{{ explanations[selectedWrongQuestionIndex].question }}</p>
-            
-            <!-- Check if the snippet exists for wrong answers -->
-            <div v-if="questions[selectedWrongQuestionIndex].snippet" class="code-snippet">
-              <pre><code>{{ questions[selectedWrongQuestionIndex].snippet }}</code></pre>
+  
+            <div v-if="questions[explanations[selectedWrongQuestionIndex].questionIndex].snippet" class="code-snippet">
+              <pre><code>{{ questions[explanations[selectedWrongQuestionIndex].questionIndex].snippet }}</code></pre>
             </div>
   
             <ul class="options-list">
-              <!-- Display the selected answer -->
               <li class="wrong-option">
                 <label style="color: red;">
-                  Your answer: 
-                  <!-- Ensure the correct index is used to fetch the selected option text -->
-                  {{ getOptions(selectedWrongQuestionIndex)[explanations[selectedWrongQuestionIndex].selectedAnswer - 1] || 'No answer selected' }}
+                  Your answer:
+                  {{ getOptions(explanations[selectedWrongQuestionIndex].questionIndex)[explanations[selectedWrongQuestionIndex].selectedAnswer - 1] || 'No answer selected' }}
                 </label>
               </li>
   
-              <!-- Display the correct answer -->
               <li class="correct-option">
                 <label style="color: green;">
-                  Correct answer: 
-                  <!-- Ensure the correct index is used to fetch the correct option text -->
-                  {{ getOptions(selectedWrongQuestionIndex)[explanations[selectedWrongQuestionIndex].correctAnswer - 1] }}
+                  Correct answer:
+                  {{ getOptions(explanations[selectedWrongQuestionIndex].questionIndex)[explanations[selectedWrongQuestionIndex].correctAnswer - 1] }}
                 </label>
               </li>
             </ul>
   
-            <!-- Explanation for the answer -->
             <p>{{ explanations[selectedWrongQuestionIndex].explanation }}</p>
             <button @click="selectedWrongQuestionIndex = null">Close</button>
           </div>
@@ -90,140 +84,175 @@
       </div>
     </div>
   </template>
-<script>
-import axios from "axios";
+  
+  <script>
+  import axios from "axios";
+  
+  export default {
+    name: "ArraysQuiz",
+    data() {
+      return {
+        quizStarted: false,
+        loading: false,
+        questions: [],
+        currentQuestionIndex: 0,
+        selectedOption: null,
+        score: 0,
+        explanations: [],
+        selectedWrongQuestionIndex: null,
+      };
+    },
+    methods: {
+      async fetchQuestions() {
+        this.loading = true;
+        try {
+          const response = await axios.get("http://localhost:5000/arrays-quiz-questions");
+          this.questions = response.data;
+          this.shuffleArray(this.questions);
+          this.currentQuestionIndex = 0;
+          this.score = 0;
+          this.explanations = [];
+        } catch (error) {
+          console.error("Error fetching questions:", error);
+          alert("Failed to fetch questions from the server. Please try again.");
+        } finally {
+          this.loading = false;
+        }
+      },
+      startQuiz() {
+        this.quizStarted = true;
+        this.fetchQuestions();
+      },
+      quitQuiz() {
+        this.currentQuestionIndex = this.questions.length; // Set to end to show completion screen
+      },
+      getOptions(index) {
+        const question = this.questions[index];
+        return [question.option1, question.option2, question.option3, question.option4];
+      },
+      nextQuestion() {
+  const currentQuestion = this.questions[this.currentQuestionIndex];
+  const correctAnswer = currentQuestion.answer;
 
-export default {
-  name: "ArraysQuiz",
-  data() {
-    return {
-      quizStarted: false,
-      loading: false, // Added loading state
-      questions: [],
-      currentQuestionIndex: 0,
-      selectedOption: null,
-      score: 0,
-      explanations: [],
-      wrongAnswers: [], // Store the wrong answers
-      selectedWrongQuestionIndex: null, // Track which wrong question is selected
-    };
-  },
-  methods: {
-    async fetchQuestions() {
-      this.loading = true; // Set loading to true before fetching questions
-      try {
-        const response = await axios.get("http://localhost:5000/arrays-quiz-questions");
-        this.questions = response.data;
-        this.shuffleArray(this.questions);
-        this.currentQuestionIndex = 0;
-        this.score = 0;
-        this.explanations = [];
-        this.wrongAnswers = []; // Reset wrong answers
-      } catch (error) {
-        console.error("Error fetching questions:", error);
-        alert("Failed to fetch questions from the server. Please try again.");
-      } finally {
-        this.loading = false; // Set loading to false after fetching questions
-      }
-    },
-    startQuiz() {
-      this.quizStarted = true;
-      this.fetchQuestions();
-    },
-    getOptions(index) {
-      const question = this.questions[index];
-      return [question.option1, question.option2, question.option3, question.option4];
-    },
-    nextQuestion() {
-      const currentQuestion = this.questions[this.currentQuestionIndex];
-      const correctAnswer = currentQuestion.answer;
+  if (this.selectedOption === correctAnswer) {
+    this.score++;
+  } else {
+    this.explanations.push({
+      questionIndex: this.currentQuestionIndex,
+      question: currentQuestion.question,
+      selectedAnswer: this.selectedOption,
+      correctAnswer: correctAnswer,
+      explanation: currentQuestion.explanation,
+    });
+  }
 
-      // Check if the selected option is correct
-      if (this.selectedOption === correctAnswer) {
-        this.score++;
-      } else {
-        // Store the selected wrong answer and explanation
-        this.explanations.push({
-          question: currentQuestion.question,
-          selectedAnswer: this.selectedOption, // Index of user's selected answer
-          correctAnswer: correctAnswer, // Correct answer for the current question
-          explanation: currentQuestion.explanation
-        });
-      }
+  this.currentQuestionIndex++;
 
-      // Move to the next question
-      this.currentQuestionIndex++;
-      this.selectedOption = null; // Reset selected option for the next question
+  // Check if the quiz is completed
+  if (this.currentQuestionIndex >= this.questions.length) {
+    this.submitScore(); // Submit score when quiz is finished
+  }
+
+  this.selectedOption = null; 
+},
+async submitScore() {
+  try {
+    const response = await axios.post("http://localhost:5000/save-score", {
+      score: this.score,
+      date: new Date().toISOString(), // Get the current date in ISO format
+    });
+    console.log(response.data.message);
+  } catch (error) {
+    console.error("Error saving score:", error);
+    alert("Failed to save score. Please try again.");
+  }
+},
+
+
+      showWrongAnswerDetails(index) {
+        this.selectedWrongQuestionIndex = index; 
+      },
+      shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      },
     },
-    showWrongAnswerDetails(index) {
-      this.selectedWrongQuestionIndex = index; // Set the selected question index
-    },
-    shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
-      }
-    },
-  },
-};
-</script>
-<style scoped>
+  };
+  </script>
+  
+  <style scoped>
+body {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100vh; /* Full height of the viewport */
+  margin: 0; /* Remove default margin */
+  background-color: #f0f0f0; /* Optional: set a background color */
+}
+
 .arrays-quiz {
-  padding: 40px;
-  background-color: #000000;
-  color: #ffffff;
-  border-radius: 8px;
   max-width: 600px;
-  margin: 100px auto;
-  text-align: center;
+  width: 100%; /* Allow it to shrink in smaller screens */
+  padding: 80px;
+  border: 0px solid #ccc;
+  border-radius: 8px;
+  background-color: #000000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .welcome-message {
+  font-size: 1.2em;
   margin: 20px 0;
-  font-size: 18px;
 }
 
-.start-button {
-  padding: 15px 30px;
-  font-size: 16px;
-}
-
-.options-list,
-.explanations-list {
-  text-align: left;
-  margin: 0 auto;
-  max-width: 600px;
-}
-
-.button-container {
-  text-align: center;
-}
-
-button {
-  background-color: #4caf50;
+.start-button, .quit-button {
+  background-color: #13c81c;
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 1em;
 }
 
-button:hover {
-  background-color: #45a049;
+.quit-button {
+  background-color: red;
 }
 
-ul {
+.quit-button:hover {
+  background-color: darkred;
+}
+
+.start-button:hover {
+  background-color: #000000;
+}
+
+.options-list {
   list-style-type: none;
   padding: 0;
 }
 
-li {
-  margin-bottom: 10px;
+.options-list li {
+  margin: 10px 0;
 }
 
-.score {
-  font-size: 24px;
-  color: #4caf50;
+.code-snippet {
+  background-color: #262424;
+  border: 0px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.details {
+  margin-top: 20px;
+}
+
+.explanations-list {
+  list-style-type: none;
+  padding: 0;
 }
 
 .wrong-option {
@@ -233,26 +262,4 @@ li {
 .correct-option {
   color: green;
 }
-
-/* Styling for the code snippet to look like VS Code */
-.code-snippet {
-  background-color: #1e1e1e;
-  color: #dcdcdc;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 6px;
-  font-family: "Courier New", Courier, monospace;
-  text-align: left;
-  overflow-x: auto;
-}
-
-.code-snippet pre {
-  margin: 0;
-  white-space: pre-wrap;
-}
-
-.details {
-  text-align: left;
-}
 </style>
-  
