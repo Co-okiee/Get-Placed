@@ -4,8 +4,14 @@
     <header class="header">
       <h1 class="header-title">Get Placed</h1>
       <nav class="header-nav">
-        <router-link to="/login">Login</router-link>
-        <router-link to="/signup">Sign Up</router-link>
+        <template v-if="name">
+          <span>Welcome, {{ name }}</span>
+          <button @click="logout" class="logout-btn">Logout</button>
+        </template>
+        <template v-else>
+          <router-link to="/login">Login</router-link>
+          <router-link to="/signup">Sign Up</router-link>
+        </template>
       </nav>
     </header>
 
@@ -34,18 +40,34 @@
 <script>
 export default {
   name: "Dashboard",
+  data() {
+    return {
+      username: null, // Store username if logged in
+      name:null
+    };
+  },
+  mounted() {
+    // When the component is mounted, check if the user is logged in
+    this.username = localStorage.getItem('username'); // Retrieve the username from localStorage
+    this.name=localStorage.getItem('name');
+  },
   methods: {
     goToQuiz() {
-      this.$router.push({ name: "quiz-options" }); // Navigate to the new QuizOptions component
+      this.$router.push({ name: "quiz-options" });
     },
     goToStudy() {
       this.$router.push({ name: "study" });
     },
     goToTrackProgress() {
-      this.$router.push({ name: "trackProgress" });
+      this.$router.push({ name: "trackprogress" });
     },
     goToMockInterview() {
       this.$router.push({ name: "mockInterview" });
+    },
+    logout() {
+      localStorage.removeItem('username'); // Remove the username from localStorage
+      this.username = null; // Reset the username in the component
+      this.$router.push('/login'); // Redirect to the login page
     }
   }
 };
@@ -83,6 +105,23 @@ export default {
 }
 
 .header-nav a:hover {
+  text-decoration: underline;
+}
+
+.header-nav span {
+  margin-right: 15px;
+  font-size: 18px;
+  color: #fff;
+}
+
+.logout-btn {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
   text-decoration: underline;
 }
 

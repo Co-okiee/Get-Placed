@@ -76,6 +76,10 @@ import Database from "../views/Database.vue";
 import HLD from "../views/HLD.vue";
 import LLD from "../views/LLD.vue";
 import AptandResoning from "../views/AptandResoning.vue";
+import TrackProgress from "../views/TrackProgress.vue";
+import Verbalquizes from "../views/Verbalquizes.vue";
+import VAQuizPage from "../views/VAQuizPage.vue";
+import MatricesQuiz from "../views/MatricesQuiz.vue";
 
 // Create router instance
 const router = createRouter({
@@ -434,11 +438,21 @@ const router = createRouter({
       name: "array-quiz",
       component: ArrayQuiz, // Array Quiz page component
     },
+    {
+      path: "/matrix-quiz",
+      name: "matrix-quiz",
+      component: MatricesQuiz, // Array Quiz page component
+    },
     
     {
       path: "/login",
       name: "login",
       component: Login, // Login page component
+    },
+    {
+      path: "/trackprogress",
+      name: "trackprogress",
+      component: TrackProgress, // Login page component
     },
     {
       path: "/signup",
@@ -459,6 +473,16 @@ const router = createRouter({
       path: "/company-coding",
       name: "company-coding", // Route for company coding questions
       component: CompanyCodingPage, // Component for company coding questions
+    },
+    {
+      path: "/verbalquizes",
+      name: "verbalquizes", // Route for company coding questions
+      component: Verbalquizes, // Component for company coding questions
+    },
+    {
+      path: '/VerbalAbilityQuizPage/:quizNumber',
+      name: 'VerbalAbilityQuizPage',
+      component: VAQuizPage,
     },
     {
       path: "/:pathMatch(.*)*", // Catch-all route for 404 Not Found

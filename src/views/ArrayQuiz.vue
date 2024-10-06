@@ -100,8 +100,14 @@
         score: 0,
         explanations: [],
         selectedWrongQuestionIndex: null,
+        user_id:null,
       };
     },
+    mounted() {
+    // Retrieve user_id from local storage when the component is mounted
+    this.user_id = localStorage.getItem("user_id");
+    this.score=localStorage.getItem("score");
+  },
     methods: {
       async fetchQuestions() {
         this.loading = true;
@@ -156,19 +162,49 @@
   this.selectedOption = null; 
 },
 async submitScore() {
-  try {
-    const response = await axios.post("http://localhost:5000/save-score", {
-      score: this.score,
-      date: new Date().toISOString(), // Get the current date in ISO format
+    console.log("Score:", this.score);
+    console.log("User ID:", this.user_id);
+    
+    // Check if user_id is present
+    if (!this.user_id) {
+        console.error("Error getting user_id: User ID is not defined.");
+        return; // Exit if user_id is not available
+    }
+
+    // Get the current date in UTC
+    const now = new Date();
+    
+    // Convert to IST by adding 5 hours and 30 minutes (330 minutes)
+    const istOffset = 330; // IST is UTC+5:30
+    const istDate = new Date(now.getTime() + istOffset * 60 * 1000);
+
+    // Log the request data
+    console.log("Request data:", {
+        score: this.score,
+        user_id: this.user_id,
+        date: istDate.toISOString(), // Send the adjusted time to the backend
     });
-    console.log(response.data.message);
-  } catch (error) {
-    console.error("Error saving score:", error);
-    alert("Failed to save score. Please try again.");
-  }
+
+    try {
+        const response = await axios.post("http://localhost:5000/save-score", {
+            score: this.score,
+            user_id: this.user_id,
+            date: istDate.toISOString(), // Use the IST adjusted date
+        });
+
+        console.log(response.data.message);
+        alert("Score saved successfully!");
+    } catch (error) {
+        if (error.response) {
+            console.error("Error saving score:", error.response.data);
+            alert(`Failed to save score: ${error.response.data.error || error.message}`);
+        } else {
+            console.error("Error saving score:", error.message);
+            alert("Failed to save score. Please try again.");
+        }
+    }
+
 },
-
-
       showWrongAnswerDetails(index) {
         this.selectedWrongQuestionIndex = index; 
       },

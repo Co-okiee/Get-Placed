@@ -16,7 +16,7 @@ export default {
       this.$router.push({ name: "array-quiz" }); // Ensure this matches the router
     },
     goToMatrices() {
-      this.$router.push({ name: "Matrix" }); // Ensure this matches the router
+      this.$router.push({ name: "matrix-quiz" }); // Ensure this matches the router
     },
     goToStrings() {
       this.$router.push({ name: "strings-quiz" }); // Ensure this matches the router

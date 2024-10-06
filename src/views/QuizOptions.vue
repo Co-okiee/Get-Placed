@@ -1,7 +1,7 @@
 <template>
   <div class="quiz-options">
     <h1>Choose Quiz Type</h1>
-    <button @click="goToCompanyCoding">Verbal Ability</button>
+    <button @click="goToVerbalquizes">Verbal Ability</button>
     <button @click="goToVerbalAbility">Company Specific Coding Questions</button>
     <button @click="goToTopicWiseQuiz">Topic Wise Quiz</button> <!-- New button -->
   </div>
@@ -11,8 +11,8 @@
 export default {
   name: "QuizOptions",
   methods: {
-    goToCompanyCoding() {
-      this.$router.push({ name: "company-coding" }); // Ensure this matches the router
+    goToVerbalquizes() {
+      this.$router.push({ name: "verbalquizes" }); // Ensure this matches the router
     },
     goToVerbalAbility() {
       console.log("Verbal Ability button clicked!"); // Debugging log
