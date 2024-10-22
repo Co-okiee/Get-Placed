@@ -160,15 +160,77 @@ def get_arrays_quiz_questions():
     conn.close()
     return jsonify(questions)
 
-@app.route('/matrices-quiz-questions', methods=['GET'])
-def get_matrices_quiz_questions():
+@app.route('/algo-quiz-questions', methods=['GET'])
+def get_algo_quiz_questions():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM matrix_quiz')
+    cursor.execute('SELECT * FROM algo_quiz')
     questions = cursor.fetchall()
     cursor.close()
     conn.close()
     return jsonify(questions)
+
+@app.route('/os-quiz-questions', methods=['GET'])
+def get_os_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM os_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+@app.route('/dbms-quiz-questions', methods=['GET'])
+def get_dbms_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM dbms_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+@app.route('/oops-quiz-questions', methods=['GET'])
+def get_oops_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM oops_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+@app.route('/apt-quiz-questions', methods=['GET'])
+def get_apt_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM apt_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+@app.route('/cnt-quiz-questions', methods=['GET'])
+def get_cnt_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM cnt_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+@app.route('/systemd-quiz-questions', methods=['GET'])
+def get_systemd_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM systemd_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+
 
 @app.route('/verbal-ability-quiz-questions', methods=['GET'])
 def get_verbal_ability_questions():

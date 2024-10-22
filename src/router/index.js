@@ -79,7 +79,14 @@ import AptandResoning from "../views/AptandResoning.vue";
 import TrackProgress from "../views/TrackProgress.vue";
 import Verbalquizes from "../views/Verbalquizes.vue";
 import VAQuizPage from "../views/VAQuizPage.vue";
-import MatricesQuiz from "../views/MatricesQuiz.vue";
+import AlgoQuiz from "../views/AlgoQuiz.vue";
+import OSQuiz from "../views/OSQuiz.vue";
+import DBMSQuiz from "../views/DBMSQuiz.vue";
+import OOPSQuiz from "../views/OOPSQuiz.vue";
+import AptQuiz from "../views/AptQuiz.vue";
+import CNTQuiz from "../views/CNTQuiz.vue";
+import SystemDQuiz from "../views/SystemDQuiz.vue";
+
 
 // Create router instance
 const router = createRouter({
@@ -439,9 +446,39 @@ const router = createRouter({
       component: ArrayQuiz, // Array Quiz page component
     },
     {
-      path: "/matrix-quiz",
-      name: "matrix-quiz",
-      component: MatricesQuiz, // Array Quiz page component
+      path: "/algo_quiz",
+      name: "algo_quiz",
+      component: AlgoQuiz, // Array Quiz page component
+    },
+    {
+      path: "/os_quiz",
+      name: "os_quiz",
+      component: OSQuiz, // Array Quiz page component
+    },
+    {
+      path: "/dbms_quiz",
+      name: "dbms_quiz",
+      component: DBMSQuiz, // Array Quiz page component
+    },
+    {
+      path: "/oops_quiz",
+      name: "oops_quiz",
+      component: OOPSQuiz, // Array Quiz page component
+    },
+    {
+      path: "/apt_quiz",
+      name: "apt_quiz",
+      component: AptQuiz, // Array Quiz page component
+    },
+    {
+      path: "/cnt_quiz",
+      name: "cnt_quiz",
+      component: CNTQuiz, // Array Quiz page component
+    },
+    {
+      path: "/systemd_quiz",
+      name: "systemd_quiz",
+      component: SystemDQuiz, // Array Quiz page component
     },
     
     {
