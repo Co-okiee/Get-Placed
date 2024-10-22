@@ -51,6 +51,8 @@ export default {
         localStorage.setItem('name', this.name);
         localStorage.setItem('user_id', this.user_id);
 
+        this.token = response.data.token; // Assuming the token is returned in the response
+        localStorage.setItem('token', this.token);
         // Redirect to the dashboard after login
         this.$router.push('/');
       } catch (error) {

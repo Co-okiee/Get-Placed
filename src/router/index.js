@@ -485,6 +485,11 @@ const router = createRouter({
       component: VAQuizPage,
     },
     {
+      path: '/dashboard',
+      name: 'Dashboard',
+      component: Dashboard
+    },
+    {
       path: "/:pathMatch(.*)*", // Catch-all route for 404 Not Found
       name: "notfound",
       component: NotFound, // Not Found page component

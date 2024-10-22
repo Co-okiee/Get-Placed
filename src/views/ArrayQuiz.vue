@@ -1,10 +1,10 @@
 <template>
     <div class="arrays-quiz">
-      <h1 v-if="!quizStarted">Arrays Quiz</h1>
+      <h1 v-if="!quizStarted">Data Structure Quiz</h1>
       <p v-if="!quizStarted" class="welcome-message">
-        Welcome to the arrays quiz!
+        Welcome to the Data Structure quiz!
         <br />
-        Test your knowledge on arrays and see how much you really know.
+        Test your knowledge on DS and see how much you really know.
         <br />
         Click the button below to start and challenge yourself!
       </p>
@@ -218,51 +218,44 @@ async submitScore() {
   };
   </script>
   
-  <style scoped>
-body {
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  height: 100vh; /* Full height of the viewport */
-  margin: 0; /* Remove default margin */
-  background-color: #f0f0f0; /* Optional: set a background color */
-}
-
+ <style scoped>
 .arrays-quiz {
-  max-width: 600px;
-  width: 100%; /* Allow it to shrink in smaller screens */
-  padding: 80px;
-  border: 0px solid #ccc;
-  border-radius: 8px;
+  max-width: 800px;
+  margin: auto;
+  padding: 40px;
   background-color: #000000;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.welcome-message {
-  font-size: 1.2em;
-  margin: 20px 0;
+.quiz-header {
+  text-align: center;
 }
 
-.start-button, .quit-button {
+.start-button {
   background-color: #13c81c;
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 1em;
-}
-
-.quit-button {
-  background-color: red;
-}
-
-.quit-button:hover {
-  background-color: darkred;
 }
 
 .start-button:hover {
-  background-color: #000000;
+  background-color: darkgreen;
+}
+
+.question-container {
+  margin: 20px 0;
+}
+
+.code-snippet {
+  background-color: #262424;
+  padding: 10px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 20px 0;
 }
 
 .options-list {
@@ -274,21 +267,44 @@ body {
   margin: 10px 0;
 }
 
-.code-snippet {
-  background-color: #262424;
-  border: 0px solid #ccc;
-  padding: 10px;
+.next-button {
+  background-color: #008cba;
+  color: white;
+  padding: 10px 20px;
+  border: none;
   border-radius: 4px;
-  overflow-x: auto;
+  cursor: pointer;
+}
+
+.next-button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
+
+.quit-button {
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.quit-button:hover {
+  background-color: darkred;
+}
+
+.result-container {
+  text-align: center;
+}
+
+.score {
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
 .details {
   margin-top: 20px;
-}
-
-.explanations-list {
-  list-style-type: none;
-  padding: 0;
 }
 
 .wrong-option {
@@ -297,5 +313,10 @@ body {
 
 .correct-option {
   color: green;
+}
+
+.explanations-list {
+  list-style-type: none;
+  padding: 0;
 }
 </style>
