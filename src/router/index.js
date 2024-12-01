@@ -79,6 +79,27 @@ import AptandResoning from "../views/AptandResoning.vue";
 import TrackProgress from "../views/TrackProgress.vue";
 import Verbalquizes from "../views/Verbalquizes.vue";
 import VAQuizPage from "../views/VAQuizPage.vue";
+import MatricesQuiz from "../views/MatricesQuiz.vue";
+import CompanySpecific from '../views/CompanySpecific.vue'; // Adjust the path as needed
+import BarclaysLanding from '../views/BarclaysLanding.vue';
+import DeutscheBankLanding from '../views/DeutscheBankLanding.vue';
+import JPMorganLanding from '../views/JPMorganLanding.vue';
+import AccentureLanding from '../views/AccentureLanding.vue';
+import TCSLanding from '../views/TCSLanding.vue';
+import OracleLanding from '../views/OracleLanding.vue';
+import WiproLanding from '../views/WiproLanding.vue';
+import CognizantLanding from '../views/CognizantLanding.vue';
+import GoogleLanding from '../views/GoogleLanding.vue';
+import MicrosoftLanding from '../views/MicrosoftLanding.vue';
+import AmazonLanding from '../views/AmazonLanding.vue';
+import SiemensLanding from '../views/SiemensLanding.vue';
+import NvidiaLanding from '../views/NvidiaLanding.vue';
+import DeloitteLanding from '../views/DeloitteLanding.vue';
+import AirtelLanding from '../views/AirtelLanding.vue';
+import CodingIde from '../views/CodingIde.vue';
+import MockExamBarclays from "../views/MockExamBarclays.vue";
+import ExamWindowBarclays from "../views/ExamWindowBarclays.vue";
+
 import AlgoQuiz from "../views/AlgoQuiz.vue";
 import OSQuiz from "../views/OSQuiz.vue";
 import DBMSQuiz from "../views/DBMSQuiz.vue";
@@ -543,6 +564,105 @@ const router = createRouter({
       name: "notfound",
       component: NotFound, // Not Found page component
     },
+    {
+      path: '/company-specific',
+      name: 'company-specific',
+      component: CompanySpecific // The new CompanySpecific component
+    },
+    {
+      path: '/barclays',
+      name: 'barclays-landing',
+      component: BarclaysLanding
+    },
+    {
+      path: '/deutschebank',
+      name: 'deutschebank-landing',
+      component: DeutscheBankLanding
+    },
+    {
+      path: '/jpmorgan',
+      name: 'jpmorgan-landing',
+      component: JPMorganLanding
+    },
+    {
+      path: '/accenture',
+      name: 'accenture-landing',
+      component: AccentureLanding
+    },
+    {
+      path: '/tcs',
+      name: 'tcs-landing',
+      component: TCSLanding
+    },
+    {
+      path: '/oracle',
+      name: 'oracle-landing',
+      component: OracleLanding
+    },
+    {
+      path: '/wipro',
+      name: 'wipro-landing',
+      component: WiproLanding
+    },
+    {
+      path: '/cognizant',
+      name: 'cognizant-landing',
+      component: CognizantLanding
+    },
+    {
+      path: '/google',
+      name: 'google-landing',
+      component: GoogleLanding
+    },
+    {
+      path: '/microsoft',
+      name: 'microsoft-landing',
+      component: MicrosoftLanding
+    },
+    {
+      path: '/amazon',
+      name: 'amazon-landing',
+      component: AmazonLanding
+    },
+    {
+      path: '/siemens',
+      name: 'siemens-landing',
+      component: SiemensLanding
+    },
+    {
+      path: '/nvidia',
+      name: 'nvidia-landing',
+      component: NvidiaLanding
+    },
+    {
+      path: '/deloitte',
+      name: 'deloitte-landing',
+      component: DeloitteLanding
+    },
+    {
+      path: '/airtel',
+      name: 'airtel-landing',
+      component: AirtelLanding
+    },
+    {
+      path: '/coding-ide',
+      name: 'coding-ide',
+      component: CodingIde // Add the route for the Coding IDE
+    },
+    {
+      path: "/barclays/mock-exam",
+      name: "mock-exam-page",
+      component: MockExamBarclays
+      // component: () => import("@/components/MockExamBarclays.vue"),
+    },
+    {
+      path: "/barclays/exam-window",
+      name: "exam-window",
+      component: ExamWindowBarclays
+    }
+    
+    
+    
   ],
 });
 
