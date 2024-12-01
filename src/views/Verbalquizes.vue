@@ -16,6 +16,9 @@
 
       <div class="fixed-grid">
         <router-link :to="{ name: 'VerbalAbilityQuizPage', params: { quizNumber: 1 } }">
+          <button class="quiz-card">Ai Generated</button>
+        </router-link>
+        <router-link :to="{ name: 'VerbalAbilityQuizPage', params: { quizNumber: 1 } }">
           <button class="quiz-card">Verbal Ability Quiz 1</button>
         </router-link>
         <router-link :to="{ name: 'VerbalAbilityQuizPage', params: { quizNumber: 2 } }">

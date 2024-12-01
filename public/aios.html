@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Structures Quiz</title>
+    <title>Operating System Quiz</title>
     <!-- React and ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
@@ -24,60 +24,44 @@
     const GROQ_API_KEY = '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';
 
     const topics = {
-        "Arrays": {
-            "subtopics": ["Introduction to Arrays", "Array Operations", "Multi-dimensional Arrays", "Array Algorithms"],
+        "Basics of Operating System": {
+            "subtopics": ["Introduction to OS", "Functions of OS", "Types of Operating Systems", "OS Architecture"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Matrix": {
-            "subtopics": ["Matrix Basics", "Matrix Operations", "Special Matrices", "Matrix Applications"],
+        "System Structure": {
+            "subtopics": ["System Components", "System Calls", "System Programs", "Virtual Machines"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Advanced Data Structures": {
-            "subtopics": ["AVL Trees", "Red-Black Trees", "B-Trees", "Segment Trees"],
+        "CPU Scheduling": {
+            "subtopics": ["Scheduling Basics", "FCFS Scheduling", "Round Robin Scheduling", "Priority Scheduling"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Strings": {
-            "subtopics": ["String Basics", "String Algorithms", "Pattern Matching", "String Manipulation"],
+        "Process Synchronization": {
+            "subtopics": ["Critical Section Problem", "Semaphores", "Monitors", "Producer-Consumer Problem"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Linked Lists": {
-            "subtopics": ["Singly Linked Lists", "Doubly Linked Lists", "Circular Linked Lists", "Applications"],
+        "Deadlock": {
+            "subtopics": ["Deadlock Basics", "Deadlock Prevention", "Deadlock Avoidance", "Deadlock Detection and Recovery"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Stack": {
-            "subtopics": ["Stack Operations", "Stack Applications", "Stack Implementations", "Advanced Concepts"],
+        "Processes and Threads": {
+            "subtopics": ["Process Basics", "Thread Basics", "Multithreading", "Process Scheduling"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Queue": {
-            "subtopics": ["Queue Operations", "Types of Queues", "Queue Applications", "Priority Queues"],
+        "Memory Management": {
+            "subtopics": ["Memory Allocation", "Paging", "Segmentation", "Virtual Memory"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Trees": {
-            "subtopics": ["Binary Trees", "BST", "Tree Traversals", "Tree Applications"],
+        "Disk Management": {
+            "subtopics": ["Disk Scheduling", "RAID Levels", "File Systems", "Disk Partitioning"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Heap": {
-            "subtopics": ["Min Heap", "Max Heap", "Heap Operations", "Heap Applications"],
-            "levels": ["Level 1", "Level 2", "Level 3"]
-        },
-        "Hashing": {
-            "subtopics": ["Hash Functions", "Collision Resolution", "Hash Tables", "Applications"],
-            "levels": ["Level 1", "Level 2", "Level 3"]
-        },
-        "Graph": {
-            "subtopics": ["Graph Representation", "Graph Traversals", "Shortest Paths", "Graph Algorithms"],
-            "levels": ["Level 1", "Level 2", "Level 3"]
-        },
-        "Set": {
-            "subtopics": ["Set Operations", "Set Implementation", "MultiSet", "Set Applications"],
-            "levels": ["Level 1", "Level 2", "Level 3"]
-        },
-        "Map": {
-            "subtopics": ["Map Basics", "HashMap", "TreeMap", "Map Applications"],
+        "Other Important Topics": {
+            "subtopics": ["I/O Management", "Security and Protection", "File Management", "Distributed Systems"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         }
     };
-
+    
     const generateQuizPrompt = (topic, subtopic, level) => {
         let difficultyDescription = '';
         switch(level) {
@@ -257,7 +241,7 @@
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-lg shadow-lg p-6">
-                <h1 className="text-3xl font-bold mb-6 text-gray-800">Data Structures Quiz</h1>
+                <h1 className="text-3xl font-bold mb-6 text-gray-800">Operating System Quiz</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Topics Panel */}

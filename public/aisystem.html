@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Structures Quiz</title>
+    <title>System Design Quiz</title>
     <!-- React and ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
@@ -24,59 +24,61 @@
     const GROQ_API_KEY = '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';
 
     const topics = {
-        "Arrays": {
-            "subtopics": ["Introduction to Arrays", "Array Operations", "Multi-dimensional Arrays", "Array Algorithms"],
+        "Introduction to System Design": {
+            "subtopics": ["What is System Design?", "Importance of System Design", "Components of a System", "High-Level vs Low-Level Design"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Matrix": {
-            "subtopics": ["Matrix Basics", "Matrix Operations", "Special Matrices", "Matrix Applications"],
+        "Scalability and Load Balancing": {
+            "subtopics": ["Vertical vs Horizontal Scaling", "Load Balancing Algorithms", "Database Sharding", "Caching Strategies", "Replication and Partitioning"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Advanced Data Structures": {
-            "subtopics": ["AVL Trees", "Red-Black Trees", "B-Trees", "Segment Trees"],
+        "Database Design": {
+            "subtopics": ["Normalization", "Denormalization", "Relational vs NoSQL Databases", "Indexes and Indexing Strategies", "ACID Properties"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Strings": {
-            "subtopics": ["String Basics", "String Algorithms", "Pattern Matching", "String Manipulation"],
+        "Microservices Architecture": {
+            "subtopics": ["What are Microservices?", "Microservices vs Monolithic Architecture", "Communication between Microservices", "Benefits and Challenges of Microservices"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Linked Lists": {
-            "subtopics": ["Singly Linked Lists", "Doubly Linked Lists", "Circular Linked Lists", "Applications"],
+        "Caching": {
+            "subtopics": ["What is Caching?", "Cache Types (In-memory, Distributed)", "Cache Eviction Policies", "Cache Coherence", "CDNs and Edge Caching"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Stack": {
-            "subtopics": ["Stack Operations", "Stack Applications", "Stack Implementations", "Advanced Concepts"],
+        "API Design": {
+            "subtopics": ["RESTful APIs", "GraphQL APIs", "API Versioning", "Authentication and Authorization", "Rate Limiting", "Designing Efficient APIs"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Queue": {
-            "subtopics": ["Queue Operations", "Types of Queues", "Queue Applications", "Priority Queues"],
+        "Message Queues and Event-Driven Architecture": {
+            "subtopics": ["What is a Message Queue?", "RabbitMQ, Kafka, and SQS", "Event-Driven Architecture", "Asynchronous Processing", "Publish-Subscribe Model"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Trees": {
-            "subtopics": ["Binary Trees", "BST", "Tree Traversals", "Tree Applications"],
+        "CAP Theorem": {
+            "subtopics": ["Consistency", "Availability", "Partition Tolerance", "Trade-offs in Distributed Systems", "CAP Theorem in Real-World Systems"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Heap": {
-            "subtopics": ["Min Heap", "Max Heap", "Heap Operations", "Heap Applications"],
+        "Designing High-Availability Systems": {
+            "subtopics": ["Redundancy", "Failover Mechanisms", "Heartbeating", "Replication and Clustering", "Disaster Recovery Plans"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Hashing": {
-            "subtopics": ["Hash Functions", "Collision Resolution", "Hash Tables", "Applications"],
+        "Monitoring and Logging": {
+            "subtopics": ["System Monitoring Tools", "Log Aggregation and Analysis", "Alerting Systems", "Tracing and Distributed Tracing", "Proactive vs Reactive Monitoring"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Graph": {
-            "subtopics": ["Graph Representation", "Graph Traversals", "Shortest Paths", "Graph Algorithms"],
+        "Security in System Design": {
+            "subtopics": ["Authentication and Authorization", "Encryption and Decryption", "SQL Injection and Other Vulnerabilities", "Rate Limiting and DDoS Protection", "Security Best Practices"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Set": {
-            "subtopics": ["Set Operations", "Set Implementation", "MultiSet", "Set Applications"],
+        "Designing for High Traffic": {
+            "subtopics": ["Handling High Traffic", "CDN Integration", "Auto-Scaling", "Traffic Shaping", "Request Throttling"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Map": {
-            "subtopics": ["Map Basics", "HashMap", "TreeMap", "Map Applications"],
+        "System Design Case Studies": {
+            "subtopics": ["Designing URL Shorteners", "Designing a Chat System", "Designing a Social Media Feed", "Designing a Distributed File Storage System", "Designing an E-Commerce System"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         }
     };
+    
+    
 
     const generateQuizPrompt = (topic, subtopic, level) => {
         let difficultyDescription = '';
@@ -257,7 +259,7 @@
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-lg shadow-lg p-6">
-                <h1 className="text-3xl font-bold mb-6 text-gray-800">Data Structures Quiz</h1>
+                <h1 className="text-3xl font-bold mb-6 text-gray-800">System Design Quiz</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Topics Panel */}

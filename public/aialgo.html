@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Structures Quiz</title>
+    <title>Algorithm Quiz</title>
     <!-- React and ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
@@ -24,59 +24,68 @@
     const GROQ_API_KEY = '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';
 
     const topics = {
-        "Arrays": {
-            "subtopics": ["Introduction to Arrays", "Array Operations", "Multi-dimensional Arrays", "Array Algorithms"],
+        "Analysis of Algorithms": {
+            "subtopics": ["Big-O Notation", "Time Complexity", "Space Complexity", "Asymptotic Analysis"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Matrix": {
-            "subtopics": ["Matrix Basics", "Matrix Operations", "Special Matrices", "Matrix Applications"],
+        "Searching Algorithms": {
+            "subtopics": ["Linear Search", "Binary Search", "Interpolation Search", "Exponential Search"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Advanced Data Structures": {
-            "subtopics": ["AVL Trees", "Red-Black Trees", "B-Trees", "Segment Trees"],
+        "Sorting Algorithms": {
+            "subtopics": ["Bubble Sort", "Merge Sort", "Quick Sort", "Heap Sort"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Strings": {
-            "subtopics": ["String Basics", "String Algorithms", "Pattern Matching", "String Manipulation"],
+        "Greedy Algorithms": {
+            "subtopics": ["Greedy Method Basics", "Huffman Coding", "Activity Selection", "Kruskal’s Algorithm"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Linked Lists": {
-            "subtopics": ["Singly Linked Lists", "Doubly Linked Lists", "Circular Linked Lists", "Applications"],
+        "Dynamic Programming": {
+            "subtopics": ["Introduction to DP", "Knapsack Problem", "Longest Common Subsequence", "Matrix Chain Multiplication"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Stack": {
-            "subtopics": ["Stack Operations", "Stack Applications", "Stack Implementations", "Advanced Concepts"],
+        "Graph Algorithms": {
+            "subtopics": ["DFS", "BFS", "Dijkstra’s Algorithm", "Prim’s Algorithm"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Queue": {
-            "subtopics": ["Queue Operations", "Types of Queues", "Queue Applications", "Priority Queues"],
+        "Pattern Searching": {
+            "subtopics": ["Naive Pattern Searching", "KMP Algorithm", "Rabin-Karp Algorithm", "Aho-Corasick Algorithm"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Trees": {
-            "subtopics": ["Binary Trees", "BST", "Tree Traversals", "Tree Applications"],
+        "Recursion": {
+            "subtopics": ["Introduction to Recursion", "Tail Recursion", "Backtracking with Recursion", "Divide and Conquer with Recursion"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Heap": {
-            "subtopics": ["Min Heap", "Max Heap", "Heap Operations", "Heap Applications"],
+        "Backtracking": {
+            "subtopics": ["N-Queens Problem", "Sudoku Solver", "Rat in a Maze", "Hamiltonian Path"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Hashing": {
-            "subtopics": ["Hash Functions", "Collision Resolution", "Hash Tables", "Applications"],
+        "Divide and Conquer": {
+            "subtopics": ["Merge Sort", "Quick Sort", "Binary Search", "Strassen’s Matrix Multiplication"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Graph": {
-            "subtopics": ["Graph Representation", "Graph Traversals", "Shortest Paths", "Graph Algorithms"],
+        "Mathematical Algorithms": {
+            "subtopics": ["GCD and LCM", "Sieve of Eratosthenes", "Matrix Exponentiation", "Modular Arithmetic"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Set": {
-            "subtopics": ["Set Operations", "Set Implementation", "MultiSet", "Set Applications"],
+        "Geometric Algorithms": {
+            "subtopics": ["Convex Hull", "Line Intersection", "Polygon Triangulation", "Closest Pair of Points"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Map": {
-            "subtopics": ["Map Basics", "HashMap", "TreeMap", "Map Applications"],
+        "Bitwise Algorithms": {
+            "subtopics": ["Bit Manipulation Basics", "Power of Two", "Count Set Bits", "Bitwise XOR Applications"],
+            "levels": ["Level 1", "Level 2", "Level 3"]
+        },
+        "Randomized Algorithms": {
+            "subtopics": ["Introduction to Randomization", "Randomized Quicksort", "Randomized Prim’s Algorithm", "Monte Carlo Methods"],
+            "levels": ["Level 1", "Level 2", "Level 3"]
+        },
+        "Branch and Bound": {
+            "subtopics": ["Introduction to Branch and Bound", "Knapsack Problem", "Traveling Salesman Problem", "N-Queens Problem"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         }
     };
+    
 
     const generateQuizPrompt = (topic, subtopic, level) => {
         let difficultyDescription = '';
@@ -257,7 +266,7 @@
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-lg shadow-lg p-6">
-                <h1 className="text-3xl font-bold mb-6 text-gray-800">Data Structures Quiz</h1>
+                <h1 className="text-3xl font-bold mb-6 text-gray-800">Algorithms Quiz</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Topics Panel */}

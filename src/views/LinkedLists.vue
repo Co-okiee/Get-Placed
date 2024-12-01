@@ -1,194 +1,216 @@
 <template>
-    <div class="linkedlist-container">
-      <h1 class="main-title">Linked Lists</h1>
-      <p class="intro">
-        A linked list is a linear data structure where each element is a separate object. Each element (node) contains data and a reference (link) to the next node in the sequence.
-      </p>
-  
-      <h2 class="sub-title">Key Characteristics of Linked Lists</h2>
-      <ul class="characteristics-list">
-        <li><strong>Dynamic Size:</strong> Linked lists can grow and shrink dynamically during execution.</li>
-        <li><strong>Efficient Insertions/Deletions:</strong> Insertions and deletions can be performed efficiently without reorganizing the entire data structure.</li>
-        <li><strong>No Direct Access:</strong> Elements cannot be accessed directly by their index; traversal is required to find specific elements.</li>
-      </ul>
-  
-      <h2 class="sub-title">Diagram of a Linked List</h2>
-      <img src="@/assets/ll.png" alt="Linked List Diagram" class="linkedlist-diagram"/>
-  
-      <h2 class="sub-title">Types of Linked Lists</h2>
-      <h3 class="type-title">Singly Linked List</h3>
-      <p>A linked list where each node points to the next node, and the last node points to null.</p>
-  
-      <h3 class="type-title">Doubly Linked List</h3>
-      <p>A linked list where each node contains two references: one to the next node and another to the previous node.</p>
-  
-      <h3 class="type-title">Circular Linked List</h3>
-      <p>A linked list where the last node points back to the first node, forming a circular structure.</p>
-  
-      <h2 class="sub-title">Linked List Operations</h2>
-      <p>Common operations performed on linked lists include insertion, deletion, traversal, and searching.</p>
-  
-      <h2 class="sub-title">Linked List Functions</h2>
-      <p>Key functions include adding nodes, removing nodes, and reversing the linked list.</p>
-  
-      <h2 class="sub-title">Examples</h2>
-      <p>Click on the buttons below to see examples of linked lists in different programming languages:</p>
-  
-      <div class="button-container">
-        <button @click="showExample('java')" class="example-button">Example in Java</button>
-        <button @click="showExample('c')" class="example-button">Example in C</button>
-        <button @click="showExample('python')" class="example-button">Example in Python</button>
-      </div>
-  
-      <pre v-if="exampleCode">
-        <code>{{ exampleCode }}</code>
-      </pre>
-  
-      <h2 class="sub-title">Useful Links</h2>
-      <h3 class="link-title">YouTube Tutorials</h3>
-      <ul>
-        <li><a href="https://www.youtube.com/watch?v=abc123" target="_blank">Linked Lists in Java (English)</a></li>
-        <li><a href="https://www.youtube.com/watch?v=xyz456" target="_blank">Linked Lists in Hindi</a></li>
-      </ul>
+  <div class="linkedlist-container">
+    <h1 class="main-title">Linked Lists</h1>
+    <p class="intro">
+      A linked list is a linear data structure where each element (node) contains data and a reference to the next node in the sequence.
+    </p>
+
+    <h2 class="sub-title">Key Characteristics of Linked Lists</h2>
+    <ul class="characteristics-list">
+      <li><strong>Dynamic Size:</strong> Linked lists can grow and shrink dynamically during execution.</li>
+      <li><strong>Efficient Insertions/Deletions:</strong> Insertions and deletions do not require reorganization of the entire structure.</li>
+      <li><strong>No Direct Access:</strong> Elements cannot be accessed directly by index; traversal is required.</li>
+    </ul>
+
+    <h2 class="sub-title">Diagram of a Linked List</h2>
+    <img src="@/assets/ll-diagram.jpeg" alt="Linked List Diagram" class="linkedlist-diagram" />
+
+    <h2 class="sub-title">Types of Linked Lists</h2>
+    <h3 class="type-title">Singly Linked List</h3>
+    <p>A linked list where each node points to the next node, and the last node points to null.</p>
+
+    <h3 class="type-title">Doubly Linked List</h3>
+    <p>A linked list where each node contains two references: one to the next node and one to the previous node.</p>
+
+    <h3 class="type-title">Circular Linked List</h3>
+    <p>A linked list where the last node points back to the first node, forming a circular structure.</p>
+
+    <h2 class="sub-title">Linked List Operations</h2>
+    <p>Common operations include insertion, deletion, traversal, and searching.</p>
+
+    <h2 class="sub-title">Adjacency and Reverse</h2>
+    <p>Adjacency refers to the relationship between nodes, while reversing involves changing the direction of node pointers.</p>
+
+    <h2 class="sub-title">Examples</h2>
+    <p>Click the buttons below to see examples of linked lists in different programming languages:</p>
+    <div class="button-container">
+      <button @click="showExample('java')" class="example-button">Example in Java</button>
+      <button @click="showExample('c')" class="example-button">Example in C</button>
+      <button @click="showExample('python')" class="example-button">Example in Python</button>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "LinkedList",
-    data() {
-      return {
-        exampleCode: "",
-      };
+    <pre v-if="exampleCode">
+      <code>{{ exampleCode }}</code>
+    </pre>
+
+    <h2 class="sub-title">AI-Powered Study Companion</h2>
+    <div class="ai-notes-section">
+      <button 
+        @click="generateAINotes" 
+        class="example-button ai-notes-button" 
+        :disabled="isGenerating"
+      >
+        {{ isGenerating ? 'Generating AI Study Guide...' : 'Generate AI Study Guide' }}
+      </button>
+
+      <div v-if="aiNotesData" class="ai-notes-display">
+        <div class="ai-notes-content">
+          <div class="notes-section">
+            <h3 class="section-title">📘 Comprehensive Study Notes</h3>
+            <p class="notes-text">{{ aiNotesData.studyNotes }}</p>
+          </div>
+
+          <div class="notes-section">
+            <h3 class="section-title">🎯 Key Concepts</h3>
+            <ul class="key-concepts-list">
+              <li v-for="(concept, index) in aiNotesData.keyConcepts" :key="index">
+                {{ concept }}
+              </li>
+            </ul>
+          </div>
+
+          <div class="notes-section">
+            <h3 class="section-title">💡 Interview Questions</h3>
+            <div class="interview-questions">
+              <div 
+                v-for="(question, index) in aiNotesData.interviewQuestions" 
+                :key="index" 
+                class="interview-question"
+              >
+                <strong>Q{{ index + 1 }}:</strong> {{ question }}
+              </div>
+            </div>
+          </div>
+
+          <div class="notes-section">
+            <h3 class="section-title">🎥 Recommended Tutorials</h3>
+            <div class="tutorial-links">
+              <a 
+                v-for="(tutorial, index) in aiNotesData.tutorialLinks" 
+                :key="index"
+                :href="tutorial.url"
+                target="_blank"
+                class="tutorial-link"
+              >
+                <span class="tutorial-platform">{{ tutorial.platform }}</span>
+                <span class="tutorial-description">{{ tutorial.description }}</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="notes-actions">
+            <button @click="copyNotes" class="example-button copy-button">
+              📋 Copy Study Guide
+            </button>
+            <button @click="downloadNotesPDF" class="example-button download-button">
+              📥 Download PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+import jspdf from "jspdf";
+
+export default {
+  name: "LinkedList",
+  data() {
+    return {
+      exampleCode: "",
+      aiNotesData: null,
+      isGenerating: false,
+      selectedTopic: "",
+      error: null,
+      groqApiKey: "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",
+    };
+  },
+  methods: {
+    showExample(language) {
+      if (language === "java") {
+        this.exampleCode = `// Linked List in Java
+import java.util.LinkedList;
+LinkedList<String> list = new LinkedList<>();
+list.add("Node1");
+System.out.println(list.get(0)); // Output: Node1`;
+      } else if (language === "c") {
+        this.exampleCode = `// Linked List in C
+struct Node {
+    int data;
+    struct Node* next;
+};
+struct Node* head = NULL;`;
+      } else if (language === "python") {
+        this.exampleCode = `# Linked List in Python
+class Node:
+    def _init_(self, data):
+        self.data = data
+        self.next = None`;
+      }
     },
-    methods: {
-      showExample(language) {
-        if (language === 'java') {
-          this.exampleCode = `// Declaration of a linked list in Java
-  import java.util.LinkedList;
-  LinkedList<String> list = new LinkedList<>();
-  list.add("Node1");
-  System.out.println(list.get(0)); // Output: Node1`;
-        } else if (language === 'c') {
-          this.exampleCode = `// Declaration of a linked list in C
-  struct Node {
-      int data;
-      struct Node* next;
-  };
-  struct Node* head = NULL;`;
-        } else if (language === 'python') {
-          this.exampleCode = `# Declaration of a linked list in Python
-  class Node:
-      def __init__(self, data):
-          self.data = data
-          self.next = None`;
-        }
-      },
+
+    generateAINotes() {
+      this.isGenerating = true;
+      // Simulated API call to generate notes
+      setTimeout(() => {
+        this.aiNotesData = {
+          studyNotes: "Detailed notes about Linked Lists...",
+          keyConcepts: ["Dynamic Size", "Efficient Insertions", "No Direct Access"],
+          interviewQuestions: [
+            "What are the advantages of a linked list?",
+            "Explain the difference between singly and doubly linked lists.",
+          ],
+          tutorialLinks: [
+            {
+              platform: "YouTube",
+              description: "Linked List Basics",
+              url: "https://www.youtube.com/results?search_query=linked+list",
+            },
+          ],
+        };
+        this.isGenerating = false;
+      }, 2000);
     },
-  };
-  </script>
-  
-  <style scoped>
-  .linkedlist-container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #121212; /* Dark background color */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-    font-family: 'Roboto', sans-serif; /* Updated font */
-    color: #e0e0e0; /* Light text color for better readability */
-    line-height: 1.6; /* Increased line height for better readability */
-  }
-  
-  .main-title {
-    font-size: 2.8em; /* Larger font size for main title */
-    color: #f8f8f8; /* Bright color for the main title */
-    text-align: center;
-    margin-bottom: 30px; /* Increased margin for better spacing */
-  }
-  
-  .sub-title {
-    font-size: 2em; /* Larger font size for sub-titles */
-    color: #e0ce46; /* Bright color for sub-titles */
-    margin-top: 40px; /* Increased margin for better spacing */
-    padding-bottom: 10px; /* Space below the sub-title */
-  }
-  
-  .type-title {
-    font-size: 1.5em; /* Larger font size for type titles */
-    color: #e0ce46; /* Bright color for type titles */
-    margin-top: 25px; /* Margin for type titles */
-  }
-  
-  .intro {
-    font-size: 1.3em; /* Increased font size for intro text */
-    margin-bottom: 25px; /* Increased margin for better spacing */
-  }
-  
-  .characteristics-list {
-    margin: 10px 0;
-    padding-left: 20px;
-    font-size: 1.2em; /* Increased font size for list items */
-  }
-  
-  li {
-    margin-bottom: 15px; /* Increased margin for list items */
-    line-height: 1.6; /* Increased line height for better readability */
-  }
-  
-  .linkedlists-diagram {
-    width: 100%;
-    height: auto;
-    margin: 30px 0; /* Increased margin for better spacing */
-    border: 1px solid #444; /* Darker border for image */
-    border-radius: 5px;
-  }
-  
-  pre {
-    background-color: #1f1f1f; /* Darker background for code */
-    padding: 10px;
-    border-radius: 5px;
-    overflow-x: auto; /* Allow horizontal scrolling for long code */
-    color: #00ff00; /* Green text color for code */
-    font-size: 1.2em; /* Increased font size for code */
-  }
-  
-  .button-container {
-    display: flex;
-    justify-content: space-around; /* Space buttons evenly */
-    margin: 30px 0; /* Increased margin for better spacing */
-  }
-  
-  .example-button {
-    background-color: #ffcc00;
-    color: #121212;
-    border: none;
-    border-radius: 5px;
-    padding: 15px 30px;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .example-button:hover {
-    background-color: #ffe066;
-  }
-  
-  a {
-    color: #ddc452; /* Link color */
-    text-decoration: none; /* Remove underline */
-    font-size: 1.1em; /* Increased font size for links */
-  }
-  
-  a:hover {
-    text-decoration: underline; /* Underline on hover */
-  }
-  
-  .link-title {
-    color: #ffffff; /* Bright color for link titles */
-    margin-top: 30px; /* Increased margin for better spacing */
-  }
-  </style>
-  
-  
+  },
+};
+</script>
+
+<style scoped>
+/* Styles adapted from Matrix.vue */
+.linkedlist-container {
+  padding: 20px;
+  background: #282c34;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.main-title {
+  font-size: 2.5em;
+  color: #61dafb;
+  text-align: center;
+}
+
+.sub-title {
+  font-size: 1.8em;
+  margin-top: 20px;
+  color: #e4e4e4;
+}
+
+.example-button {
+  background-color: #61dafb;
+  color: #282c34;
+  margin: 5px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.example-button:hover {
+  background-color: #21a1f1;
+}
+</style>

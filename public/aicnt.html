@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Structures Quiz</title>
+    <title>CNT Quiz</title>
     <!-- React and ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
@@ -24,59 +24,61 @@
     const GROQ_API_KEY = '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';
 
     const topics = {
-        "Arrays": {
-            "subtopics": ["Introduction to Arrays", "Array Operations", "Multi-dimensional Arrays", "Array Algorithms"],
+        "Introduction to Computer Networks": {
+            "subtopics": ["What is a Computer Network?", "Types of Networks", "Network Topologies", "Components of a Network", "Advantages and Disadvantages of Networking"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Matrix": {
-            "subtopics": ["Matrix Basics", "Matrix Operations", "Special Matrices", "Matrix Applications"],
+        "OSI and TCP/IP Models": {
+            "subtopics": ["OSI Model Layers", "TCP/IP Model Layers", "Comparison of OSI and TCP/IP Models", "Function of Each Layer"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Advanced Data Structures": {
-            "subtopics": ["AVL Trees", "Red-Black Trees", "B-Trees", "Segment Trees"],
+        "Networking Devices": {
+            "subtopics": ["Hub", "Switch", "Router", "Bridge", "Gateway", "NIC (Network Interface Card)"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Strings": {
-            "subtopics": ["String Basics", "String Algorithms", "Pattern Matching", "String Manipulation"],
+        "IP Addressing": {
+            "subtopics": ["IP Address Types", "IPv4 vs IPv6", "Subnetting", "CIDR", "Private and Public IP Addresses"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Linked Lists": {
-            "subtopics": ["Singly Linked Lists", "Doubly Linked Lists", "Circular Linked Lists", "Applications"],
+        "Routing and Switching": {
+            "subtopics": ["Routing Algorithms", "Static and Dynamic Routing", "Switching Techniques", "VLANs", "Subnet Masks"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Stack": {
-            "subtopics": ["Stack Operations", "Stack Applications", "Stack Implementations", "Advanced Concepts"],
+        "Network Protocols": {
+            "subtopics": ["TCP", "UDP", "ICMP", "ARP", "DNS", "DHCP", "FTP", "HTTP/HTTPS"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Queue": {
-            "subtopics": ["Queue Operations", "Types of Queues", "Queue Applications", "Priority Queues"],
+        "Network Security": {
+            "subtopics": ["Encryption and Decryption", "Firewalls", "VPNs", "Authentication Protocols", "TLS/SSL", "Security Threats"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Trees": {
-            "subtopics": ["Binary Trees", "BST", "Tree Traversals", "Tree Applications"],
+        "Wireless Networks": {
+            "subtopics": ["Wi-Fi", "Bluetooth", "Cellular Networks", "Satellite Communication", "WiMAX"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Heap": {
-            "subtopics": ["Min Heap", "Max Heap", "Heap Operations", "Heap Applications"],
+        "Network Layer": {
+            "subtopics": ["IP Protocol", "ICMP Protocol", "IPv4 and IPv6 Addressing", "Packet Routing", "Subnetting"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Hashing": {
-            "subtopics": ["Hash Functions", "Collision Resolution", "Hash Tables", "Applications"],
+        "Transport Layer": {
+            "subtopics": ["TCP vs UDP", "Flow Control", "Congestion Control", "Reliability of TCP", "TCP Handshake"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Graph": {
-            "subtopics": ["Graph Representation", "Graph Traversals", "Shortest Paths", "Graph Algorithms"],
+        "Application Layer": {
+            "subtopics": ["HTTP/HTTPS", "DNS", "FTP", "SMTP", "POP3", "IMAP", "Telnet"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Set": {
-            "subtopics": ["Set Operations", "Set Implementation", "MultiSet", "Set Applications"],
+        "Network Troubleshooting": {
+            "subtopics": ["Ping and Traceroute", "Packet Sniffing", "Bandwidth and Latency Issues", "Network Monitoring Tools"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Map": {
-            "subtopics": ["Map Basics", "HashMap", "TreeMap", "Map Applications"],
+        "Network Design and Architecture": {
+            "subtopics": ["Topologies and Layouts", "LAN, MAN, WAN", "Redundancy and Fault Tolerance", "Quality of Service (QoS)", "Load Balancing"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         }
     };
+    
+    
 
     const generateQuizPrompt = (topic, subtopic, level) => {
         let difficultyDescription = '';
@@ -257,7 +259,7 @@
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-lg shadow-lg p-6">
-                <h1 className="text-3xl font-bold mb-6 text-gray-800">Data Structures Quiz</h1>
+                <h1 className="text-3xl font-bold mb-6 text-gray-800">CNT Quiz</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Topics Panel */}

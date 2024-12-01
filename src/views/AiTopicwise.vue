@@ -83,26 +83,23 @@
   window.location.href = '/aids.html';
 },
       goToAlgoQuiz() {
-        this.$router.push({ name: "algo_quiz" });
-      },
+        window.location.href = '/aialgo.html';      },
       goToOSQuiz() {
-        this.$router.push({ name: "os_quiz" });
-      },
+        window.location.href = '/aios.html';      },
       goToDBMSQuiz() {
-        this.$router.push({ name: "dbms_quiz" });
-      },
+        window.location.href = '/aidbms.html';      },
       goToOOPSQuiz() {
-        this.$router.push({ name: "oops_quiz" });
-      },
+        window.location.href = '/aioops.html';      },
+
       goToCNTQuiz() {
-        this.$router.push({ name: "cnt_quiz" });
-      },
+        window.location.href = '/aicnt.html';      },
+
       goToSystemDQuiz() {
-        this.$router.push({ name: "systemd_quiz" });
-      },
+        window.location.href = '/aisystem.html';      },
+
       goToAptQuiz() {
-        this.$router.push({ name: "apt_quiz" });
-      },
+        window.location.href = '/aiapt.html';      },
+
       goToTopic(topic) {
         this.$router.push({ name: `${topic}-quiz` });
       },
