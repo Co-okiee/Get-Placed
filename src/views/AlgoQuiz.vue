@@ -1,13 +1,12 @@
 <template>
   <div class="arrays-quiz">
-    
     <!-- Quiz Start Screen -->
     <div v-if="!quizStarted" class="quiz-intro">
       <div class="intro-content">
-        <h1 class="intro-title">Data Structure Quiz</h1>
+        <h1 class="intro-title">Algorithms Quiz</h1>
         <p class="intro-message">
-          Welcome to the Data Structure quiz!<br />
-          Test your knowledge on data structures and see how much you really know.
+          Welcome to the Algorithms quiz!<br />
+          Test your knowledge on algorithms and see how much you really know.
         </p>
         <button @click="startQuiz" class="intro-button">
           <span>Start Quiz</span>
@@ -167,7 +166,7 @@
 import axios from "axios";
 
 export default {
-  name: "ArraysQuiz",
+  name: "AlgoQuiz",
   data() {
     return {
       quizStarted: false,
@@ -189,7 +188,7 @@ export default {
     async fetchQuestions() {
       this.loading = true;
       try {
-        const response = await axios.get("http://localhost:5000/arrays-quiz-questions");
+        const response = await axios.get("http://localhost:5000/algo-quiz-questions"); // Updated endpoint for algorithms quiz
         this.questions = response.data;
         this.shuffleArray(this.questions);
         this.currentQuestionIndex = 0;
