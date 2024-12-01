@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Structures Quiz</title>
+    <title>Aptitute and Reasoning Quiz</title>
     <!-- React and ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
@@ -24,59 +24,57 @@
     const GROQ_API_KEY = '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';
 
     const topics = {
-        "Arrays": {
-            "subtopics": ["Introduction to Arrays", "Array Operations", "Multi-dimensional Arrays", "Array Algorithms"],
+        "Quantitative Aptitude": {
+            "subtopics": ["Arithmetic", "Algebra", "Number System", "Time and Work", "Speed and Distance", "Averages", "Percentages", "Profit and Loss", "Simple and Compound Interest"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Matrix": {
-            "subtopics": ["Matrix Basics", "Matrix Operations", "Special Matrices", "Matrix Applications"],
+        "Logical Reasoning": {
+            "subtopics": ["Puzzles", "Seating Arrangement", "Blood Relations", "Series Completion", "Syllogism", "Coding-Decoding", "Data Interpretation", "Direction Sense"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Advanced Data Structures": {
-            "subtopics": ["AVL Trees", "Red-Black Trees", "B-Trees", "Segment Trees"],
+        "Verbal Ability": {
+            "subtopics": ["Reading Comprehension", "Sentence Completion", "Error Spotting", "Antonyms and Synonyms", "Para Jumbles", "Fill in the Blanks", "Cloze Test"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Strings": {
-            "subtopics": ["String Basics", "String Algorithms", "Pattern Matching", "String Manipulation"],
+        "Data Interpretation": {
+            "subtopics": ["Tables", "Bar Graphs", "Pie Charts", "Line Graphs", "Data Sufficiency", "Caselets"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Linked Lists": {
-            "subtopics": ["Singly Linked Lists", "Doubly Linked Lists", "Circular Linked Lists", "Applications"],
+        "Time and Work": {
+            "subtopics": ["Work Efficiency", "Work and Time", "Pipes and Cisterns", "Time, Speed, and Distance", "Problems on Trains"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Stack": {
-            "subtopics": ["Stack Operations", "Stack Applications", "Stack Implementations", "Advanced Concepts"],
+        "Permutation and Combination": {
+            "subtopics": ["Fundamental Principle of Counting", "Permutations", "Combinations", "Binomial Theorem", "Probability"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Queue": {
-            "subtopics": ["Queue Operations", "Types of Queues", "Queue Applications", "Priority Queues"],
+        "Number Series": {
+            "subtopics": ["Arithmetic Progression", "Geometric Progression", "Pattern Identification", "Missing Number", "Next Number in Series"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Trees": {
-            "subtopics": ["Binary Trees", "BST", "Tree Traversals", "Tree Applications"],
+        "Mathematical Reasoning": {
+            "subtopics": ["Logical Sequences", "Number Puzzles", "Number Relationships", "Mathematical Induction", "Venn Diagrams", "Truth Tables"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Heap": {
-            "subtopics": ["Min Heap", "Max Heap", "Heap Operations", "Heap Applications"],
+        "Verbal Reasoning": {
+            "subtopics": ["Word Arrangement", "Sentence Formation", "Analogy", "Classification", "Blood Relations", "Coding-Decoding", "Odd One Out"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Hashing": {
-            "subtopics": ["Hash Functions", "Collision Resolution", "Hash Tables", "Applications"],
+        "Abstract Reasoning": {
+            "subtopics": ["Figure Series", "Matrix Reasoning", "Analogies in Figures", "Mirror and Water Images", "Pattern Recognition"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Graph": {
-            "subtopics": ["Graph Representation", "Graph Traversals", "Shortest Paths", "Graph Algorithms"],
+        "Critical Thinking": {
+            "subtopics": ["Statements and Assumptions", "Arguments and Conclusions", "Strengthening and Weakening Arguments", "Logical Deduction", "Decision Making"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         },
-        "Set": {
-            "subtopics": ["Set Operations", "Set Implementation", "MultiSet", "Set Applications"],
-            "levels": ["Level 1", "Level 2", "Level 3"]
-        },
-        "Map": {
-            "subtopics": ["Map Basics", "HashMap", "TreeMap", "Map Applications"],
+        "Data Sufficiency": {
+            "subtopics": ["Data Sufficiency Basics", "Condition Analysis", "Evaluating Statements", "Conclusion Drawing"],
             "levels": ["Level 1", "Level 2", "Level 3"]
         }
     };
+    
+    
 
     const generateQuizPrompt = (topic, subtopic, level) => {
         let difficultyDescription = '';
@@ -257,7 +255,7 @@
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-lg shadow-lg p-6">
-                <h1 className="text-3xl font-bold mb-6 text-gray-800">Data Structures Quiz</h1>
+                <h1 className="text-3xl font-bold mb-6 text-gray-800">Aptitude and Reasoning Quiz</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Topics Panel */}

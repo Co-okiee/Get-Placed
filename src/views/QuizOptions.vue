@@ -40,52 +40,6 @@
             </div>
           </div>
 
-          <!-- Verbal Ability Card -->
-          <div class="quiz-card" @click="goToVerbalquizes">
-            <div class="card-content">
-              <div class="card-icon">🗣️</div>
-              <h2>Verbal Ability</h2>
-              <p>Enhance your language skills with comprehensive verbal tests</p>
-              <div class="card-stats">
-                <div class="stat">
-                  <span class="stat-value">7+</span>
-                  <span class="stat-label">Categories</span>
-                </div>
-                <div class="stat">
-                  <span class="stat-value">100+</span>
-                  <span class="stat-label">Questions</span>
-                </div>
-              </div>
-              <button class="start-button">
-                Start Quiz
-                <span class="arrow">→</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Company Specific Card -->
-          <div class="quiz-card" @click="goToCompanySpecific">
-            <div class="card-content">
-              <div class="card-icon">💼</div>
-              <h2>Company Specific</h2>
-              <p>Practice coding questions from top tech companies</p>
-              <div class="card-stats">
-                <div class="stat">
-                  <span class="stat-value">10+</span>
-                  <span class="stat-label">Companies</span>
-                </div>
-                <div class="stat">
-                  <span class="stat-value">100+</span>
-                  <span class="stat-label">Questions</span>
-                </div>
-              </div>
-              <button class="start-button">
-                Start Quiz
-                <span class="arrow">→</span>
-              </button>
-            </div>
-          </div>
-
           <!-- AI Generated Topic Wise Quiz Card -->
           <div class="quiz-card" @click="goToAIGeneratedQuiz">
             <div class="card-content">
@@ -111,6 +65,32 @@
               </button>
             </div>
           </div>
+
+          
+          <!-- Company Specific Card -->
+          <div class="quiz-card" @click="goToCompanySpecific">
+            <div class="card-content">
+              <div class="card-icon">💼</div>
+              <h2>Company Specific</h2>
+              <p>Practice coding questions from top tech companies</p>
+              <div class="card-stats">
+                <div class="stat">
+                  <span class="stat-value">10+</span>
+                  <span class="stat-label">Companies</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-value">100+</span>
+                  <span class="stat-label">Questions</span>
+                </div>
+              </div>
+              <button class="start-button">
+                Start Quiz
+                <span class="arrow">→</span>
+              </button>
+            </div>
+          </div>
+
+          
         </div>
       </div>
     </div>
@@ -121,14 +101,8 @@
 export default {
   name: "QuizOptions",
   methods: {
-    goToVerbalquizes() {
-      this.$router.push({ name: "verbalquizes" });
-    },
     goToCompanySpecific() {
       this.$router.push({ name: "company-specific" });
-    },
-    goToVerbalAbility() {
-      this.$router.push({ name: "verbal-reasoning" });
     },
     goToTopicWiseQuiz() {
       this.$router.push({ name: "topic-wise-quiz" });

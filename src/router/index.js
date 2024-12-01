@@ -79,7 +79,6 @@ import AptandResoning from "../views/AptandResoning.vue";
 import TrackProgress from "../views/TrackProgress.vue";
 import Verbalquizes from "../views/Verbalquizes.vue";
 import VAQuizPage from "../views/VAQuizPage.vue";
-import MatricesQuiz from "../views/MatricesQuiz.vue";
 import CompanySpecific from '../views/CompanySpecific.vue'; // Adjust the path as needed
 import BarclaysLanding from '../views/BarclaysLanding.vue';
 import DeutscheBankLanding from '../views/DeutscheBankLanding.vue';

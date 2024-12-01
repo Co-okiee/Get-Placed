@@ -28,8 +28,8 @@ export default {
     return {
       companies: [
         { name: "Barclays", logo: "https://imgs.search.brave.com/IekZ4r35gjaVZj2s_UDLxcsuxBRuxEpnCBYNNgrDN4U/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9pY29u/cy52ZXJ5aWNvbi5j/b20vcG5nL28vYnVz/aW5lc3MvYmFuay1s/b2dvLWNvbGxlY3Rp/b24vYmFyY2xheXMt/bG9nby5wbmc" },
-        { name: "Deutsche Bank", logo: "https://1000logos.net/wp-content/uploads/2017/09/Deutsche-Bank-Logo-768x432.png" },
-        { name: "JP Morgan", logo: "https://imgs.search.brave.com/ge-iqc-sUFNd8s1qclNbvtRLcFeRNFZ9GiqUENNHkpU/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/cy13b3JsZC5uZXQv/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDIvSlAtTW9yZ2Fu/LUNoYXNlLVN5bWJv/bC03MDB4Mzk0LnBu/Zw" },
+        { name: "DeutscheBank", logo: "https://1000logos.net/wp-content/uploads/2017/09/Deutsche-Bank-Logo-768x432.png" },
+        { name: "JPMorgan", logo: "https://imgs.search.brave.com/ge-iqc-sUFNd8s1qclNbvtRLcFeRNFZ9GiqUENNHkpU/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/cy13b3JsZC5uZXQv/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDIvSlAtTW9yZ2Fu/LUNoYXNlLVN5bWJv/bC03MDB4Mzk0LnBu/Zw" },
         { name: "Accenture", logo: "https://imgs.search.brave.com/hOzpKIM4SLhSritMlf51kTV_cJNKAu6wjZnv_MQ7QXo/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jb21w/YW5pZXNsb2dvLmNv/bS9pbWcvb3JpZy9B/Q04tY2NlNWI0MTEu/cG5nP3Q9MTcyMDI0/NDQ5MA" },
         { name: "TCS", logo: "https://companieslogo.com/img/orig/TCS.NS-7401f1bd.png?t=1720244494" },
         { name: "Oracle", logo: "https://imgs.search.brave.com/X458aERa0Ew2-7LZ_LBKZkK7UV0R1_cAc4dWeSTJhbo/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9hc3Nl/dHMuc3RpY2twbmcu/Y29tL3RodW1icy82/MmJjN2FmNjA3MWRl/YzE3ODQ5YWYzMjMu/cG5n" },
@@ -50,8 +50,8 @@ export default {
         // Updated list with correct names matching the routes
         const companiesWithDedicatedLanding = [
             'Barclays',
-            'Deutsche Bank', // Updated to match the route naming
-            'JP Morgan', // Updated to match the route naming
+            'DeutscheBank', // Updated to match the route naming
+            'JPMorgan', // Updated to match the route naming
             'Accenture',
             'TCS',
             'Oracle',
