@@ -60,7 +60,8 @@ export default {
     },
     goToCodingIde() {
       console.log('Navigating to Coding Problems');
-      this.$router.push({ name: 'coding-ide' });
+      // this.$router.push({ name: 'coding-ide' });
+      window.location.href = 'CodingIDEfinal.html';
     },
     goToArrayQuiz() {
       this.$router.push({ name: "array-quiz" });

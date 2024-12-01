@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coding Challenge Platform</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        const { createApp, reactive, ref, onMounted, nextTick } = Vue;
+
+        // Groq API configuration
+        const GROQ_API_KEY = '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'; // Replace with your actual Groq API key
+
+        const App = {
+            setup() {
+                const state = reactive({
+                    challenges: [],
+                    selectedChallenge: null,
+                    selectedLanguage: 'python',
+                    languages: ['python', 'java', 'cpp', 'javascript'],
+                    codeEditorInstance: null,
+                    codeContent: '',
+                    executionResults: null,
+                    loading: false,
+                    generatingChallenge: false
+                });
+
+                const generateChallenge = async () => {
+                    state.generatingChallenge = true;
+                    state.selectedChallenge = null;
+                    state.executionResults = null;
+
+                    try {
+                        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${GROQ_API_KEY}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                model: 'mixtral-8x7b-32768',
+                                messages: [
+                                    { 
+                                        role: 'user', 
+                                        content: `
+                                            Generate a unique coding challenge with the following requirements:
+                                            1. Choose a programming concept (e.g., binary search, arrays, strings, recursion, dynamic programming, linkedlist etc)
+                                            2. Create a challenge title
+                                            3. Write a clear problem description
+                                            4. Specify 3 test cases
+                                            5. Provide solution templates for Python, Java, C++, and JavaScript
+                                            
+                                            Output format (JSON):
+                                            {
+                                                "title": "Challenge Title",
+                                                "description": "Detailed problem description",
+                                                "difficulty": "Easy/Medium/Hard",
+                                                "topics": ["Topic1", "Topic2"],
+                                                "templates": {
+                                                    "python": "Python solution template",
+                                                    "java": "Java solution template",
+                                                    "cpp": "C++ solution template",
+                                                    "javascript": "JavaScript solution template"
+                                                },
+                                                "testCases": [
+                                                    {"input": "input1", "expectedOutput": "output1"},
+                                                    {"input": "input2", "expectedOutput": "output2"},
+                                                    {"input": "input3", "expectedOutput": "output3"}
+                                                ]
+                                            }
+                                        `
+                                    }
+                                ],
+                                temperature: 0.7,
+                                max_tokens: 1000,
+                                response_format: { type: "json_object" }
+                            })
+                        });
+
+                        if (!response.ok) throw new Error('Challenge generation failed');
+
+                        const data = await response.json();
+                        const generatedChallenge = JSON.parse(data.choices[0].message.content);
+                        
+                        // Add an ID to the challenge
+                        generatedChallenge.id = `challenge-${Date.now()}`;
+                        
+                        // Set the generated challenge
+                        state.challenges = [generatedChallenge];
+                        selectChallenge(generatedChallenge);
+                    } catch (error) {
+                        console.error('Error generating challenge:', error);
+                        alert('Failed to generate challenge. Please try again.');
+                    } finally {
+                        state.generatingChallenge = false;
+                    }
+                };
+
+                const selectChallenge = (challenge) => {
+                    state.selectedChallenge = challenge;
+                    state.selectedLanguage = 'python'; // Default to Python
+                    initializeCodeEditor();
+                };
+
+                const initializeCodeEditor = () => {
+                    nextTick(() => {
+                        // Destroy previous editor instance if exists
+                        if (state.codeEditorInstance) {
+                            state.codeEditorInstance.destroy();
+                        }
+
+                        // Initialize new Ace editor
+                        const editor = ace.edit("code-editor");
+                        editor.setTheme("ace/theme/monokai");
+                        
+                        // Set language-specific mode
+                        const languageModes = {
+                            'python': 'ace/mode/python',
+                            'java': 'ace/mode/java',
+                            'cpp': 'ace/mode/c_cpp',
+                            'javascript': 'ace/mode/javascript'
+                        };
+                        editor.session.setMode(languageModes[state.selectedLanguage]);
+                        
+                        // Set initial code based on selected language
+                        const initialCode = state.selectedChallenge.templates[state.selectedLanguage];
+                        editor.setValue(initialCode, -1);
+                        
+                        // Update code content on change
+                        editor.getSession().on('change', () => {
+                            state.codeContent = editor.getValue();
+                        });
+                        
+                        state.codeEditorInstance = editor;
+                    });
+                };
+
+                const changeLanguage = (language) => {
+                    state.selectedLanguage = language;
+                    initializeCodeEditor();
+                };
+
+                
+
+
+
+
+                const executeCode = async () => {
+                  state.loading = true;
+                  state.executionResults = null;
+
+                  try {
+                      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                          method: 'POST',
+                          headers: {
+                              'Authorization': `Bearer ${GROQ_API_KEY}`,
+                              'Content-Type': 'application/json'
+                          },
+                          body: JSON.stringify({
+                              model: 'mixtral-8x7b-32768',
+                              messages: [
+                                  { 
+                                      role: 'system',
+                                      content: `You are a code execution and testing assistant. 
+                                      For each test case, you must:
+                                      1. Attempt to run the submitted code
+                                      2. Compare the output with the expected output
+                                      3. Return a structured JSON response with detailed test results`
+                                  },
+                                  { 
+                                      role: 'user', 
+                                      content: `
+                                      Language: ${state.selectedLanguage}
+                                      Challenge: ${state.selectedChallenge.title}
+                                      
+                                      Code to test:
+                                      ${state.codeContent}
+                                      
+                                      Test Cases:
+                                      ${JSON.stringify(state.selectedChallenge.testCases)}
+                                      
+                                      Provide a detailed JSON response with:
+                                      - overall success status
+                                      - individual test case results
+                                      - any error messages
+                                      
+                                      Response format:
+                                      {
+                                          "success": true/false,
+                                          "testResults": [
+                                              {
+                                                  "input": "...",
+                                                  "expectedOutput": "...",
+                                                  "actualOutput": "...",
+                                                  "passed": true/false,
+                                                  "error": null/error message
+                                              }
+                                          ],
+                                          "overallError": null/compilation or runtime error
+                                      }
+                                      `
+                                  }
+                              ],
+                              temperature: 0.2,
+                              max_tokens: 1000,
+                              response_format: { type: "json_object" }
+                          })
+                      });
+
+                      if (!response.ok) throw new Error('Code execution failed');
+
+                      const data = await response.json();
+                      const executionResponse = JSON.parse(data.choices[0].message.content);
+                      
+                      // Parse the structured execution results
+                      state.executionResults = {
+                          passed: executionResponse.testResults.filter(result => result.passed).length,
+                          total: state.selectedChallenge.testCases.length,
+                          status: executionResponse.success ? 'All Passed' : 'Partial Pass',
+                          error: executionResponse.overallError,
+                          details: executionResponse.testResults.map(result => ({
+                              input: result.input,
+                              expectedOutput: result.expectedOutput,
+                              actualOutput: result.actualOutput,
+                              passed: result.passed,
+                              error: result.error
+                          }))
+                      };
+                  } catch (error) {
+                      state.executionResults = {
+                          passed: 0,
+                          total: state.selectedChallenge.testCases.length,
+                          status: 'Error',
+                          error: error.message
+                      };
+                  } finally {
+                      state.loading = false;
+                  }
+              };
+
+                const parseExecutionResults = (content) => {
+                  try {
+                      // Attempt to parse the execution results from the API response
+                      const executionResults = JSON.parse(content);
+                      
+                      const testCases = state.selectedChallenge.testCases;
+                      const details = testCases.map((testCase, index) => {
+                          // Check if the test case actually passed based on the API response
+                          const passed = executionResults.testResults && 
+                                        executionResults.testResults[index] && 
+                                        executionResults.testResults[index].passed;
+                          
+                          return {
+                              input: testCase.input,
+                              expectedOutput: testCase.expectedOutput,
+                              passed: passed
+                          };
+                      });
+
+                      const passedCases = details.filter(result => result.passed).length;
+
+                      return {
+                          passed: passedCases,
+                          total: testCases.length,
+                          status: passedCases === testCases.length ? 'All Passed' : 'Partial Pass',
+                          details: details,
+                          error: executionResults.error || null
+                      };
+                  } catch (error) {
+                      // Fallback error handling
+                      return {
+                          passed: 0,
+                          total: state.selectedChallenge.testCases.length,
+                          status: 'Error',
+                          error: 'Failed to parse execution results'
+                      };
+                  }
+              };
+
+                // Generate initial challenge on component mount
+                onMounted(generateChallenge);
+
+                return { 
+                    state, 
+                    selectChallenge, 
+                    changeLanguage,
+                    executeCode,
+                    generateChallenge
+                };
+            },
+            template: `
+                <div class="min-h-screen bg-gray-100 p-4">
+                    <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h1 class="text-3xl font-bold text-gray-800">Coding Challenge Platform</h1>
+                        </div>
+
+
+                        <div v-if="state.selectedChallenge" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <h2 class="text-xl font-semibold mb-4">Challenge Details</h2>
+                                <div class="p-4 bg-white shadow-md rounded-lg">
+                                    <h3 class="font-bold text-lg mb-2">{{ state.selectedChallenge.title }}</h3>
+                                    <p class="mb-2 text-gray-600">{{ state.selectedChallenge.description }}</p>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm text-gray-600">{{ state.selectedChallenge.difficulty }}</span>
+                                        <div class="flex space-x-2">
+                                            <span 
+                                                v-for="topic in state.selectedChallenge.topics" 
+                                                :key="topic"
+                                                class="px-2 py-1 bg-gray-200 text-xs rounded">
+                                                {{ topic }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-span-2">
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="flex space-x-2">
+                                        <button 
+                                            v-for="lang in state.languages" 
+                                            :key="lang"
+                                            @click="changeLanguage(lang)"
+                                            class="px-3 py-1 rounded"
+                                            :class="{
+                                                'bg-blue-500 text-white': state.selectedLanguage === lang,
+                                                'bg-gray-200': state.selectedLanguage !== lang
+                                            }">
+                                            {{ lang.toUpperCase() }}
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div id="code-editor" class="h-64 border rounded mb-4"></div>
+                                
+                                <button 
+                                    @click="executeCode" 
+                                    class="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                    :disabled="state.loading">
+                                    {{ state.loading ? 'Running...' : 'Run Code' }}
+                                </button>
+
+                                <div v-if="state.executionResults" class="mt-4">
+                                    <div 
+                                        class="p-4 rounded"
+                                        :class="{
+                                            'bg-green-100 border-green-500': state.executionResults.status === 'All Passed',
+                                            'bg-yellow-100 border-yellow-500': state.executionResults.status === 'Partial Pass',
+                                            'bg-red-100 border-red-500': state.executionResults.status === 'Error'
+                                        }">
+                                        <div class="flex justify-between items-center">
+                                            <h4 class="font-semibold">
+                                                Test Case Results: 
+                                                {{ state.executionResults.passed }}/{{ state.executionResults.total }} Passed
+                                            </h4>
+                                            <span 
+                                                class="px-3 py-1 rounded"
+                                                :class="{
+                                                    'bg-green-500 text-white': state.executionResults.status === 'All Passed',
+                                                    'bg-yellow-500 text-white': state.executionResults.status === 'Partial Pass',
+                                                    'bg-red-500 text-white': state.executionResults.status === 'Error'
+                                                }">
+                                                {{ state.executionResults.status }}
+                                            </span>
+                                        </div>
+
+                                        <div v-if="state.executionResults.error" class="mt-2 text-red-600">
+                                            {{ state.executionResults.error }}
+                                        </div>
+
+                                        <div v-if="state.executionResults.details" class="mt-2">
+                                            <div 
+                                                v-for="(result, index) in state.executionResults.details" 
+                                                :key="index"
+                                                class="flex justify-between p-2 border-b"
+                                                :class="{
+                                                    'bg-green-50': result.passed,
+                                                    'bg-red-50': !result.passed
+                                                }">
+                                                <span>Test Case {{ index + 1 }}: Input = {{ result.input }}</span>
+                                                <span 
+                                                    class="font-semibold"
+                                                    :class="{
+                                                        'text-green-600': result.passed,
+                                                        'text-red-600': !result.passed
+                                                    }">
+                                                    {{ result.passed ? 'Passed' : 'Failed' }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
+        };
+
+        createApp(App).mount('#app');
+    </script>
+</body>
+</html>

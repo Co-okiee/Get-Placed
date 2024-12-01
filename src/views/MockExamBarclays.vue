@@ -20,7 +20,7 @@
         - Click "Start Exam" to begin.
       </p>
 
-      <button @click="$router.push({ name: 'exam-window' })">Start Exam</button>
+      <button @click="startExam">Start Exam</button>
 
     </div>
   </div>
@@ -35,8 +35,10 @@ export default {
     },
     startExam() {
       console.log("Navigating to the Mock Exam Quiz Page...");
-      this.$router.push({ name: "mock-exam-quiz" });
-    },
+      // this.$router.push({ path: '/ExamWindowBarclays1' });
+      window.open('/ExamWindowBarclays1.html', '_blank');
+    }
+
   },
 };
 </script>
