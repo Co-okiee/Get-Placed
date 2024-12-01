@@ -7,8 +7,8 @@ from flask_bcrypt import Bcrypt
 import pytz
 import requests
 from bs4 import BeautifulSoup
-from transformers import pipeline
-summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+#from transformers import pipeline
+#summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
 
 
 app = Flask(__name__)
@@ -16,7 +16,7 @@ bcrypt = Bcrypt(app)
 CORS(app)  # Enable CORS for all routes
 
 # Pre-trained summarizer model from HuggingFace
-summarizer = pipeline("summarization")
+#summarizer = pipeline("summarization")
 
 # MySQL Database connection function
 def get_db_connection():
@@ -26,93 +26,6 @@ def get_db_connection():
         password='Ruzan',
         database='get_placed'
     )
-
-@app.route('/fetch-array-notes', methods=['GET'])
-def fetch_array_notes():
-    url = "https://www.geeksforgeeks.org/introduction-to-arrays-data-structure-and-algorithm-tutorials/"
-    
-    try:
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-        soup = BeautifulSoup(response.content, 'html.parser')
-        
-        # Find the main article content
-        article = soup.find('article', class_='content')
-        
-        # Topics to extract
-        topics = [
-            'What is an Array?',
-            'Basic terminologies of Array',
-            'Importance of Array',
-            'Types of Arrays',
-            'Operations on Array',
-            'Advantages of Array',
-            'Disadvantages of Array',
-            'Applications of Array',
-            'Conclusion'
-        ]
-        
-        content = []
-        
-        if article:
-            for topic in topics:
-                # Find headers (both h2 and h3)
-                header = article.find(['h2', 'h3'], string=lambda x: x and topic.lower() in x.lower())
-                
-                if header:
-                    topic_content = {
-                        "title": topic,
-                        "description": "",
-                        "lists": [],
-                        "code_examples": []
-                    }
-                    
-                    current = header.find_next()
-                    
-                    while current and not (current.name in ['h2', 'h3'] and any(t.lower() in current.text.lower() for t in topics if t != topic)):
-                        if current.name == 'p':
-                            text = current.get_text(strip=True)
-                            if text:
-                                topic_content["description"] += text + "\n\n"
-                        
-                        # Handle unordered lists
-                        elif current.name == 'ul':
-                            list_items = []
-                            for li in current.find_all('li', recursive=False):
-                                list_items.append(li.get_text(strip=True))
-                            if list_items:
-                                topic_content["lists"].append(list_items)
-                        
-                        # Handle ordered lists
-                        elif current.name == 'ol':
-                            list_items = []
-                            for li in current.find_all('li', recursive=False):
-                                list_items.append(li.get_text(strip=True))
-                            if list_items:
-                                topic_content["lists"].append(list_items)
-                        
-                        # Handle code examples
-                        elif current.name in ['pre', 'code']:
-                            code = current.get_text(strip=True)
-                            if code and len(code) > 10:
-                                topic_content["code_examples"].append(code)
-                        
-                        current = current.find_next()
-                    
-                    # Clean up the description
-                    topic_content["description"] = topic_content["description"].strip()
-                    
-                    # Only add topics that have content
-                    if topic_content["description"] or topic_content["lists"] or topic_content["code_examples"]:
-                        content.append(topic_content)
-        
-        return jsonify(content), 200
-    
-    except requests.exceptions.RequestException as e:
-        return jsonify({"error": f"Error fetching content: {str(e)}"}), 500
 
 
 # Existing API endpoints for questions and user handling
@@ -160,15 +73,77 @@ def get_arrays_quiz_questions():
     conn.close()
     return jsonify(questions)
 
-@app.route('/matrices-quiz-questions', methods=['GET'])
-def get_matrices_quiz_questions():
+@app.route('/algo-quiz-questions', methods=['GET'])
+def get_algo_quiz_questions():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM matrix_quiz')
+    cursor.execute('SELECT * FROM algo_quiz')
     questions = cursor.fetchall()
     cursor.close()
     conn.close()
     return jsonify(questions)
+
+@app.route('/os-quiz-questions', methods=['GET'])
+def get_os_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM os_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+@app.route('/dbms-quiz-questions', methods=['GET'])
+def get_dbms_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM dbms_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+@app.route('/oops-quiz-questions', methods=['GET'])
+def get_oops_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM oops_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+@app.route('/apt-quiz-questions', methods=['GET'])
+def get_apt_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM apt_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+@app.route('/cnt-quiz-questions', methods=['GET'])
+def get_cnt_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM cnt_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+@app.route('/systemd-quiz-questions', methods=['GET'])
+def get_systemd_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM systemd_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+
 
 @app.route('/verbal-ability-quiz-questions', methods=['GET'])
 def get_verbal_ability_questions():

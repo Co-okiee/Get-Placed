@@ -23,49 +23,49 @@
         </button>
 
         <!-- Algorithms -->
-        <button @click="goToMatrices" class="topic-card">
+        <button @click="goToAlgoQuiz" class="topic-card">
           <div class="card-icon">🔄</div>
           <h3>Algorithms</h3>
           <p>Sorting, Searching & Problem Solving</p>
         </button>
 
         <!-- Operating Systems -->
-        <button @click="goToStrings" class="topic-card">
+        <button @click="goToOSQuiz" class="topic-card">
           <div class="card-icon">💻</div>
           <h3>Operating Systems</h3>
           <p>Processes, Memory & File Systems</p>
         </button>
 
         <!-- DBMS -->
-        <button @click="goToTopic('dbms')" class="topic-card">
+        <button @click="goToDBMSQuiz" class="topic-card">
           <div class="card-icon">🗃️</div>
           <h3>DBMS</h3>
           <p>SQL, Normalization & Transactions</p>
         </button>
 
         <!-- OOP -->
-        <button @click="goToTopic('oops')" class="topic-card">
+        <button @click="goToOOPSQuiz" class="topic-card">
           <div class="card-icon">🎯</div>
           <h3>Object-Oriented Programming</h3>
           <p>Classes, Inheritance & Polymorphism</p>
         </button>
 
         <!-- Aptitude -->
-        <button @click="goToTopic('Apt')" class="topic-card">
+        <button @click="goToAptQuiz" class="topic-card">
           <div class="card-icon">🧮</div>
           <h3>Aptitude & Reasoning</h3>
           <p>Logical & Quantitative Problems</p>
         </button>
 
         <!-- Computer Networks -->
-        <button @click="goToTopic('CN')" class="topic-card">
+        <button @click="goToCNTQuiz" class="topic-card">
           <div class="card-icon">🌐</div>
           <h3>Computer Networks</h3>
           <p>TCP/IP, OSI Model & Protocols</p>
         </button>
 
         <!-- System Design -->
-        <button @click="goToTopic('SystemDesign')" class="topic-card">
+        <button @click="goToSystemDQuiz" class="topic-card">
           <div class="card-icon">⚡</div>
           <h3>System Design</h3>
           <p>Architecture, Scalability & Design Patterns</p>
@@ -82,11 +82,26 @@ export default {
     goToArrayQuiz() {
       this.$router.push({ name: "array-quiz" });
     },
-    goToMatrices() {
-      this.$router.push({ name: "matrix-quiz" });
+    goToAlgoQuiz() {
+      this.$router.push({ name: "algo_quiz" });
     },
-    goToStrings() {
-      this.$router.push({ name: "strings-quiz" });
+    goToOSQuiz() {
+      this.$router.push({ name: "os_quiz" });
+    },
+    goToDBMSQuiz() {
+      this.$router.push({ name: "dbms_quiz" });
+    },
+    goToOOPSQuiz() {
+      this.$router.push({ name: "oops_quiz" });
+    },
+    goToCNTQuiz() {
+      this.$router.push({ name: "cnt_quiz" });
+    },
+    goToSystemDQuiz() {
+      this.$router.push({ name: "systemd_quiz" });
+    },
+    goToAptQuiz() {
+      this.$router.push({ name: "apt_quiz" });
     },
     goToTopic(topic) {
       this.$router.push({ name: `${topic}-quiz` });
