@@ -64,7 +64,7 @@
           </div>
 
           <!-- Company Specific Card -->
-          <div class="quiz-card" @click="goToVerbalAbility">
+          <div class="quiz-card" @click="goToCompanySpecific">
             <div class="card-content">
               <div class="card-icon">💼</div>
               <h2>Company Specific</h2>
@@ -97,6 +97,9 @@ export default {
   methods: {
     goToVerbalquizes() {
       this.$router.push({ name: "verbalquizes" });
+    },
+    goToCompanySpecific() {
+      this.$router.push({ name: "company-specific" });
     },
     goToVerbalAbility() {
       this.$router.push({ name: "verbal-reasoning" });
