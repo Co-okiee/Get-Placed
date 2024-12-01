@@ -36,7 +36,7 @@ export default {
     startExam() {
       console.log("Navigating to the Mock Exam Quiz Page...");
       // this.$router.push({ path: '/ExamWindowBarclays1' });
-      window.open('/ExamWindowBarclays1.html', '_blank');
+      window.open('/ExamWindowBarclays.html', '_blank');
     }
 
   },

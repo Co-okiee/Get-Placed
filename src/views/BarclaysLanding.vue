@@ -105,14 +105,14 @@ export default {
           icon: '👩‍💻',
           title: 'Coding Practice',
           description: 'Live coding environment',
-          route: 'coding-ide'
+          route: '/CodingIDEfinal.html'
         },
         {
           id: 6,
           icon: '📚',
           title: 'Mock Exam',
           description: 'Full-length practice assessment',
-          route: 'mock-exam-page'
+          route: '/ExamWindowBarclays1.html'
         }
       ]
     }
@@ -121,22 +121,24 @@ export default {
     goBack() {
       this.$router.push({ name: "company-specific" });
     },
-    goToCodingTopics(topic) {
-    console.log(`Navigating to ${topic}`);
-    this.$router.push({ name: `${topic}-page` });
-  },
-  goToCodingIde() {
-    console.log('Navigating to Coding Problems');
-    // this.$router.push({ name: 'coding-ide' });
-    window.location.href = 'CodingIDEfinal.html';
-  },
-  goToArrayQuiz() {
-    this.$router.push({ name: "array-quiz" });
-  },
-  goToNewResource() {
-    console.log('Navigating to New Resource');
-    this.$router.push({ name: "mock-exam-page" });
-  },
+  //   goToCodingTopics(topic) {
+  //   console.log(`Navigating to ${topic}`);
+  //   this.$router.push({ name: `${topic}-page` });
+  // },
+  // goToCodingIde() {
+  //   console.log('Navigating to Coding Problems');
+  //   // this.$router.push({ name: 'coding-ide' });
+  //   window.location.href = '/CodingIDEfinal.html';
+  // },
+  // goToArrayQuiz() {
+  //   this.$router.push({ name: "array-quiz" });
+  // },
+
+  // navigateTo(routeName) {
+  //   // Use Vue Router to navigate to the route
+  //   this.$router.push({ name: routeName });
+  // },
+  
   navigateTo(routeName) {
     window.location.href = routeName;
   }
