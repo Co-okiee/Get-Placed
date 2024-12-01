@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming Quiz Generator</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        const { createApp, reactive, ref, onMounted } = Vue;
+
+        const GROQ_API_KEY = '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';
+
+        const topics = {
+            "Core subjects": ["Data Structures and Algorithms", "Database Management System", "Object oriented programming"],
+            "Aptitude and Reasoning": ["Quantitative Aptitude", "Logical Reasoning", "Verbal Ability and Reading Comprehension"],
+            "Automata": ["Problem 1", "Problem 2"],
+        };
+
+        const generateQuizPrompt = (topic, subtopic) => `
+            Generate a quiz with 7 multiple-choice questions on the topic of ${subtopic} under the subject of ${topic}.
+            The questions should cover a variety of difficulty levels (easy, medium) and be focused on key concepts.
+            
+            For each question, provide:
+            1. A question with 4 options (A, B, C, D)
+            2. The correct answer (A/B/C/D)
+            3. A detailed explanation for the correct answer.
+            
+            Please format the questions as follows:
+            Question: [Question Text]
+            A) [Option A]
+            B) [Option B]
+            C) [Option C]
+            D) [Option D]
+            Correct Answer: [Correct Option Letter]
+            Explanation: [Detailed Explanation]
+        `;
+
+
+        const App = {
+            setup() {
+                const state = reactive({
+                    topics,
+                    expandedTopics: {},
+                    selectedTopic: '',
+                    quiz: null,
+                    loading: false,
+                    selectedAnswers: [],
+                    submitted: false,
+                    score: 0,
+                    quizHistory: [],
+                    error: null,
+                    timer: 90 * 60, // 90 minutes in seconds
+                    completedSubSections: {}, // Track completed sections
+                    disabledSubSections: [],
+                    selectedSubtopic: null,  
+                    completedAllSubsections: false, // New flag to track overall completion
+
+                });
+
+                
+
+                const toggleTopic = (topic) => {
+                    state.expandedTopics[topic] = !state.expandedTopics[topic];
+                };
+
+                const completeSubsection = (subtopic) => {
+                    state.completedSubSections[subtopic] = true;
+                    state.disabledSubSections.push(subtopic); // Disable this subsection once done
+                    checkOverallCompletion();
+                };
+
+                const checkOverallCompletion = () => {
+                    const allSubtopics = Object.values(state.topics).flat().filter(subtopic => subtopic !== 'Problem 1' && subtopic !== 'Problem 2');
+                    const completedSubtopics = Object.keys(state.completedSubSections).length;
+                    
+                    if (completedSubtopics === allSubtopics.length) {
+                        state.completedAllSubsections = true;
+                        submitQuiz(); // Once all subsections are completed, calculate the overall score
+                    }
+                };
+
+
+                
+
+                const generateQuiz = async (topic, subtopic) => {
+                    if (state.completedSubSections[subtopic]) {
+                        return; // Prevent reloading the quiz if the section is completed
+                    }
+
+                    if (subtopic === 'Problem 1' || subtopic === 'Problem 2') {
+                        // saveTimerToStorage(); 
+                        window.location.href = 'CodingIDEfinal.html';
+                        return;
+                    }
+
+                    state.selectedSubtopic = subtopic;
+
+                    state.selectedTopic = `${topic} - ${subtopic}`;
+                    state.quiz = null;
+                    state.loading = true;
+                    state.error = null;
+                    state.selectedAnswers = [];
+                    state.submitted = false;
+                    state.score = 0;
+                    // state.timer = 90 * 60; // Reset timer when new quiz starts.
+
+                    try {
+                        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${GROQ_API_KEY}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                model: 'mixtral-8x7b-32768',
+                                messages: [
+                                    { role: 'user', content: generateQuizPrompt(topic, subtopic) }
+                                ],
+                                temperature: 0.7,
+                                max_tokens: 2000
+                            })
+                        });
+
+                        if (!response.ok) throw new Error('Failed to fetch quiz.');
+
+                        const data = await response.json();
+                        const parsedQuiz = parseQuizContent(data.choices[0].message.content);
+                        state.quiz = parsedQuiz;
+                        state.selectedAnswers = new Array(parsedQuiz.length).fill(null);
+                    } catch (error) {
+                        state.error = error.message;
+                    } finally {
+                        state.loading = false;
+                    }
+                };
+
+                const parseQuizContent = (content) => {
+                    const questions = [];
+                    const regex = /Question: (.*?)\nA\) (.*?)\nB\) (.*?)\nC\) (.*?)\nD\) (.*?)\nCorrect Answer: (.*?)\nExplanation: (.*?)(?=\n\nQuestion:|\z)/gs;
+                    let match;
+                    while ((match = regex.exec(content)) !== null) {
+                        questions.push({
+                            question: match[1],
+                            options: { A: match[2], B: match[3], C: match[4], D: match[5] },
+                            correctAnswer: match[6],
+                            explanation: match[7]
+                        });
+                    }
+                    return questions;
+                };
+
+                
+
+                const handleAnswerSelect = (questionIndex, option) => {
+                    if (state.submitted) return;
+                    state.selectedAnswers[questionIndex] = option;
+                };
+
+                const submitQuiz = () => {
+                    // Calculate the score for the current quiz (subsection)
+                    const currentScore = state.quiz.reduce((score, question, index) => {
+                        const isCorrect = state.selectedAnswers[index] === question.correctAnswer;
+                        return isCorrect ? score + 1 : score;
+                    }, 0);
+
+                    // Store the score for the current subsection in completedSubSections
+                    state.completedSubSections[state.selectedSubtopic] = currentScore;
+                    state.submitted = true;
+
+                    // Optionally, store the result in history (if needed)
+                    const result = {
+                        topic: state.selectedTopic,
+                        date: new Date().toLocaleString(),
+                        score: currentScore,
+                        totalQuestions: state.quiz.length,
+                    };
+                    state.quizHistory.push(result);
+                    localStorage.setItem('quizHistory', JSON.stringify(state.quizHistory));
+
+                    // Only display scores after all 6 subsections are completed
+                    if (Object.keys(state.completedSubSections).length === 6) {
+                        let totalScore = 0;
+                        let resultText = "Scores for each Subsection:\n";
+
+                        // Display each subsection score
+                        for (const [subsection, score] of Object.entries(state.completedSubSections)) {
+                            resultText += `${subsection}: ${score} / 6\n`;
+                            totalScore += score;
+                        }
+
+                        // Display final score after all subsections
+                        resultText += `\nFinal Score after all subsections: ${totalScore} / 36`; // assuming 6 subsections, 6 questions each
+                        alert(resultText);
+                    }
+                };
+
+
+
+                const countdownTimer = () => {
+                    if (state.timer > 0) {
+                        state.timer--;
+                    } else {
+                        alert("Time's up! Submitting your quiz.");
+                        submitQuiz();
+                    }
+                };
+
+                const formattedTime = () => {
+                    const minutes = Math.floor(state.timer / 60);
+                    const seconds = state.timer % 60;
+                    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                };
+
+                onMounted(() => {
+                    const savedTime = localStorage.getItem('remainingTime');
+                    state.timer = savedTime ? parseInt(savedTime, 10) : 90 * 60;
+
+                    setInterval(countdownTimer, 1000); // Start timer countdown
+                });
+
+
+                return { state, toggleTopic, generateQuiz, handleAnswerSelect, submitQuiz, formattedTime };
+            },
+            template: `
+                <div class="min-h-screen bg-gray-100 p-4 relative">
+                    <!-- Timer -->
+                    <div class="absolute top-4 right-4 bg-gray-800 text-white px-4 py-2 rounded">
+                        <p class="text-xl font-bold">{{ formattedTime() }}</p>
+                    </div>
+
+                    <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-lg p-6">
+                        <h1 class="text-3xl font-bold text-gray-800 mb-6">Programming Quiz Generator</h1>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <h2 class="text-xl font-semibold mb-4">Topics</h2>
+                                <div>
+                                    <div v-for="(subtopics, topic) in state.topics" :key="topic" class="mb-4">
+                                        <button @click="toggleTopic(topic)" class="w-full px-4 py-2 bg-gray-200 rounded-lg mb-2">
+                                            {{ topic }}
+                                        </button>
+                                        <div v-if="state.expandedTopics[topic]">
+                                            <button 
+                                                v-for="subtopic in subtopics" 
+                                                :key="subtopic" 
+                                                @click="generateQuiz(topic, subtopic)" 
+                                                class="w-full px-4 py-2 rounded mb-2"
+                                                :class="{
+                                                    'bg-green-200': state.selectedSubtopic === subtopic,  <!-- Green for current -->
+                                                    'bg-gray-100': state.selectedSubtopic !== subtopic,  <!-- Default color for others -->
+                                                }">
+                                                {{ subtopic }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+
+                            <div class="col-span-2">
+                                <h2 class="text-xl font-semibold mb-4">{{ state.selectedTopic || 'Select a topic to start quiz' }}</h2>
+                                
+                                <div v-if="state.loading" class="text-center">
+                                    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-blue-500"></div>
+                                </div>
+                                
+                                <div v-if="state.quiz">
+                                    <div v-for="(question, index) in state.quiz" :key="index" class="mb-6 p-4 bg-white shadow-md rounded">
+                                        <h3 class="font-bold">{{ index + 1 }}. {{ question.question }}</h3>
+                                        <div class="mt-2">
+                                            <button 
+                                                v-for="(option, key) in question.options" 
+                                                :key="key" 
+                                                @click="handleAnswerSelect(index, key)" 
+                                                :class="[ 
+                                                    'w-full text-left py-2 px-4 rounded mb-2',
+                                                    state.selectedAnswers[index] === key ? 'bg-blue-200' : 'bg-gray-100',
+                                                    state.submitted && question.correctAnswer === key ? 'bg-green-200' : '',
+                                                    state.submitted && state.selectedAnswers[index] === key && key !== question.correctAnswer ? 'bg-red-200' : ''
+                                                ]">
+                                                {{ key }}) {{ option }}
+                                            </button>
+                                        </div>
+                                        <div v-if="state.submitted" class="mt-2 text-sm">
+                                            <p class="text-green-600">Correct Answer: {{ question.correctAnswer }}</p>
+                                            <p>{{ question.explanation }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center mt-4">
+                                        <button v-if="!state.submitted" @click="submitQuiz" class="px-6 py-2 bg-blue-500 text-white rounded">
+                                            Submit Quiz
+                                        </button>
+                                        <p v-if="state.completedAllSubsections && state.submitted" class="text-lg font-bold mt-4">
+                                            You scored {{ state.score }} / {{ state.quiz.length }}
+                                        </p>
+
+                                    </div>
+                                </div>
+                                
+                                <div v-if="state.error" class="text-red-500 mt-4">
+                                    <p>Error: {{ state.error }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
+        };
+
+        createApp(App).mount('#app');
+    </script>
+</body>
+</html>

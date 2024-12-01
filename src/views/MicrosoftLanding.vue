@@ -105,14 +105,14 @@ export default {
           icon: '👩‍💻',
           title: 'Coding Practice',
           description: 'Live coding environment',
-          route: 'coding-ide'
+          route: '/CodingIDEfinal.html'
         },
         {
           id: 6,
           icon: '📚',
           title: 'Mock Exam',
           description: 'Full-length practice assessment',
-          route: 'mock-exam-page'
+          route: '/ExamWindow136.html'
         }
       ]
     }
