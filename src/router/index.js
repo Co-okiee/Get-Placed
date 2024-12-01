@@ -97,7 +97,8 @@ import DeloitteLanding from '../views/DeloitteLanding.vue';
 import AirtelLanding from '../views/AirtelLanding.vue';
 import CodingIde from '../views/CodingIde.vue';
 import MockExamBarclays from "../views/MockExamBarclays.vue";
-import ExamWindowBarclays from "../views/ExamWindowBarclays.vue";
+// import ExamWindowBarclays from "../views/ExamWindowBarclays.vue";
+import AutomataPage from '../views/AutomataPage.vue';
 
 import AlgoQuiz from "../views/AlgoQuiz.vue";
 import OSQuiz from "../views/OSQuiz.vue";
@@ -654,11 +655,15 @@ const router = createRouter({
       component: MockExamBarclays
       // component: () => import("@/components/MockExamBarclays.vue"),
     },
+    // {
+    //   path: "/barclays/exam-window",
+    //   name: "exam-window",
+    //   component: ExamWindowBarclays
+    // }
     {
-      path: "/barclays/exam-window",
-      name: "exam-window",
-      component: ExamWindowBarclays
-    }
+      path: '/automata',
+      component: AutomataPage
+    },
     
     
     

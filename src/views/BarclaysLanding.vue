@@ -121,6 +121,22 @@ export default {
     goBack() {
       this.$router.push({ name: "company-specific" });
     },
+    goToCodingTopics(topic) {
+    console.log(`Navigating to ${topic}`);
+    this.$router.push({ name: `${topic}-page` });
+  },
+  goToCodingIde() {
+    console.log('Navigating to Coding Problems');
+    // this.$router.push({ name: 'coding-ide' });
+    window.location.href = 'CodingIDEfinal.html';
+  },
+  goToArrayQuiz() {
+    this.$router.push({ name: "array-quiz" });
+  },
+  goToNewResource() {
+    console.log('Navigating to New Resource');
+    this.$router.push({ name: "mock-exam-page" });
+  },
   navigateTo(routeName) {
     window.location.href = routeName;
   }

@@ -58,7 +58,11 @@
                     completedSubSections: {}, // Track completed sections
                     disabledSubSections: [],
                     selectedSubtopic: null,  
+                    completedAllSubsections: false, // New flag to track overall completion
+
                 });
+
+                
 
                 const toggleTopic = (topic) => {
                     state.expandedTopics[topic] = !state.expandedTopics[topic];
@@ -67,14 +71,34 @@
                 const completeSubsection = (subtopic) => {
                     state.completedSubSections[subtopic] = true;
                     state.disabledSubSections.push(subtopic); // Disable this subsection once done
+                    checkOverallCompletion();
                 };
+
+                const checkOverallCompletion = () => {
+                    const allSubtopics = Object.values(state.topics).flat().filter(subtopic => subtopic !== 'Problem 1' && subtopic !== 'Problem 2');
+                    const completedSubtopics = Object.keys(state.completedSubSections).length;
+                    
+                    if (completedSubtopics === allSubtopics.length) {
+                        state.completedAllSubsections = true;
+                        submitQuiz(); // Once all subsections are completed, calculate the overall score
+                    }
+                };
+
+
                 
 
                 const generateQuiz = async (topic, subtopic) => {
                     if (state.completedSubSections[subtopic]) {
                         return; // Prevent reloading the quiz if the section is completed
                     }
-                    this.selectedSubtopic = subtopic;
+
+                    if (subtopic === 'Problem 1' || subtopic === 'Problem 2') {
+                        // saveTimerToStorage(); 
+                        window.location.href = 'CodingIDEfinal.html';
+                        return;
+                    }
+
+                    state.selectedSubtopic = subtopic;
 
                     state.selectedTopic = `${topic} - ${subtopic}`;
                     state.quiz = null;
@@ -130,30 +154,52 @@
                     return questions;
                 };
 
+                
+
                 const handleAnswerSelect = (questionIndex, option) => {
                     if (state.submitted) return;
                     state.selectedAnswers[questionIndex] = option;
                 };
 
                 const submitQuiz = () => {
-                    state.score = state.quiz.reduce((score, question, index) => {
-                        return state.selectedAnswers[index] === question.correctAnswer ? score + 1 : score;
+                    // Calculate the score for the current quiz (subsection)
+                    const currentScore = state.quiz.reduce((score, question, index) => {
+                        const isCorrect = state.selectedAnswers[index] === question.correctAnswer;
+                        return isCorrect ? score + 1 : score;
                     }, 0);
+
+                    // Store the score for the current subsection in completedSubSections
+                    state.completedSubSections[state.selectedSubtopic] = currentScore;
                     state.submitted = true;
 
-                    const currentSubtopic = state.selectedTopic.split(' - ')[1];
-                    completeSubsection(currentSubtopic);
-
+                    // Optionally, store the result in history (if needed)
                     const result = {
                         topic: state.selectedTopic,
                         date: new Date().toLocaleString(),
-                        score: state.score,
-                        totalQuestions: state.quiz.length
+                        score: currentScore,
+                        totalQuestions: state.quiz.length,
                     };
-
                     state.quizHistory.push(result);
                     localStorage.setItem('quizHistory', JSON.stringify(state.quizHistory));
+
+                    // Only display scores after all 6 subsections are completed
+                    if (Object.keys(state.completedSubSections).length === 6) {
+                        let totalScore = 0;
+                        let resultText = "Scores for each Subsection:\n";
+
+                        // Display each subsection score
+                        for (const [subsection, score] of Object.entries(state.completedSubSections)) {
+                            resultText += `${subsection}: ${score} / 6\n`;
+                            totalScore += score;
+                        }
+
+                        // Display final score after all subsections
+                        resultText += `\nFinal Score after all subsections: ${totalScore} / 36`; // assuming 6 subsections, 6 questions each
+                        alert(resultText);
+                    }
                 };
+
+
 
                 const countdownTimer = () => {
                     if (state.timer > 0) {
@@ -171,11 +217,12 @@
                 };
 
                 onMounted(() => {
-                    const savedHistory = JSON.parse(localStorage.getItem('quizHistory') || '[]');
-                    state.quizHistory = savedHistory;
+                    const savedTime = localStorage.getItem('remainingTime');
+                    state.timer = savedTime ? parseInt(savedTime, 10) : 90 * 60;
 
-                    setInterval(countdownTimer, 1000); // Start timer countdown.
+                    setInterval(countdownTimer, 1000); // Start timer countdown
                 });
+
 
                 return { state, toggleTopic, generateQuiz, handleAnswerSelect, submitQuiz, formattedTime };
             },
@@ -250,7 +297,10 @@
                                         <button v-if="!state.submitted" @click="submitQuiz" class="px-6 py-2 bg-blue-500 text-white rounded">
                                             Submit Quiz
                                         </button>
-                                        <p v-else class="text-lg font-bold mt-4">You scored {{ state.score }} / {{ state.quiz.length }}</p>
+                                        <p v-if="state.completedAllSubsections && state.submitted" class="text-lg font-bold mt-4">
+                                            You scored {{ state.score }} / {{ state.quiz.length }}
+                                        </p>
+
                                     </div>
                                 </div>
                                 
