@@ -191,27 +191,27 @@ a:hover {
 <template>
   <div class="min-h-screen bg-black p-6">
     <div class="max-w-4xl mx-auto">
-      <!-- Header -->
+
       <h1 class="text-4xl font-bold text-center mb-8 text-indigo-400">
         Array Data Structure Notes
       </h1>
 
-      <!-- Loading State -->
+
       <div v-if="loading" class="flex justify-center items-center min-h-[200px]">
         <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
       </div>
 
-      <!-- Error State -->
+
       <div v-else-if="error" class="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
         <p class="text-red-700">{{ error }}</p>
       </div>
 
-      <!-- Content -->
+
       <div v-else class="space-y-4">
         <div v-for="(note, index) in arrayNotes" :key="index" 
              class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
           
-          <!-- Topic Header Button -->
+
           <button 
             @click="expandedTopics[index] = !expandedTopics[index]"
             class="w-full px-6 py-4 flex justify-between items-center bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 transition-colors duration-200"
@@ -225,12 +225,12 @@ a:hover {
 
           <!-- Expanded Content -->
           <div v-if="expandedTopics[index]" class="p-6 text-gray-200">
-            <!-- Description -->
+
             <div v-if="note.description" class="mb-6 leading-relaxed">
               <p>{{ note.description }}</p>
             </div>
 
-            <!-- Lists -->
+
             <div v-for="(list, listIndex) in note.lists" :key="listIndex" class="mb-6">
               <ul class="space-y-2 list-disc list-inside">
                 <li v-for="(item, itemIndex) in list" :key="itemIndex">
@@ -239,7 +239,6 @@ a:hover {
               </ul>
             </div>
 
-            <!-- Code Examples section changes -->
     <div v-if="note.code_examples?.length" class="space-y-4">
       <h3 class="text-lg font-semibold text-indigo-400 mb-3 flex items-center gap-2">
         <i class="fas fa-code"></i>

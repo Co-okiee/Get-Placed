@@ -86,7 +86,8 @@ import OOPSQuiz from "../views/OOPSQuiz.vue";
 import AptQuiz from "../views/AptQuiz.vue";
 import CNTQuiz from "../views/CNTQuiz.vue";
 import SystemDQuiz from "../views/SystemDQuiz.vue";
-
+import Aidatastructure from "../views/aidatastructure.vue";
+import AiTopicwise from "../views/AiTopicwise.vue";
 
 // Create router instance
 const router = createRouter({
@@ -107,6 +108,17 @@ const router = createRouter({
       name: "data-structures",
       component: DataStructures, // Data Structures page component
     },
+    {
+      path: "/aidatastructure",
+      name: "aidatastructure",
+      component: Aidatastructure, // Data Structures page component
+    },
+    {
+      path: "/aitopicwise",
+      name: "aitopicwise",
+      component: AiTopicwise, //Ai
+    },
+    
     {
       path: "/arrays",
       name: "arrays",

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Structures Quiz Challenge</title>
+    <!-- React and ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX transformation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-black min-h-screen font-inter">
+    <div id="root"></div>
+
+    <script type="text/babel">
+    // Manually define icons since Lucide import isn't working
+    const Icons = {
+        Code2Icon: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>,
+        BarChartIcon: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+        BrainCircuitIcon: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4.5a2.5 2.5 0 0 0-4.5 1.5v6"/><path d="M12 4.5a2.5 2.5 0 0 1 4.5 1.5v6"/><path d="M12 12.5a2.5 2.5 0 1 0 4.5 1.5v-6"/><path d="M12 12.5a2.5 2.5 0 1 1-4.5 1.5v-6"/><path d="M5 10V7.5a2.5 2.5 0 1 1 5 0v6"/><path d="M16 17.5a2.5 2.5 0 1 0 5 0V9.5a2.5 2.5 0 1 0-5 0v8z"/><line x1="12" y1="12.5" x2="12.01" y2="12.51"/></svg>,
+        CheckCircle2Icon: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>,
+        ArrowLeftIcon: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>,
+        ArrowRightIcon: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    };
+
+    const { useState, useEffect } = React;
+
+    // Mock quiz data for development/testing
+    const mockQuizData = [
+        {
+            question: "What is the time complexity of binary search?",
+            options: {
+                A: "O(n)",
+                B: "O(log n)",
+                C: "O(n^2)",
+                D: "O(1)"
+            },
+            correctAnswer: "B",
+            explanation: "Binary search divides the search space in half with each iteration, resulting in logarithmic time complexity."
+        }
+        // Add more mock questions as needed
+    ];
+
+    const App = () => {
+        const [difficulty, setDifficulty] = useState(null);
+        const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+        const [quiz, setQuiz] = useState([]);
+        const [selectedAnswers, setSelectedAnswers] = useState({});
+        const [submitted, setSubmitted] = useState(false);
+        const [loading, setLoading] = useState(false);
+        const [score, setScore] = useState(0);
+        const [error, setError] = useState(null);
+
+        const generateQuiz = (selectedDifficulty) => {
+            console.log('Generating quiz for difficulty:', selectedDifficulty);
+            setDifficulty(selectedDifficulty);
+            // Use mock data for now
+            setQuiz(mockQuizData.slice(0, 10));
+        };
+
+        const handleAnswerSelect = (option) => {
+            if (submitted) return;
+            setSelectedAnswers(prev => ({
+                ...prev,
+                [currentQuestionIndex]: option
+            }));
+        };
+
+        const handleNextQuestion = () => {
+            if (currentQuestionIndex < quiz.length - 1) {
+                setCurrentQuestionIndex(prev => prev + 1);
+            }
+        };
+
+        const handlePreviousQuestion = () => {
+            if (currentQuestionIndex > 0) {
+                setCurrentQuestionIndex(prev => prev - 1);
+            }
+        };
+
+        const handleSubmitQuiz = () => {
+            let quizScore = 0;
+            quiz.forEach((question, index) => {
+                if (selectedAnswers[index] === question.correctAnswer) {
+                    quizScore++;
+                }
+            });
+            setScore(quizScore);
+            setSubmitted(true);
+        };
+
+        const isQuizComplete = () => {
+            return quiz.length > 0 && quiz.length === Object.keys(selectedAnswers).length;
+        };
+
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black p-4 md:p-8 flex items-center justify-center">
+                <div className="bg-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl p-6 md:p-10 border border-gray-700 space-y-6">
+                    {!difficulty ? (
+                        <div className="text-center">
+                            <h1 className="text-3xl md:text-5xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
+                                Data Structures Quiz Challenge
+                            </h1>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {['Easy', 'Medium', 'Hard'].map(level => (
+                                    <button
+                                        key={level}
+                                        onClick={() => generateQuiz(level)}
+                                        className={`
+                                            py-4 rounded-lg text-xl font-semibold 
+                                            transform transition hover:scale-105 
+                                            flex items-center justify-center space-x-3
+                                            ${level === 'Easy' 
+                                                ? 'bg-green-500 text-white hover:bg-green-600' 
+                                                : level === 'Medium' 
+                                                    ? 'bg-yellow-500 text-black hover:bg-yellow-600'
+                                                    : 'bg-red-500 text-white hover:bg-red-600'
+                                            }`}
+                                    >
+                                        {level === 'Easy' && <Icons.Code2Icon />}
+                                        {level === 'Medium' && <Icons.BarChartIcon />}
+                                        {level === 'Hard' && <Icons.BrainCircuitIcon />}
+                                        <span>{level} Level</span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    ) : (
+                        <div>
+                            {/* Quiz Header */}
+                            <div className="mb-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                                <h2 className={`text-2xl font-bold 
+                                    ${difficulty === 'Easy' 
+                                        ? 'text-green-400' 
+                                        : difficulty === 'Medium' 
+                                            ? 'text-yellow-400'
+                                            : 'text-red-400'
+                                    }`}>
+                                    {difficulty} Level Quiz
+                                </h2>
+                                <div className="text-gray-300">
+                                    Question {currentQuestionIndex + 1} of {quiz.length}
+                                </div>
+                            </div>
+
+                            {quiz.length > 0 && !submitted ? (
+                                <div>
+                                    {/* Current Question */}
+                                    <div className="bg-gray-700 p-6 rounded-lg mb-6 border border-gray-600 shadow-lg">
+                                        <h3 className="text-xl font-semibold mb-4 text-white">
+                                            {quiz[currentQuestionIndex].question}
+                                        </h3>
+                                        <div className="space-y-4">
+                                            {Object.entries(quiz[currentQuestionIndex].options).map(([optionKey, optionText]) => (
+                                                <button
+                                                    key={optionKey}
+                                                    onClick={() => handleAnswerSelect(optionKey)}
+                                                    className={`
+                                                        w-full text-left p-4 rounded-lg transition 
+                                                        flex items-center justify-between
+                                                        ${selectedAnswers[currentQuestionIndex] === optionKey 
+                                                            ? 'bg-blue-600 text-white' 
+                                                            : 'hover:bg-gray-600 bg-gray-700 text-gray-300'
+                                                        }`}
+                                                >
+                                                    <span>{optionKey}. {optionText}</span>
+                                                    {selectedAnswers[currentQuestionIndex] === optionKey && <Icons.CheckCircle2Icon className="w-5 h-5" />}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Navigation Buttons */}
+                                    <div className="flex justify-between space-x-4">
+                                        <button
+                                            onClick={handlePreviousQuestion}
+                                            disabled={currentQuestionIndex === 0}
+                                            className="w-1/2 py-3 bg-gray-700 text-white rounded-lg 
+                                                hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed
+                                                flex items-center justify-center space-x-2"
+                                        >
+                                            <Icons.ArrowLeftIcon className="w-5 h-5" />
+                                            <span>Previous</span>
+                                        </button>
+                                        <button
+                                            onClick={handleNextQuestion}
+                                            disabled={currentQuestionIndex === quiz.length - 1}
+                                            className="w-1/2 py-3 bg-gray-700 text-white rounded-lg 
+                                                hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed
+                                                flex items-center justify-center space-x-2"
+                                        >
+                                            <span>Next</span>
+                                            <Icons.ArrowRightIcon className="w-5 h-5" />
+                                        </button>
+                                    </div>
+
+                                    {/* Submit Quiz Button */}
+                                    {isQuizComplete() && (
+                                        <button
+                                            onClick={handleSubmitQuiz}
+                                            className="w-full mt-4 py-3 bg-green-500 text-white rounded-lg 
+                                                hover:bg-green-600 font-bold flex items-center justify-center space-x-2"
+                                        >
+                                            <Icons.CheckCircle2Icon className="w-6 h-6" />
+                                            <span>Submit Quiz</span>
+                                        </button>
+                                    )}
+                                </div>
+                            ) : submitted ? (
+                                <div className="text-center">
+                                    <h2 className="text-3xl font-bold mb-6 text-neon-blue">
+                                        Quiz Results
+                                    </h2>
+                                    <div className="bg-gray-800 p-8 rounded-lg mb-6">
+                                        <p className="text-2xl mb-4">
+                                            Your Score: <span className="text-neon-green">{score}/10</span>
+                                        </p>
+                                        <div className="space-y-4">
+                                            {quiz.map((question, index) => (
+                                                <div 
+                                                    key={index} 
+                                                    className={`p-4 rounded-lg 
+                                                        ${selectedAnswers[index] === question.correctAnswer 
+                                                            ? 'bg-green-900' 
+                                                            : 'bg-red-900'
+                                                        }`}
+                                                >
+                                                    <p className="font-bold mb-2">
+                                                        Question {index + 1}: {question.question}
+                                                    </p>
+                                                    <p className="mb-2">
+                                                        Your Answer: {question.options[selectedAnswers[index]]}
+                                                    </p>
+                                                    <p className="text-neon-green mb-2">
+                                                        Correct Answer: {question.options[question.correctAnswer]}
+                                                    </p>
+                                                    <p className="text-gray-300 italic">
+                                                        Explanation:{question.explanation}
+                                                    </p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={() => setDifficulty(null)}
+                                        className="w-full py-3 bg-neon-red text-white rounded-lg hover:bg-red-700"
+                                    >
+                                        Quit Quiz
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="text-center text-gray-500">
+                                    No quiz available. Please try again.
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    };
+
+    // Custom Tailwind config for neon colors
+    const script = document.createElement('script');
+    script.innerHTML = `
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-green': '#39FF14',
+                        'neon-blue': '#00FFFF',
+                        'neon-red': '#FF0033',
+                        'neon-yellow': '#FFFF00'
+                    }
+                }
+            }
+        }
+    `;
+    document.head.appendChild(script);
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>

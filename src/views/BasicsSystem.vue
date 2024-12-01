@@ -1,60 +1,55 @@
 <template>
-    <div class="sd-container">
-      <h1 class="main-title">Basics of System Design</h1>
-      <p class="intro">
-        System design is the process of defining the architecture, components, modules, interfaces, and data for a system to satisfy specified requirements. It is crucial in developing scalable and efficient software systems.
-      </p>
+  <div class="sd-container">
+    <h1 class="main-title">Basics of System Design</h1>
+    <p class="intro">
+      System design is the process of defining the architecture, components, modules, interfaces, and data for a system to satisfy specified requirements. It is crucial in developing scalable and efficient software systems.
+    </p>
 
-      <h2 class="sub-title">What is System Design?</h2>
-      <p class="content">
-        System design involves creating a blueprint for the system that outlines its structure, functionality, and how components interact with each other. It aims to meet user requirements while ensuring performance, reliability, and scalability.
-      </p>
-  
-      <h2 class="sub-title">Functional vs Non-Functional Requirements</h2>
-      <ul class="characteristics-list">
-        <li><strong>Functional Requirements:</strong> Define what the system should do, specifying tasks, services, and functions.</li>
-        <li><strong>Non-Functional Requirements:</strong> Describe how the system performs its functions, including performance metrics, usability, reliability, and security.</li>
-      </ul>
-  
-      <h2 class="sub-title">What are the Components of System Design?</h2>
-      <p class="content">
-        Key components include:
-        <ul>
-          <li><strong>Architecture:</strong> The overall structure of the system.</li>
-          <li><strong>Modules:</strong> Independent components that encapsulate functionality.</li>
-          <li><strong>Interfaces:</strong> Points of interaction between different modules.</li>
-          <li><strong>Data Flow:</strong> The movement of data between modules.</li>
-        </ul>
-      </p>
-  
-      <h2 class="sub-title">System Design Life Cycle | SDLC (Design)</h2>
-      <p class="content">
-        The SDLC for system design includes phases such as:
-        <ul>
-          <li><strong>Requirement Analysis:</strong> Gathering and analyzing requirements.</li>
-          <li><strong>System Design:</strong> Creating the system architecture and interfaces.</li>
-          <li><strong>Implementation:</strong> Developing and integrating components.</li>
-          <li><strong>Testing:</strong> Validating functionality and performance.</li>
-          <li><strong>Deployment:</strong> Releasing the system to users.</li>
-        </ul>
-      </p>
-  
-      <h2 class="sub-title">Structured Analysis and Structured Design (SA/SD)</h2>
-      <p class="content">
-        SA/SD is a methodology used to analyze requirements and design systems systematically. It emphasizes breaking down the system into manageable components and using data flow diagrams to model processes and data storage.
-      </p>
-  
-      <h2 class="sub-title">System Design Strategy</h2>
-      <p class="content">
-        Effective system design strategies include:
-        <ul>
-          <li><strong>Top-Down Design:</strong> Starting with the high-level overview and breaking it down into sub-systems.</li>
-          <li><strong>Bottom-Up Design:</strong> Building smaller modules first and integrating them into a larger system.</li>
-          <li><strong>Modular Design:</strong> Creating independent, interchangeable modules to simplify development and maintenance.</li>
-        </ul>
-      </p>
-  
-      <h2 class="sub-title">Database Sharding – System Design Interview Concept</h2>
+    <h2 class="sub-title">What is System Design?</h2>
+    <p class="content">
+      System design involves creating a blueprint for the system that outlines its structure, functionality, and how components interact with each other. It aims to meet user requirements while ensuring performance, reliability, and scalability.
+    </p>
+
+    <h2 class="sub-title">Functional vs Non-Functional Requirements</h2>
+    <ul class="characteristics-list">
+      <li><strong>Functional Requirements:</strong> Define what the system should do, specifying tasks, services, and functions.</li>
+      <li><strong>Non-Functional Requirements:</strong> Describe how the system performs its functions, including performance metrics, usability, reliability, and security.</li>
+    </ul>
+
+    <h2 class="sub-title">What are the Components of System Design?</h2>
+    <p class="content">
+      Key components include:
+    </p>
+    <ul>
+      <li><strong>Architecture:</strong> The overall structure of the system.</li>
+      <li><strong>Modules:</strong> Independent components that encapsulate functionality.</li>
+      <li><strong>Interfaces:</strong> Points of interaction between different modules.</li>
+      <li><strong>Data Flow:</strong> The movement of data between modules.</li>
+    </ul>
+
+    <h2 class="sub-title">System Design Life Cycle | SDLC (Design)</h2>
+    <p class="content">
+      The SDLC for system design includes phases such as:
+    </p>
+    <ul>
+      <li><strong>Requirement Analysis:</strong> Gathering and analyzing requirements.</li>
+      <li><strong>System Design:</strong> Creating the system architecture and interfaces.</li>
+      <li><strong>Implementation:</strong> Developing and integrating components.</li>
+      <li><strong>Testing:</strong> Validating functionality and performance.</li>
+      <li><strong>Deployment:</strong> Releasing the system to users.</li>
+    </ul>
+
+    <h2 class="sub-title">System Design Strategy</h2>
+    <p class="content">
+      Effective system design strategies include:
+    </p>
+    <ul>
+      <li><strong>Top-Down Design:</strong> Starting with the high-level overview and breaking it down into sub-systems.</li>
+      <li><strong>Bottom-Up Design:</strong> Building smaller modules first and integrating them into a larger system.</li>
+      <li><strong>Modular Design:</strong> Creating independent, interchangeable modules to simplify development and maintenance.</li>
+    </ul>
+
+    <h2 class="sub-title">Database Sharding – System Design Interview Concept</h2>
       <p class="content">
         Database sharding involves partitioning data across multiple databases to improve performance and scalability. Each shard contains a subset of the total data, allowing the system to handle larger volumes of data more efficiently.
       </p>
