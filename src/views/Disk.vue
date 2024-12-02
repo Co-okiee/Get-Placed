@@ -9,13 +9,13 @@
       <p class="content">
         A file system is a method used by the operating system to manage files on a disk. It provides a way to store, organize, and retrieve files.
       </p>
-      <img src="@/assets/file-system-diagram.png" alt="File System Structure Diagram" class="diagram"/>
+      <img src="src\assets\study_imgs\os_disk1.webp" alt="File System Structure Diagram" class="diagram imageedit"/>
 
       <h2 class="sub-title">Unix File System</h2>
       <p class="content">
         The Unix File System (UFS) organizes files in a hierarchical structure, where everything is treated as a file, including devices and processes. UFS uses inodes to manage files and directories.
       </p>
-      <img src="@/assets/unix-file-system-diagram.png" alt="Unix File System Structure" class="diagram"/>
+      <img src="src\assets\study_imgs\os_disk2.png" alt="Unix File System Structure" class="diagram imageedit"/>
 
       <h2 class="sub-title">Implementing Directory Management using Shell Script</h2>
       <p class="content">
@@ -75,7 +75,7 @@
       <p class="content">
         A Hard Disk Drive (HDD) is a common type of secondary memory that uses magnetic storage to read and write data. It consists of spinning disks and read/write heads.
       </p>
-      <img src="@/assets/hard-disk-drive.png" alt="Hard Disk Drive Diagram" class="diagram"/>
+      <img src="src\assets\study_imgs\os_disk3.jpg" alt="Hard Disk Drive Diagram" class="diagram imageedit"/>
 
       <h2 class="sub-title">Disk Scheduling Algorithms</h2>
       <p class="content">
@@ -118,14 +118,14 @@
       </p>
 
  
-      <h2 class="sub-title">AI-Powered Study Companion</h2>
+      <h2 class="sub-title">Generative Study Companion</h2>
   <div class="ai-notes-section">
     <button 
       @click="generateAINotes" 
       class="example-button ai-notes-button" 
       :disabled="isGenerating"
     >
-      {{ isGenerating ? 'Generating AI Study Guide...' : 'Generate AI Study Guide' }}
+      {{ isGenerating ? 'Generating Study Guide...' : 'Generate Study Guide' }}
     </button>
     
     <div v-if="aiNotesData" class="ai-notes-display">
@@ -432,21 +432,27 @@ color: #e4e4e4;
 }
 
 .main-title {
-font-size: 2em;
-color: #007bff;
+font-size: 4em;
+color: #ccc;
 text-align: center;
 }
 
 .sub-title {
 font-size: 1.5em;
-color: #0056b3;
+color: #0d9bbb;
 margin-top: 20px;
 }
 
 .type-title {
 font-size: 1.2em;
-color: #ebe64d;
+color: #89dbce;
 margin-top: 10px;
+}
+
+.imageedit {
+  margin: 10px; /* Adds space around each image */
+  padding: 5px; /* Optional: Adds inner space within the image border */
+  border: 1px solid #ccc; /* Optional: Adds a border for better visibility */
 }
 
 .characteristics-list {

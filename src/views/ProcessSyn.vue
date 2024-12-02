@@ -14,7 +14,7 @@
       <p class="content">
         The critical section is a segment of code that accesses shared resources. Only one process should be allowed to execute in its critical section at a time to prevent data inconsistency.
       </p>
-      <img src="path/to/critical-section-diagram.png" alt="Critical Section Diagram" />
+      <img src="src\assets\study_imgs\os_prosyn1.webp" alt="Critical Section Diagram" class="imageedit"/>
   
       <h2 class="sub-title">Inter Process Communication (IPC)</h2>
       <p class="content">
@@ -158,14 +158,14 @@
       </p>
   
      
-      <h2 class="sub-title">AI-Powered Study Companion</h2>
+      <h2 class="sub-title">Generative Study Companion</h2>
   <div class="ai-notes-section">
     <button 
       @click="generateAINotes" 
       class="example-button ai-notes-button" 
       :disabled="isGenerating"
     >
-      {{ isGenerating ? 'Generating AI Study Guide...' : 'Generate AI Study Guide' }}
+      {{ isGenerating ? 'Generating Study Guide...' : 'Generate Study Guide' }}
     </button>
     
     <div v-if="aiNotesData" class="ai-notes-display">
@@ -472,20 +472,27 @@ color: #e4e4e4;
 }
 
 .main-title {
-font-size: 2em;
-color: #007bff;
+font-size: 4em;
+color: #ccc;
 text-align: center;
 }
 
 .sub-title {
 font-size: 1.5em;
-color: #0056b3;
+color: #0d9bbb;
 margin-top: 20px;
 }
 
+.imageedit {
+  margin: 10px; /* Adds space around each image */
+  padding: 5px; /* Optional: Adds inner space within the image border */
+  border: 1px solid #ccc; /* Optional: Adds a border for better visibility */
+}
+
+
 .type-title {
 font-size: 1.2em;
-color: #ebe64d;
+color: #71dcd6;
 margin-top: 10px;
 }
 

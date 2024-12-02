@@ -325,19 +325,19 @@
       <h2 class="sub-title">Diagrams</h2>
       <p>Below are some diagrams that illustrate the concepts discussed:</p>
       <div class="diagram-container">
-        <img src="path/to/memory_hierarchy.png" alt="Memory Hierarchy Diagram" />
-        <img src="path/to/paging_diagram.png" alt="Paging Diagram" />
-        <img src="path/to/segmentation_diagram.png" alt="Segmentation Diagram" />
+        <img src="src\assets\study_imgs\os_memory1.webp" alt="Memory Hierarchy Diagram" class="imageedit"/>
+        <img src="src\assets\study_imgs\os_memory2.webp" alt="Paging Diagram" class="imageedit"/>
+        <img src="src\assets\study_imgs\os_memory3.webp" alt="Segmentation Diagram" class="imageedit"/>
       </div>
    
-      <h2 class="sub-title">AI-Powered Study Companion</h2>
+      <h2 class="sub-title">Generative Study Companion</h2>
   <div class="ai-notes-section">
     <button 
       @click="generateAINotes" 
       class="example-button ai-notes-button" 
       :disabled="isGenerating"
     >
-      {{ isGenerating ? 'Generating AI Study Guide...' : 'Generate AI Study Guide' }}
+      {{ isGenerating ? 'Generating Study Guide...' : 'Generate Study Guide' }}
     </button>
     
     <div v-if="aiNotesData" class="ai-notes-display">
@@ -644,20 +644,26 @@ color: #e4e4e4;
 }
 
 .main-title {
-font-size: 2em;
-color: #007bff;
+font-size: 4em;
+color: #ccc;
 text-align: center;
 }
 
 .sub-title {
 font-size: 1.5em;
-color: #0056b3;
+color: #0d9bbb;
 margin-top: 20px;
+}
+
+.imageedit {
+  margin: 10px; /* Adds space around each image */
+  padding: 5px; /* Optional: Adds inner space within the image border */
+  border: 1px solid #ccc; /* Optional: Adds a border for better visibility */
 }
 
 .type-title {
 font-size: 1.2em;
-color: #ebe64d;
+color: #73d1c3;
 margin-top: 10px;
 }
 
