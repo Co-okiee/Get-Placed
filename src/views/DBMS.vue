@@ -23,10 +23,7 @@
       <p class="content">
         The relational model represents data in the form of tables (also called relations). Each table consists of rows (records or tuples) and columns (fields or attributes). In this model, every row in the table is a unique entry and is identified by a primary key. Relationships between tables are established using foreign keys.
       </p>
-      <div class="diagram-container">
-        <img src="src\assets\dbms2.png" alt="Relational Model Diagram" class="imageedit" />
-        <p class="diagram-caption">A Relational Model representing a 'Student' and 'Course' table, where 'Student_ID' acts as a primary key in the Student table and a foreign key in the Course table.</p>
-      </div>
+      
   
       <h2 class="sub-title">Relational Algebra</h2>
       <p class="content">

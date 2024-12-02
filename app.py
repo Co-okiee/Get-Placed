@@ -10,7 +10,7 @@ import docx
 import re
 from datetime import datetime
 import random
-import requests
+
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -35,6 +35,8 @@ def get_db_connection():
 # Allowed file types for resume upload
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+
 
 # Keyword extraction functions
 def extract_keywords(filepath):
@@ -183,6 +185,15 @@ def get_systemd_quiz_questions():
     conn.close()
     return jsonify(questions)
 
+@app.route('/arrays-quiz-questions', methods=['GET'])
+def get_arrays_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM arrays_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
 
 
 @app.route('/verbal-ability-quiz-questions', methods=['GET'])
@@ -221,29 +232,7 @@ def save_verbal_score():
         conn.close()
 
 # Save score for other quizzes
-@app.route('/save-score', methods=['POST'])
-def save_score():
-    data = request.get_json()
-    score_value = data.get('score')
-    user_id = data.get('user_id')
 
-    ist_timezone = pytz.timezone('Asia/Kolkata')
-    date_value = data.get('date', datetime.now(ist_timezone).isoformat())
-    if score_value is None or user_id is None:
-        return jsonify({"error": "Invalid data"}), 400
-
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    try:
-        cursor.execute('INSERT INTO scores (score, user_id, date) VALUES (%s, %s, %s)', (score_value, user_id, date_value))
-        conn.commit()
-        return jsonify({"message": "Score saved successfully!"}), 201
-    except Exception as e:
-        conn.rollback()
-        return jsonify({"error": str(e)}), 500
-    finally:
-        cursor.close()
-        conn.close()
 
 @app.route('/get-scores', methods=['GET'])
 def get_scores():
