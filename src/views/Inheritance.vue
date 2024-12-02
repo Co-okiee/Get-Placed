@@ -90,19 +90,18 @@
       <h2 class="sub-title">Diagrams</h2>
       <p>Below are some diagrams that illustrate the concept of inheritance:</p>
       <div class="diagram-container">
-        <img src="path/to/inheritance_diagram1.png" alt="Single Inheritance Example" />
-        <img src="path/to/inheritance_diagram2.png" alt="Multiple Inheritance Example" />
-        <img src="path/to/inheritance_diagram3.png" alt="Base and Derived Class Relationship" />
+        <img src="src\assets\study_imgs\inheritance.jpg" alt="Single Inheritance Example" class="imageedit" />
+        <img src="src\assets\study_imgs\inherit.jpg" alt="Base and Derived Class Relationship" class="imageedit" />
       </div>
     
-      <h2 class="sub-title">AI-Powered Study Companion</h2>
+      <h2 class="sub-title">Generative Study Companion</h2>
   <div class="ai-notes-section">
     <button 
       @click="generateAINotes" 
       class="example-button ai-notes-button" 
       :disabled="isGenerating"
     >
-      {{ isGenerating ? 'Generating AI Study Guide...' : 'Generate AI Study Guide' }}
+      {{ isGenerating ? 'Generating Study Guide...' : 'Generate Study Guide' }}
     </button>
     
     <div v-if="aiNotesData" class="ai-notes-display">
@@ -411,14 +410,14 @@
   }
   
   .main-title {
-  font-size: 2em;
-  color: #007bff;
+  font-size: 4em;
+  color: #ccc;
   text-align: center;
   }
   
   .sub-title {
   font-size: 1.5em;
-  color: #0056b3;
+  color: #0d9bbb;
   margin-top: 20px;
   }
   
@@ -469,6 +468,15 @@
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
+  
+  .imageedit {
+  padding: 10px; /* Adds inner spacing for a cleaner appearance */
+  border: 1px solid #ccc; /* Optional: Adds a subtle border for clarity */
+  width: 600px; /* Adjusted size for larger images */
+  height: auto; /* Maintains the aspect ratio */
+  display: block; /* Centers the image within its container */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds a soft shadow */
+}
   
   .section-title {
   font-size: 1.3em;

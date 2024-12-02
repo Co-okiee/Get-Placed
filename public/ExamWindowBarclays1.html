@@ -49,6 +49,7 @@
                     expandedTopics: {},
                     selectedTopic: '',
                     quiz: null,
+                    userProgress: {}, // New property to track user progress
                     loading: false,
                     selectedAnswers: [],
                     submitted: false,
@@ -168,37 +169,77 @@
                         const isCorrect = state.selectedAnswers[index] === question.correctAnswer;
                         return isCorrect ? score + 1 : score;
                     }, 0);
-
+        
                     // Store the score for the current subsection in completedSubSections
                     state.completedSubSections[state.selectedSubtopic] = currentScore;
                     state.submitted = true;
-
-                    // Optionally, store the result in history (if needed)
-                    const result = {
-                        topic: state.selectedTopic,
-                        date: new Date().toLocaleString(),
+        
+                    // Store user progress in localStorage
+                    const userProgress = JSON.parse(localStorage.getItem('userProgress') || '{}');
+                    
+                    // Use a unique identifier for the logged-in user (you'll need to implement user authentication)
+                    const userId = user_id(); // Implement this function to get current user ID
+                    
+                    if (!userProgress[userId]) {
+                        userProgress[userId] = {};
+                    }
+        
+                    // Store progress for this specific topic
+                    if (!userProgress[userId][state.selectedTopic]) {
+                        userProgress[userId][state.selectedTopic] = [];
+                    }
+        
+                    // Add the current quiz result
+                    userProgress[userId][state.selectedTopic].push({
+                        subtopic: state.selectedSubtopic,
                         score: currentScore,
                         totalQuestions: state.quiz.length,
-                    };
-                    state.quizHistory.push(result);
-                    localStorage.setItem('quizHistory', JSON.stringify(state.quizHistory));
+                        date: new Date().toISOString()
+                    });
+                    localStorage.setItem('userProgress', JSON.stringify(userProgress));
 
-                    // Only display scores after all 6 subsections are completed
-                    if (Object.keys(state.completedSubSections).length === 6) {
-                        let totalScore = 0;
-                        let resultText = "Scores for each Subsection:\n";
+            // Only display scores after all 6 subsections are completed
+            if (Object.keys(state.completedSubSections).length === 6) {
+                let totalScore = 0;
+                let resultText = "Scores for each Subsection:\n";
 
-                        // Display each subsection score
-                        for (const [subsection, score] of Object.entries(state.completedSubSections)) {
-                            resultText += `${subsection}: ${score} / 6\n`;
-                            totalScore += score;
-                        }
+                // Display each subsection score
+                for (const [subsection, score] of Object.entries(state.completedSubSections)) {
+                    resultText += `${subsection}: ${score} / 6\n`;
+                    totalScore += score;
+                }
 
-                        // Display final score after all subsections
-                        resultText += `\nFinal Score after all subsections: ${totalScore} / 36`; // assuming 6 subsections, 6 questions each
-                        alert(resultText);
-                    }
-                };
+                // Display final score after all subsections
+                resultText += `\nFinal Score after all subsections: ${totalScore} / 36`; // assuming 6 subsections, 6 questions each
+                alert(resultText);
+            }
+        };
+
+        const getUserProgress = (userId) => {
+            const userProgress = JSON.parse(localStorage.getItem('userProgress') || '{}');
+            return userProgress[userId] || {};
+        };
+
+        const getTopicAverageScore = (userId, topic) => {
+            const userProgress = getUserProgress(userId);
+            const topicAttempts = userProgress[topic] || [];
+            
+            if (topicAttempts.length === 0) return null;
+
+            const totalScore = topicAttempts.reduce((sum, attempt) => sum + attempt.score, 0);
+            const averageScore = totalScore / topicAttempts.length;
+
+            return {
+                averageScore: averageScore.toFixed(2),
+                totalAttempts: topicAttempts.length,
+                attempts: topicAttempts
+            };
+        };
+
+        const getCurrentUserId = () => {
+            // In a real app, this would come from your authentication system
+            return 'default_user';
+        };
 
 
 
@@ -224,8 +265,15 @@
                     setInterval(countdownTimer, 1000); // Start timer countdown
                 });
 
-
-                return { state, toggleTopic, generateQuiz, handleAnswerSelect, submitQuiz, formattedTime };
+                return {
+                state, 
+                toggleTopic, 
+                generateQuiz, 
+                handleAnswerSelect, 
+                submitQuiz, 
+                formattedTime,
+                getUserProgress,
+                getTopicAverageScore }
             },
             template: `
                 <div class="min-h-screen bg-gray-100 p-4 relative">
