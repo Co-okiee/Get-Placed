@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Capture</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        video {
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        button {
+            font-size: 1.1rem;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #007bff;
+            margin-top: 30px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            font-size: 1.2rem;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        #transcription {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #333;
+            border: 1px solid #007bff;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 200px; /* Increased height to fit more text */
+            overflow-y: scroll; /* Scrollable if content exceeds the height */
+            word-wrap: break-word; /* Break long words to fit within the box */
+        }
+
+        #transcriptionText {
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Record Your Response</h1>
+    <video id="video" autoplay></video>
+    <br>
+
+    <!-- Controls for recording -->
+    <button id="startCameraButton">Start Camera</button>
+    <button id="startRecordingButton" disabled>Start Recording</button>
+    <button id="stopRecordingButton" disabled>Stop Recording</button>
+
+    <h2>Playback</h2>
+    <video id="playbackVideo" controls></video>
+
+    <!-- Dynamic Questions Section -->
+    <h2>Interview Questions</h2>
+    <div id="questions">
+        <ul id="questionsList"></ul>
+    </div>
+
+    <!-- Real-time transcription area -->
+    <div id="transcription">
+        <h2>Transcription</h2>
+        <p id="transcriptionText">Your transcription will appear here...</p>
+    </div>
+
+    <script>
+        let video = document.getElementById('video');
+        let playbackVideo = document.getElementById('playbackVideo');
+        let startCameraButton = document.getElementById('startCameraButton');
+        let startRecordingButton = document.getElementById('startRecordingButton');
+        let stopRecordingButton = document.getElementById('stopRecordingButton');
+        let stream = null;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+
+        let transcriptionText = document.getElementById('transcriptionText');
+        let questionsList = document.getElementById('questionsList');
+
+        // Dictionary to store questions based on keywords
+        const questionsDictionary = {
+            "python": ["What is Python?", "What are Python decorators?", "Explain Python's memory management."],
+            "machine learning": ["What is supervised learning?", "Explain the bias-variance tradeoff.", "What are neural networks?"],
+            "javascript": ["What is event bubbling in JavaScript?", "Explain closures in JavaScript.", "How does 'this' keyword work in JavaScript?"],
+            "html": ["What are semantic tags in HTML?", "Explain the difference between block and inline elements.", "What is the <canvas> element used for?"],
+            "css": ["What is the box model in CSS?", "Explain the difference between flexbox and grid layout.", "How do you implement responsive design in CSS?"],
+            "java": ["What is the difference between an abstract class and an interface in Java?", "Explain garbage collection in Java.", "What are checked and unchecked exceptions in Java?"]
+        };
+
+        // Function to fetch questions based on extracted keywords
+        function fetchQuestions() {
+            const keywords = JSON.parse(sessionStorage.getItem('keywords')) || [];
+            console.log('Retrieved Keywords:', keywords); // Debugging line
+            const matchingQuestions = [];
+
+            keywords.forEach(keyword => {
+                const normalizedKeyword = keyword.toLowerCase(); // Normalize to match the dictionary keys
+                if (questionsDictionary[normalizedKeyword]) {
+                    matchingQuestions.push(...questionsDictionary[normalizedKeyword]);
+                }
+            });
+
+            questionsList.innerHTML = '';
+            if (matchingQuestions.length > 0) {
+                matchingQuestions.forEach(question => {
+                    const li = document.createElement('li');
+                    li.textContent = question;
+                    questionsList.appendChild(li);
+                });
+            } else {
+                questionsList.innerHTML = '<li>No questions found for the given keywords.</li>';
+            }
+        }
+
+        // Call fetchQuestions when the page loads
+        window.onload = fetchQuestions;
+
+        // Function to start the camera stream with audio
+        startCameraButton.onclick = async function () {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                video.srcObject = stream;
+
+                startRecordingButton.disabled = false;
+                startCameraButton.disabled = true;
+            } catch (err) {
+                alert('Error accessing the camera or microphone: ' + err.message);
+            }
+        };
+
+        // Function to start recording the video and audio
+        startRecordingButton.onclick = function () {
+            recordedChunks = []; // Reset recorded chunks for a new recording session
+
+            mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+
+            mediaRecorder.ondataavailable = function (event) {
+                if (event.data.size > 0) {
+                    recordedChunks.push(event.data);
+                }
+            };
+
+            mediaRecorder.start();
+            stopRecordingButton.disabled = false;
+            startRecordingButton.disabled = true;
+
+            // Start real-time transcription
+            startTranscription();
+        };
+
+        // Function to stop recording the video and audio
+        stopRecordingButton.onclick = function () {
+            mediaRecorder.stop(); // Stop the recording
+
+            mediaRecorder.onstop = function () {
+                const recordedBlob = new Blob(recordedChunks, { type: 'video/webm' });
+                playbackVideo.src = URL.createObjectURL(recordedBlob); // Set the source of playback video
+                playbackVideo.controls = true;
+
+                startRecordingButton.disabled = false;
+                stopRecordingButton.disabled = true;
+
+                // Stop transcription when recording stops
+                stopTranscription();
+            };
+        };
+
+        // Web Speech API for real-time transcription
+        let recognition;
+
+        function startTranscription() {
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.interimResults = true;
+            recognition.continuous = true;
+
+            recognition.onresult = function (event) {
+                let transcript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    transcript += event.results[i][0].transcript;
+                }
+                transcriptionText.innerText = transcript;
+            };
+
+            recognition.start();
+        }
+
+        function stopTranscription() {
+            if (recognition) {
+                recognition.stop();
+                recognition = null;
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-
 // Import necessary components
-import Dashboard from "../views/Dashboard.vue"; // Dashboard will be the home component
+import Dashboard from "../views/Dashboard.vue"; // Dashboard as home component
 import Study from "../views/Study.vue"; // Study page component
 import DataStructures from "../views/DataStructures.vue"; // Data Structures page component
 import Arrays from "../views/Arrays.vue"; // Arrays page component
@@ -10,10 +9,15 @@ import Strings from "../views/Strings.vue"; // Matrix page component
 import Login from "../views/Login.vue"; // Login page component
 import Signup from "../views/Signup.vue"; // Signup page component
 import NotFound from "../views/NotFound.vue"; // Not Found page component
-import CompanyCodingPage from "../views/CompanyCodingPage.vue"; // Component for company coding questions
-import QuizOptions from "../views/QuizOptions.vue"; // Component for quiz options
-import TopicWise from "../views/TopicWise.vue"; // Topic Wise Quiz page component
-import ArrayQuiz from "../views/ArrayQuiz.vue"; // Array Quiz page component
+import CompanyCodingPage from "../views/CompanyCodingPage.vue";
+import QuizOptions from "../views/QuizOptions.vue";
+import TopicWise from "../views/TopicWise.vue";
+import ArrayQuiz from "../views/ArrayQuiz.vue";
+import MockInterview from "../views/MockInterview.vue";
+import UploadResume from "../views/UploadResume.vue";
+import VideoCapture from "../views/VideoCapture.vue";
+
+// Data Structures Related Imports
 import LinkedLists from "../views/LinkedLists.vue";
 import Stack from "../views/Stack.vue";
 import Queue from "../views/Queue.vue";
@@ -24,6 +28,8 @@ import Heap from "../views/Heap.vue";
 import ADS from "../views/ADS.vue";
 import Map from "../views/Map.vue";
 import Set from "../views/Set.vue";
+
+// Algorithms Related Imports
 import Algorithms from "../views/Algorithms.vue";
 import AnalysisofAlgo from "../views/AnalysisofAlgo.vue";
 import Searching from "../views/Searching.vue";
@@ -40,6 +46,8 @@ import Bitwise from "../views/Bitwise.vue";
 import Backtracking from "../views/Backtracking.vue";
 import Randomised from "../views/Randomised.vue";
 import BranchBound from "../views/BranchBound.vue";
+
+// Operating Systems Related Imports
 import OS from "../views/OS.vue";
 import Basics from "../views/Basics.vue";
 import SystemStructure from "../views/SystemStructure.vue";
@@ -50,6 +58,8 @@ import ProcessThreads from "../views/ProcessThreads.vue";
 import Memory from "../views/Memory.vue";
 import Disk from "../views/Disk.vue";
 import Misc from "../views/Misc.vue";
+
+// DBMS and OOPS Related Imports
 import DBMS from "../views/DBMS.vue";
 import OOPS from "../views/OOPS.vue";
 import BasicsOOPS from "../views/BasicsOOPS.vue";
@@ -58,6 +68,8 @@ import Abstraction from "../views/Abstraction.vue";
 import Polymorphism from "../views/Polymorphism.vue";
 import Inheritance from "../views/Inheritance.vue";
 import DynamicBinding from "../views/DynamicBinding.vue";
+
+// Computer Networks Related Imports
 import CN from "../views/CN.vue";
 import CNBasics from "../views/CNBasics.vue";
 import DataLinkLayer from "../views/DataLinkLayer.vue";
@@ -69,17 +81,23 @@ import CompressionTech from "../views/CompressionTech.vue";
 import NetworkExp from "../views/NetworkExp.vue";
 import Devices from "../views/Devices.vue";
 import CNMisc from "../views/CNMisc.vue";
+
+// System Design Related Imports
 import SystemDesign from "../views/SystemDesign.vue";
 import BasicsSystem from "../views/BasicsSystem.vue";
 import Scalibility from "../views/Scalibility.vue";
 import Database from "../views/Database.vue";
 import HLD from "../views/HLD.vue";
 import LLD from "../views/LLD.vue";
+
+// Other Specific Imports
 import AptandResoning from "../views/AptandResoning.vue";
 import TrackProgress from "../views/TrackProgress.vue";
 import Verbalquizes from "../views/Verbalquizes.vue";
 import VAQuizPage from "../views/VAQuizPage.vue";
-import CompanySpecific from '../views/CompanySpecific.vue'; // Adjust the path as needed
+import CompanySpecific from '../views/CompanySpecific.vue';
+
+// Company Landing Pages
 import BarclaysLanding from '../views/BarclaysLanding.vue';
 import DeutscheBankLanding from '../views/DeutscheBankLanding.vue';
 import JPMorganLanding from '../views/JPMorganLanding.vue';
@@ -95,11 +113,13 @@ import SiemensLanding from '../views/SiemensLanding.vue';
 import NvidiaLanding from '../views/NvidiaLanding.vue';
 import DeloitteLanding from '../views/DeloitteLanding.vue';
 import AirtelLanding from '../views/AirtelLanding.vue';
+
+// Additional Specific Imports
 import CodingIde from '../views/CodingIde.vue';
 import MockExamBarclays from "../views/MockExamBarclays.vue";
-// import ExamWindowBarclays from "../views/ExamWindowBarclays.vue";
 import AutomataPage from '../views/AutomataPage.vue';
 
+// Quiz Related Imports
 import AlgoQuiz from "../views/AlgoQuiz.vue";
 import OSQuiz from "../views/OSQuiz.vue";
 import DBMSQuiz from "../views/DBMSQuiz.vue";
@@ -107,6 +127,8 @@ import OOPSQuiz from "../views/OOPSQuiz.vue";
 import AptQuiz from "../views/AptQuiz.vue";
 import CNTQuiz from "../views/CNTQuiz.vue";
 import SystemDQuiz from "../views/SystemDQuiz.vue";
+
+// AI Related Imports
 import Aidatastructure from "../views/aidatastructure.vue";
 import AiTopicwise from "../views/AiTopicwise.vue";
 
@@ -117,7 +139,22 @@ const router = createRouter({
     {
       path: "/", // Home path
       name: "home",
-      component: Dashboard, // Dashboard will be the home component
+      component: Dashboard, // Dashboard as the home component
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: Login, // Login page component
+    },
+    {
+      path: "/signup",
+      name: "signup",
+      component: Signup, // Signup page component
+    },
+    {
+      path: "/mock-interview",
+      name: "mock-interview",
+      component: MockInterview, // Mock Interview page component
     },
     {
       path: "/study",
@@ -146,9 +183,19 @@ const router = createRouter({
       component: Arrays, // Arrays page component
     },
     {
-      path: '/matrix', // Add this route for the Matrix component
-      name: 'matrix',
-      component: Matrix,
+      path: "/matrix",
+      name: "matrix",
+      component: Matrix, // Matrix page component
+    },
+    {
+      path: "/upload-resume",
+      name: "upload-resume",
+      component: UploadResume, // Upload Resume component
+    },
+    {
+      path: "/video-capture",
+      name: "video-capture",
+      component: VideoCapture, // Ensure this path is correct
     },
     {
       path: '/strings', // Add this route for the Matrix component
@@ -474,80 +521,81 @@ const router = createRouter({
       component: TopicWise, // Topic Wise Quiz page component
     },
     {
-      path: "/array-quiz",
-      name: "array-quiz",
-      component: ArrayQuiz, // Array Quiz page component
+      path: "/quiz-options",
+      name: "quiz-options",
+      component: QuizOptions, // Quiz Options component
     },
+[
+    // Quiz Routes
     {
       path: "/algo_quiz",
       name: "algo_quiz",
-      component: AlgoQuiz, // Array Quiz page component
+      component: AlgoQuiz,
     },
     {
       path: "/os_quiz",
       name: "os_quiz",
-      component: OSQuiz, // Array Quiz page component
+      component: OSQuiz,
     },
     {
       path: "/dbms_quiz",
       name: "dbms_quiz",
-      component: DBMSQuiz, // Array Quiz page component
+      component: DBMSQuiz,
     },
     {
       path: "/oops_quiz",
       name: "oops_quiz",
-      component: OOPSQuiz, // Array Quiz page component
+      component: OOPSQuiz,
     },
     {
       path: "/apt_quiz",
       name: "apt_quiz",
-      component: AptQuiz, // Array Quiz page component
+      component: AptQuiz,
     },
     {
       path: "/cnt_quiz",
       name: "cnt_quiz",
-      component: CNTQuiz, // Array Quiz page component
+      component: CNTQuiz,
     },
     {
       path: "/systemd_quiz",
       name: "systemd_quiz",
-      component: SystemDQuiz, // Array Quiz page component
+      component: SystemDQuiz,
     },
-    
     {
-      path: "/login",
-      name: "login",
-      component: Login, // Login page component
+      path: "/array-quiz",
+      name: "array-quiz",
+      component: ArrayQuiz,
+    },
+    {
+      path: "/company-coding",
+      name: "company-coding",
+      component: CompanyCodingPage,
     },
     {
       path: "/trackprogress",
       name: "trackprogress",
-      component: TrackProgress, // Login page component
+      component: TrackProgress,
     },
     {
       path: "/signup",
       name: "signup",
-      component: Signup, // Signup page component
+      component: Signup,
     },
     {
-      path: "/question/:id", // Dynamic route for questions
+      path: "/question/:id",
       name: "question",
-      component: () => import("../views/Question.vue"), // Lazy-loaded Question component
+      component: () => import("../views/Question.vue"),
     },
     {
       path: "/quiz-options",
-      name: "quiz-options", // Route name for QuizOptions
-      component: QuizOptions, // Component for quiz options
-    },
-    {
-      path: "/company-coding",
-      name: "company-coding", // Route for company coding questions
-      component: CompanyCodingPage, // Component for company coding questions
+      name: "quiz-options",
+      component: QuizOptions,
     },
     {
       path: "/verbalquizes",
-      name: "verbalquizes", // Route for company coding questions
-      component: Verbalquizes, // Component for company coding questions
+      name: "verbalquizes",
+      component: Verbalquizes,
     },
     {
       path: '/VerbalAbilityQuizPage/:quizNumber',
@@ -558,8 +606,8 @@ const router = createRouter({
       path: '/dashboard',
       name: 'Dashboard',
       component: Dashboard
-    },
-    {
+    }
+]
       path: "/:pathMatch(.*)*", // Catch-all route for 404 Not Found
       name: "notfound",
       component: NotFound, // Not Found page component
