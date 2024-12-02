@@ -33,7 +33,7 @@
         <li><strong>Stopped:</strong> The process has been stopped, usually by a signal.</li>
         <li><strong>Zombie:</strong> The process has completed execution but still has an entry in the process table.</li>
       </ul>
-      <img src="path/to/process_states_diagram.png" alt="Process States and Transitions" class="process-diagram"/>
+      <img src="src\assets\study_imgs\os_cpu3.webp" alt="Process States and Transitions" class="process-diagram imageedit"/>
   
       <h2 class="sub-title">Introduction to Linux Shell and Shell Scripting</h2>
       <p class="content">
@@ -92,18 +92,18 @@
       <h2 class="sub-title">Diagrams</h2>
       <p>Below are some diagrams that illustrate the concepts discussed:</p>
       <div class="diagram-container">
-        <img src="path/to/diagram1.png" alt="Diagram illustrating UNIX process states" />
-        <img src="path/to/diagram2.png" alt="Diagram showing Linux shell scripting" />
+        <img src="src\assets\study_imgs\os_misc1.jpg" alt="Diagram illustrating UNIX process states" class="imageedit"/>
+        <!-- <img src="src\assets\study_imgs\os_misc2.webp" alt="Diagram showing Linux shell scripting" class="imageedit"/> -->
       </div>
    
-      <h2 class="sub-title">AI-Powered Study Companion</h2>
+      <h2 class="sub-title">Generative Study Companion</h2>
   <div class="ai-notes-section">
     <button 
       @click="generateAINotes" 
       class="example-button ai-notes-button" 
       :disabled="isGenerating"
     >
-      {{ isGenerating ? 'Generating AI Study Guide...' : 'Generate AI Study Guide' }}
+      {{ isGenerating ? 'Generating Study Guide...' : 'Generate Study Guide' }}
     </button>
     
     <div v-if="aiNotesData" class="ai-notes-display">
@@ -432,21 +432,27 @@ font-family: 'Arial', sans-serif;
 color: #e4e4e4;
 }
 
+.sub-title {
+font-size: 1.5em;
+color: #0d9bbb;
+margin-top: 20px;
+}
+
 .main-title {
-font-size: 2em;
-color: #007bff;
+font-size: 4em;
+color: #ccc;
 text-align: center;
 }
 
-.sub-title {
-font-size: 1.5em;
-color: #0056b3;
-margin-top: 20px;
+.imageedit {
+  margin: 10px; /* Adds space around each image */
+  padding: 5px; /* Optional: Adds inner space within the image border */
+  border: 1px solid #ccc; /* Optional: Adds a border for better visibility */
 }
 
 .type-title {
 font-size: 1.2em;
-color: #ebe64d;
+color: #6ac0be;
 margin-top: 10px;
 }
 

@@ -9,13 +9,13 @@
       <p class="content">
         A microkernel is a minimalistic kernel that only includes essential functionalities like communication between processes and basic memory management. Other services, like device drivers and file systems, run in user space.
       </p>
-      <img src="path/to/microkernel-diagram.png" alt="Microkernel Architecture" class="system-diagram" />
+      <img src="src\assets\study_imgs\os_system2.jpeg" alt="Microkernel Architecture" class="system-diagram imageedit"  />
   
       <h2 class="sub-title">Kernel I/O Subsystem (I/O System)</h2>
       <p class="content">
         The I/O subsystem manages input and output devices and their communication with the operating system. It abstracts the complexity of device handling through drivers and provides a uniform interface for application developers.
       </p>
-      <img src="path/to/io-subsystem-diagram.png" alt="Kernel I/O Subsystem" class="system-diagram" />
+      <img src="src\assets\study_imgs\os_system3.png" alt="Kernel I/O Subsystem" class="system-diagram imageedit" />
   
       <h2 class="sub-title">Monolithic Kernel and Key Differences from Microkernel</h2>
       <p class="content">
@@ -25,13 +25,13 @@
         <li><strong>Microkernel:</strong> Minimal services, runs most services in user space, better fault isolation.</li>
         <li><strong>Monolithic Kernel:</strong> All services in kernel space, potentially faster, but less modular.</li>
       </ul>
-      <img src="path/to/monolithic-vs-microkernel-diagram.png" alt="Monolithic vs Microkernel" class="system-diagram" />
+      <!-- <img src="path/to/monolithic-vs-microkernel-diagram.png" alt="Monolithic vs Microkernel" class="system-diagram" /> -->
   
       <h2 class="sub-title">Introduction of System Call</h2>
       <p class="content">
         A system call is a mechanism used by an application to request services from the operating system. It acts as an interface between user programs and the OS, allowing user-level applications to perform operations like file manipulation and process control.
       </p>
-      <img src="path/to/system-call-diagram.png" alt="System Call Diagram" class="system-diagram" />
+      <img src="src\assets\study_imgs\os_system4.png" alt="System Call Diagram" class="system-diagram imageedit" />
   
       <h2 class="sub-title">Get/Set Process Resource Limits in C</h2>
       <p class="content">
@@ -54,7 +54,7 @@ setrlimit(RLIMIT_CPU, &amp;limit);
       <p class="content">
         Dual mode operation allows the operating system to operate in two modes: user mode and kernel mode. In user mode, processes have restricted access to system resources, while in kernel mode, the operating system can execute any instruction and access any resource.
       </p>
-      <img src="path/to/dual-mode-diagram.png" alt="Dual Mode Operations" class="system-diagram" />
+      <img src="src\assets\study_imgs\os_system1.jpeg" alt="Dual Mode Operations" class="system-diagram imageedit" />
   
       <h2 class="sub-title">Privileged and Non-Privileged Instructions</h2>
       <p class="content">
@@ -66,14 +66,14 @@ setrlimit(RLIMIT_CPU, &amp;limit);
       </ul>
   
      
-      <h2 class="sub-title">AI-Powered Study Companion</h2>
+      <h2 class="sub-title">Generative Study Companion</h2>
   <div class="ai-notes-section">
     <button 
       @click="generateAINotes" 
       class="example-button ai-notes-button" 
       :disabled="isGenerating"
     >
-      {{ isGenerating ? 'Generating AI Study Guide...' : 'Generate AI Study Guide' }}
+      {{ isGenerating ? 'Generating Study Guide...' : 'Generate Study Guide' }}
     </button>
     
     <div v-if="aiNotesData" class="ai-notes-display">
@@ -380,14 +380,14 @@ color: #e4e4e4;
 }
 
 .main-title {
-font-size: 2em;
-color: #007bff;
+font-size: 4em;
+color: #ccc;
 text-align: center;
 }
 
 .sub-title {
 font-size: 1.5em;
-color: #0056b3;
+color: #0d9bbb;
 margin-top: 20px;
 }
 
@@ -437,6 +437,12 @@ background: #313131;
 padding: 20px;
 border-radius: 10px;
 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.imageedit {
+  margin: 10px; /* Adds space around each image */
+  padding: 5px; /* Optional: Adds inner space within the image border */
+  border: 1px solid #ccc; /* Optional: Adds a border for better visibility */
 }
 
 .section-title {
