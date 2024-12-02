@@ -22,8 +22,9 @@
         };
 
         const generateQuizPrompt = (topic, subtopic) => `
-            Generate a quiz with 7 multiple-choice questions on the topic of ${subtopic} under the subject of ${topic}.
+            Generate a quiz with 9 multiple-choice questions on the topic of ${subtopic} under the subject of ${topic}.
             The questions should cover a variety of difficulty levels (easy, medium) and be focused on key concepts.
+            IMPORTANT: You MUST provide 9 questions, no more and no less.
             
             For each question, provide:
             1. A question with 4 options (A, B, C, D)
@@ -151,7 +152,7 @@
                             explanation: match[7]
                         });
                     }
-                    return questions;
+                    return questions.slice(0, 6);
                 };
 
                 
