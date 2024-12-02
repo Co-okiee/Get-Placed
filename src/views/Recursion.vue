@@ -1,100 +1,145 @@
-<!-- src/views/Recursion.vue -->
 <template>
-    <div class="algorithm-container">
-      <h1 class="main-title">Recursion</h1>
-      <p class="intro">
-        Recursion is a programming technique where a function calls itself directly or indirectly to solve a problem. It is used to break down complex problems into simpler sub-problems.
-      </p>
+  <div class="algorithm-container">
+    <h1 class="main-title">Recursion</h1>
+    <p class="intro">
+      Recursion is a programming method where a function solves a problem by calling itself. It divides the problem into smaller sub-problems until reaching a base case.
+    </p>
+
+    <h2 class="sub-title">Key Concepts in Recursion</h2>
+    <ul class="characteristics-list">
+      <li><strong>Base Case:</strong> The stopping condition for recursion to avoid infinite loops.</li>
+      <li><strong>Recursive Case:</strong> The function's logic to solve smaller problems.</li>
+      <li><strong>Stack Overflow:</strong> An error due to excessive recursive calls exceeding the stack limit.</li>
+    </ul>
+
   
-      <h2 class="sub-title">Key Concepts in Recursion</h2>
-      <ul class="characteristics-list">
-        <li><strong>Base Case:</strong> The condition under which the recursion ends. It prevents infinite loops.</li>
-        <li><strong>Recursive Case:</strong> The part of the function that includes the recursive call to solve smaller instances of the problem.</li>
-        <li><strong>Stack Overflow:</strong> A common issue in recursion where too many function calls are made, exceeding the call stack limit.</li>
-      </ul>
-  
-      <h2 class="sub-title">Diagram for Recursion Flow</h2>
-      <img src="@/assets/recursion-diagram.png" alt="Recursion Flow Diagram" class="algorithm-diagram"/>
-  
-      <h2 class="sub-title">Example Algorithms</h2>
-      <p>Select a category of algorithms to see examples:</p>
-  
-      <div class="button-container">
-        <button @click="showAlgorithm('factorial')" class="example-button">Factorial Function</button>
-        <button @click="showAlgorithm('fibonacci')" class="example-button">Fibonacci Series</button>
-        <button @click="showAlgorithm('towerOfHanoi')" class="example-button">Tower of Hanoi</button>
-      </div>
-  
-      <pre v-if="algorithmExample">
-        <code>{{ algorithmExample }}</code>
-      </pre>
-  
-      <h2 class="sub-title">Types of Recursion</h2>
-      <h3 class="type-title">Direct Recursion</h3>
-      <p>Direct recursion occurs when a function calls itself directly to solve smaller sub-problems.</p>
-  
-      <h3 class="type-title">Indirect Recursion</h3>
-      <p>Indirect recursion occurs when a function calls another function, which then calls the first function.</p>
-  
-      <h2 class="sub-title">Advantages of Recursion</h2>
-      <ul>
-        <li>Simplifies code by reducing the need for explicit stack management.</li>
-        <li>Provides clear solutions for problems that can be defined in terms of smaller sub-problems.</li>
-        <li>Helps in solving problems like tree traversal and graph algorithms efficiently.</li>
-      </ul>
-  
-      <h2 class="sub-title">Disadvantages of Recursion</h2>
-      <ul>
-        <li>Can lead to high memory consumption due to the call stack.</li>
-        <li>Risk of stack overflow for deep recursion without optimization.</li>
-        <li>Performance can be slower than iterative solutions due to function call overhead.</li>
-      </ul>
-  
-      <h2 class="sub-title">Useful Links</h2>
-      <h3 class="link-title">YouTube Tutorials</h3>
-      <ul>
-        <li><a href="https://www.youtube.com/watch?v=Y2a0fdr1h_Q" target="_blank">Understanding Recursion (English)</a></li>
-        <li><a href="https://www.youtube.com/watch?v=JrY_sKzJ_sA" target="_blank">Recursion in Hindi</a></li>
-      </ul>
+
+    <h2 class="sub-title">Example Algorithms</h2>
+    <p>Choose an algorithm to view its code:</p>
+    <div class="button-container">
+      <button @click="showAlgorithm('factorial')" class="example-button">Factorial Function</button>
+      <button @click="showAlgorithm('fibonacci')" class="example-button">Fibonacci Series</button>
+      <button @click="showAlgorithm('towerOfHanoi')" class="example-button">Tower of Hanoi</button>
     </div>
+
+    <pre v-if="algorithmExample">
+      <code>{{ algorithmExample }}</code>
+    </pre>
+
+    <h2 class="sub-title">Generative Study Notes</h2>
+    <div class="ai-notes-section">
+      <button 
+        @click="generateAINotes" 
+        class="example-button ai-notes-button" 
+        :disabled="isGenerating"
+      >
+        {{ isGenerating ? "Generating Study Notes..." : "Generate Study Notes" }}
+      </button>
+      <div v-if="aiNotesData" class="ai-notes-display">
+        <h3 class="section-title">AI Study Notes</h3>
+        <div v-html="aiNotesData"></div>
+      </div>
+    </div>
+
+    <h2 class="sub-title">Useful Links</h2>
+    <ul>
+      <li><a href="https://www.geeksforgeeks.org/recursion/" target="_blank">GeeksforGeeks - Recursion Explained</a></li>
+      <li><a href="https://www.youtube.com/watch?v=Y2a0fdr1h_Q" target="_blank">YouTube - Understanding Recursion (English)</a></li>
+      <li><a href="https://www.youtube.com/watch?v=JrY_sKzJ_sA" target="_blank">YouTube - Recursion in Hindi</a></li>
+    </ul>
+  </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Recursion",
   data() {
     return {
       algorithmExample: "",
+      aiNotesData: null,
+      isGenerating: false,
+      groqApiKey: "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"
     };
   },
   methods: {
     showAlgorithm(type) {
-      if (type === 'factorial') {
-        this.algorithmExample = `// Example of Factorial Function using Recursion
+      if (type === "factorial") {
+        this.algorithmExample = `// Factorial Function using Recursion
 function factorial(n) {
   if (n <= 1) return 1; // Base Case
   return n * factorial(n - 1); // Recursive Case
 }`;
-      } else if (type === 'fibonacci') {
-        this.algorithmExample = `// Example of Fibonacci Function using Recursion
+      } else if (type === "fibonacci") {
+        this.algorithmExample = `// Fibonacci Series using Recursion
 function fibonacci(n) {
   if (n <= 1) return n; // Base Case
   return fibonacci(n - 1) + fibonacci(n - 2); // Recursive Case
 }`;
-      } else if (type === 'towerOfHanoi') {
-        this.algorithmExample = `// Example of Tower of Hanoi using Recursion
+      } else if (type === "towerOfHanoi") {
+        this.algorithmExample = `// Tower of Hanoi using Recursion
 function towerOfHanoi(n, source, target, auxiliary) {
   if (n === 1) {
-    console.log(\Move disk 1 from \${source} to \${target}\);
+    console.log(\`Move disk 1 from \${source} to \${target}\`);
     return;
   }
   towerOfHanoi(n - 1, source, auxiliary, target);
-  console.log(\Move disk \${n} from \${source} to \${target}\);
+  console.log(\`Move disk \${n} from \${source} to \${target}\`);
   towerOfHanoi(n - 1, auxiliary, target, source);
 }`;
       }
     },
-  },
+
+    async generateAINotes() {
+      this.isGenerating = true;
+      this.aiNotesData = null;
+
+      const prompt = `
+        Generate a detailed study guide on recursion, including:
+        - Explanation of key concepts (base case, recursive case).
+        - Examples with code: Factorial, Fibonacci, Tower of Hanoi.
+        - Advantages and disadvantages of recursion.
+        - Real-world applications and limitations.
+        - Common interview questions and solutions.
+      `;
+
+      try {
+        const response = await axios.post(
+          "https://api.groq.com/openai/v1/chat/completions",
+          {
+            model: "mixtral-8x7b-32768",
+            messages: [{ role: "user", content: prompt }],
+            temperature: 0.8,
+            max_tokens: 3000,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.groqApiKey}`,
+              "Content-Type": "application/json"
+            }
+          }
+        );
+        if (response.data && response.data.choices && response.data.choices.length > 0) {
+          const formattedResponse = response.data.choices[0].message.content
+            .replace(/\n/g, "<br>")
+            .replace(/(\d\.\s)/g, "<b>$1</b>")
+            .replace(
+              /(https?:\/\/[^\s]+)/g,
+              `<a href="$1" target="_blank" style="color:#00ffcc;">$1</a>`
+            );
+          this.aiNotesData = `<div style="text-align: left;">${formattedResponse}</div>`;
+        } else {
+          throw new Error("Invalid response from API");
+        }
+      } catch (error) {
+        console.error("Error generating AI notes:", error.message);
+        alert("Failed to generate AI notes. Please try again.");
+      } finally {
+        this.isGenerating = false;
+      }
+    }
+  }
 };
 </script>
 
@@ -111,24 +156,22 @@ function towerOfHanoi(n, source, target, auxiliary) {
   line-height: 1.6;
 }
 
-.main-title {
-  font-size: 2.8em;
-  color: #f8f8f8;
-  text-align: center;
-  margin-bottom: 30px;
-}
-
 .sub-title {
-  font-size: 2em;
-  color: #e0ce46;
-  margin-top: 40px;
-  padding-bottom: 10px;
+font-size: 1.5em;
+color: #0d9bbb;
+margin-top: 20px;
 }
 
-.type-title {
-  font-size: 1.5em;
-  color: #e0ce46;
-  margin-top: 25px;
+.main-title {
+font-size: 4em;
+color: #ccc;
+text-align: center;
+}
+
+.imageedit {
+  margin: 10px; /* Adds space around each image */
+  padding: 5px; /* Optional: Adds inner space within the image border */
+  border: 1px solid #ccc; /* Optional: Adds a border for better visibility */
 }
 
 .intro {
@@ -136,49 +179,25 @@ function towerOfHanoi(n, source, target, auxiliary) {
   margin-bottom: 25px;
 }
 
-.characteristics-list {
-  margin: 10px 0;
-  padding-left: 20px;
-  font-size: 1.2em;
-}
-
-li {
-  margin-bottom: 15px;
-  line-height: 1.6;
-}
-
 .algorithm-diagram {
   width: 100%;
   height: auto;
   margin: 30px 0;
-  border: 1px solid #444;
-  border-radius: 5px;
 }
 
 pre {
   background-color: #1f1f1f;
   padding: 10px;
   border-radius: 5px;
-  overflow-x: auto;
   color: #00ff00;
   font-size: 1.2em;
-}
-
-.button-container {
-  display: flex;
-  justify-content: space-around;
-  margin: 30px 0;
 }
 
 .example-button {
   background-color: #ffcc00;
   color: #121212;
-  border: none;
   border-radius: 5px;
   padding: 15px 30px;
-  font-size: 1.2em;
-  cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 .example-button:hover {
@@ -186,17 +205,11 @@ pre {
 }
 
 a {
-  color: #ddc452;
+  color: #e0ce46;
   text-decoration: none;
-  font-size: 1.1em;
 }
 
 a:hover {
-  text-decoration: underline;
-}
-
-.link-title {
-  color: #ffffff;
-  margin-top: 30px;
+  color: #fff;
 }
 </style>

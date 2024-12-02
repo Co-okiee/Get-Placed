@@ -13,7 +13,7 @@
     </ul>
 
     <h2 class="sub-title">Diagram of a Linked List</h2>
-    <img src="@/assets/ll-diagram.jpeg" alt="Linked List Diagram" class="linkedlist-diagram" />
+    <img src="@/assets/ll.png" alt="Linked List Diagram" class="linkedlist-diagram imageedit" />
 
     <h2 class="sub-title">Types of Linked Lists</h2>
     <h3 class="type-title">Singly Linked List</h3>
@@ -42,14 +42,14 @@
       <code>{{ exampleCode }}</code>
     </pre>
 
-    <h2 class="sub-title">AI-Powered Study Companion</h2>
+    <h2 class="sub-title">Generative Study Companion</h2>
     <div class="ai-notes-section">
       <button 
         @click="generateAINotes" 
         class="example-button ai-notes-button" 
         :disabled="isGenerating"
       >
-        {{ isGenerating ? 'Generating AI Study Guide...' : 'Generate AI Study Guide' }}
+        {{ isGenerating ? 'Generating Study Guide...' : 'Generate Study Guide' }}
       </button>
 
       <div v-if="aiNotesData" class="ai-notes-display">
@@ -178,7 +178,7 @@ class Node:
 </script>
 
 <style scoped>
-/* Styles adapted from Matrix.vue */
+
 .linkedlist-container {
   padding: 20px;
   background: #282c34;
@@ -187,17 +187,22 @@ class Node:
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
-.main-title {
-  font-size: 2.5em;
-  color: #61dafb;
-  text-align: center;
+.sub-title {
+font-size: 1.5em;
+color: #0d9bbb;
+margin-top: 20px;
 }
 
-.sub-title {
-  font-size: 1.8em;
-  margin-top: 20px;
-  color: #e4e4e4;
+.main-title {
+font-size: 4em;
+color: #ccc;
+text-align: center;
+}
+
+.imageedit {
+  margin: 10px; /* Adds space around each image */
+  padding: 5px; /* Optional: Adds inner space within the image border */
+  border: 1px solid #ccc; /* Optional: Adds a border for better visibility */
 }
 
 .example-button {
