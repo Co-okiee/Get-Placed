@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-
 // Import necessary components
-import Dashboard from "../views/Dashboard.vue"; // Dashboard will be the home component
+import Dashboard from "../views/Dashboard.vue"; // Dashboard as home component
 import Study from "../views/Study.vue"; // Study page component
 import DataStructures from "../views/DataStructures.vue"; // Data Structures page component
 import Arrays from "../views/Arrays.vue"; // Arrays page component
@@ -9,10 +8,13 @@ import Matrix from "../views/Matrix.vue"; // Matrix page component
 import Login from "../views/Login.vue"; // Login page component
 import Signup from "../views/Signup.vue"; // Signup page component
 import NotFound from "../views/NotFound.vue"; // Not Found page component
-import CompanyCodingPage from "../views/CompanyCodingPage.vue"; // Component for company coding questions
-import QuizOptions from "../views/QuizOptions.vue"; // Component for quiz options
-import TopicWise from "../views/TopicWise.vue"; // Topic Wise Quiz page component
-import ArrayQuiz from "../views/ArrayQuiz.vue"; // Array Quiz page component
+import CompanyCodingPage from "../views/CompanyCodingPage.vue"; // Company coding questions component
+import QuizOptions from "../views/QuizOptions.vue"; // Quiz options component
+import TopicWise from "../views/TopicWise.vue"; // Topic Wise Quiz component
+import ArrayQuiz from "../views/ArrayQuiz.vue"; // Array Quiz component
+import MockInterview from "../views/MockInterview.vue"; // Mock Interview component
+import UploadResume from "../views/UploadResume.vue"; // Upload Resume component
+import VideoCapture from "../views/VideoCapture.vue";
 
 // Create router instance
 const router = createRouter({
@@ -21,7 +23,22 @@ const router = createRouter({
     {
       path: "/", // Home path
       name: "home",
-      component: Dashboard, // Dashboard will be the home component
+      component: Dashboard, // Dashboard as the home component
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: Login, // Login page component
+    },
+    {
+      path: "/signup",
+      name: "signup",
+      component: Signup, // Signup page component
+    },
+    {
+      path: "/mock-interview",
+      name: "mock-interview",
+      component: MockInterview, // Mock Interview page component
     },
     {
       path: "/study",
@@ -39,9 +56,19 @@ const router = createRouter({
       component: Arrays, // Arrays page component
     },
     {
-      path: '/matrix', // Add this route for the Matrix component
-      name: 'matrix',
-      component: Matrix,
+      path: "/matrix",
+      name: "matrix",
+      component: Matrix, // Matrix page component
+    },
+    {
+      path: "/upload-resume",
+      name: "upload-resume",
+      component: UploadResume, // Upload Resume component
+    },
+    {
+      path: "/video-capture",
+      name: "video-capture",
+      component: VideoCapture, // Ensure this path is correct
     },
     {
       path: "/topic-wise-quiz",
@@ -49,35 +76,24 @@ const router = createRouter({
       component: TopicWise, // Topic Wise Quiz page component
     },
     {
+      path: "/quiz-options",
+      name: "quiz-options",
+      component: QuizOptions, // Quiz Options component
+    },
+    {
+      path: "/company-coding",
+      name: "company-coding",
+      component: CompanyCodingPage, // Company Coding Questions component
+    },
+    {
       path: "/array-quiz",
       name: "array-quiz",
-      component: ArrayQuiz, // Array Quiz page component
-    },
-    
-    {
-      path: "/login",
-      name: "login",
-      component: Login, // Login page component
-    },
-    {
-      path: "/signup",
-      name: "signup",
-      component: Signup, // Signup page component
+      component: ArrayQuiz, // Array Quiz component
     },
     {
       path: "/question/:id", // Dynamic route for questions
       name: "question",
       component: () => import("../views/Question.vue"), // Lazy-loaded Question component
-    },
-    {
-      path: "/quiz-options",
-      name: "quiz-options", // Route name for QuizOptions
-      component: QuizOptions, // Component for quiz options
-    },
-    {
-      path: "/company-coding",
-      name: "company-coding", // Route for company coding questions
-      component: CompanyCodingPage, // Component for company coding questions
     },
     {
       path: "/:pathMatch(.*)*", // Catch-all route for 404 Not Found

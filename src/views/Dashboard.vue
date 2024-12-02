@@ -15,8 +15,7 @@
       <div class="banner-content">
         <h2>Prepare for Success</h2>
         <p>
-          Welcome to our web app designed to help you prepare for your future career! 
-          Whether you want to study, take quizzes, track your progress, or simulate mock interviews, we've got you covered.
+          Welcome to our web app designed to help you prepare for your future career! Whether you want to study, take quizzes, track your progress, or simulate mock interviews, we've got you covered.
         </p>
       </div>
     </section>
@@ -36,7 +35,7 @@ export default {
   name: "Dashboard",
   methods: {
     goToQuiz() {
-      this.$router.push({ name: "quiz-options" }); // Navigate to the new QuizOptions component
+      this.$router.push({ name: "quiz-options" }); 
     },
     goToStudy() {
       this.$router.push({ name: "study" });
@@ -45,14 +44,16 @@ export default {
       this.$router.push({ name: "trackProgress" });
     },
     goToMockInterview() {
-      this.$router.push({ name: "mockInterview" });
+      this.$router.push({ name: "upload-resume" }); // Use Vue's routing
     }
+    // goToMockInterview() {
+    //     window.location.href = '/upload.html';  // Adjusted to direct to upload.html
+    // }
   }
 };
 </script>
 
 <style scoped>
-/* General Styles */
 .dashboard {
   font-family: 'Roboto', sans-serif;
   color: #ffffff;
@@ -86,7 +87,6 @@ export default {
   text-decoration: underline;
 }
 
-/* Banner Section */
 .banner {
   display: flex;
   align-items: center;
@@ -116,7 +116,6 @@ export default {
   line-height: 1.6;
 }
 
-/* Action Buttons */
 .actions {
   display: flex;
   justify-content: space-around;
