@@ -15,7 +15,7 @@
         The Entity-Relationship (ER) Model is a high-level data model that defines the data elements (entities) and relationships among them. It is used to visually represent the database's logical structure. Entities can be things, persons, or concepts, and relationships define how entities are linked together.
       </p>
       <div class="diagram-container">
-        <img src="src\assets\Entity-Relationship-Diagram-.jpg" alt="ER Diagram example showing entities and their relationships" />
+        <img src="src\assets\Entity-Relationship-Diagram-.jpg" alt="ER Diagram example showing entities and their relationships" class="imageedit" />
         <p class="diagram-caption">Example of an ER diagram.</p>
       </div>
   
@@ -24,7 +24,7 @@
         The relational model represents data in the form of tables (also called relations). Each table consists of rows (records or tuples) and columns (fields or attributes). In this model, every row in the table is a unique entry and is identified by a primary key. Relationships between tables are established using foreign keys.
       </p>
       <div class="diagram-container">
-        <img src="src\assets\dbms2.png" alt="Relational Model Diagram" />
+        <img src="src\assets\dbms2.png" alt="Relational Model Diagram" class="imageedit" />
         <p class="diagram-caption">A Relational Model representing a 'Student' and 'Course' table, where 'Student_ID' acts as a primary key in the Student table and a foreign key in the Course table.</p>
       </div>
   
@@ -33,7 +33,7 @@
         Relational Algebra is a procedural query language that works on the relational model. It provides a set of operations such as selection, projection, union, set difference, and join, which are used to query and manipulate data in relational databases. For example, the 'selection' operator filters rows, while the 'projection' operator selects specific columns.
       </p>
       <div class="diagram-container">
-        <img src="path/to/relational_algebra_operations.png" alt="Relational Algebra operations" />
+        <img src="src\assets\study_imgs\dbms3.webp" alt="Relational Algebra operations" class="imageedit" />
         <p class="diagram-caption">Various relational algebra operations like selection (σ), projection (π), and join (⋈) used to manipulate relations in a database.</p>
       </div>
   
@@ -47,7 +47,7 @@
         Normalization is the process of organizing data to reduce redundancy and improve data integrity. The most common normal forms include 1NF (First Normal Form), 2NF (Second Normal Form), 3NF (Third Normal Form), and BCNF (Boyce-Codd Normal Form). Each step in normalization ensures that data is stored logically, minimizing duplication and dependency issues.
       </p>
       <div class="diagram-container">
-        <img src="path/to/normalization.png" alt="Normalization process example" />
+        <img src="src\assets\study_imgs\dbms6.jpg" alt="Normalization process example" class="imageedit" />
         <p class="diagram-caption">An example of Normalization from 1NF to 3NF, showing how tables are restructured to minimize redundancy and dependency.</p>
       </div>
   
@@ -61,7 +61,7 @@
         Indexing is used to speed up data retrieval by reducing the number of disk accesses. B-trees and B+ trees are popular data structures used in databases to maintain sorted data and allow for efficient insertion, deletion, and searching. B+ trees are a variation of B-trees where all records are stored at the leaf level, making it highly efficient for range queries.
       </p>
       <div class="diagram-container">
-        <img src="path/to/b_tree_diagram.png" alt="B+ Tree diagram" />
+        <img src="src\assets\study_imgs\dbms5.jpg" alt="diagram" class="imageedit" />
         <p class="diagram-caption">Example of a B+ Tree data structure used for indexing in databases, which helps in faster data retrieval and range queries.</p>
       </div>
   
@@ -90,7 +90,7 @@
         <li>Enhances data security through access controls and encryption.</li>
         <li>Allows concurrent access to data by multiple users.</li>
         <li>Ensures data integrity by enforcing data constraints.</li>
-      </ul>
+      </ul>B+ Tree 
   
       <h2 class="sub-title">Disadvantages of DBMS</h2>
       <ul class="characteristics-list">
@@ -101,22 +101,15 @@
       </ul>
 
   
-      <h2 class="sub-title">Diagrams</h2>
-      <p>Below are some diagrams that illustrate the key DBMS concepts discussed:</p>
-      <div class="diagram-container">
-        <img src="path/to/er_diagram.png" alt="ER Diagram" />
-        <img src="path/to/b_tree_diagram.png" alt="B+ Tree Diagram" />
-        <img src="path/to/normalization.png" alt="Normalization process" />
-      </div>
 
-      <h2 class="sub-title">AI-Powered Study Companion</h2>
+      <h2 class="sub-title">Generative Study Companion</h2>
   <div class="ai-notes-section">
     <button 
       @click="generateAINotes" 
       class="example-button ai-notes-button" 
       :disabled="isGenerating"
     >
-      {{ isGenerating ? 'Generating AI Study Guide...' : 'Generate AI Study Guide' }}
+      {{ isGenerating ? 'Generating Study Guide...' : 'Generate Study Guide' }}
     </button>
     
     <div v-if="aiNotesData" class="ai-notes-display">
@@ -423,14 +416,14 @@ color: #e4e4e4;
 }
 
 .main-title {
-font-size: 2em;
-color: #007bff;
+font-size: 4em;
+color: #ccc;
 text-align: center;
 }
 
 .sub-title {
 font-size: 1.5em;
-color: #0056b3;
+color: #0d9bbb;
 margin-top: 20px;
 }
 
@@ -480,6 +473,15 @@ background: #313131;
 padding: 20px;
 border-radius: 10px;
 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.imageedit {
+  padding: 10px; /* Adds inner spacing for a cleaner appearance */
+  border: 1px solid #ccc; /* Optional: Adds a subtle border for clarity */
+  width: 600px; /* Adjusted size for larger images */
+  height: auto; /* Maintains the aspect ratio */
+  display: block; /* Centers the image within its container */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds a soft shadow */
 }
 
 .section-title {

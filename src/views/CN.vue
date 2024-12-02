@@ -15,8 +15,8 @@
       </div>
 
       <div class="topic-card" @click="navigateTo('network')">
-        <div class="card-icon">📡</div>
-        <h3>Network Layer</h3>
+        <div class="card-icon">🔐</div>
+        <h3>Network Security</h3>
       </div>
 
       <div class="topic-card" @click="navigateTo('transport')">
@@ -30,8 +30,8 @@
       </div>
 
       <div class="topic-card" @click="navigateTo('networksecurity')">
-        <div class="card-icon">🔐</div>
-        <h3>Network Security</h3>
+        <div class="card-icon">📡</div>
+        <h3>Network Layer</h3>
       </div>
 
       <div class="topic-card" @click="navigateTo('compressiontech')">
@@ -49,7 +49,7 @@
         <h3>Devices</h3>
       </div>
 
-      <div class="topic-card" @click="navigateTo('misc')">
+      <div class="topic-card" @click="navigateTo('CNmisc')">
         <div class="card-icon">🔍</div>
         <h3>Miscellaneous</h3>
       </div>
