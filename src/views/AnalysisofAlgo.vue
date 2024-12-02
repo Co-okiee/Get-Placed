@@ -1,211 +1,240 @@
-<!-- src/views/AnalysisOfAlgorithm.vue -->
 <template>
-    <div class="algorithm-container">
-      <h1 class="main-title">Analysis of Algorithms</h1>
-      <p class="intro">
-        The analysis of algorithms is a fundamental part of computer science, aimed at determining the computational efficiency of an algorithm in terms of time and space. It helps in understanding how an algorithm will scale with input size.
-      </p>
-  
-      <h2 class="sub-title">Key Concepts in Algorithm Analysis</h2>
-      <ul class="characteristics-list">
-        <li><strong>Time Complexity:</strong> The amount of time taken by an algorithm to run as a function of the length of the input.</li>
-        <li><strong>Space Complexity:</strong> The amount of memory space required by an algorithm as a function of the input size.</li>
-        <li><strong>Asymptotic Notation:</strong> Big-O, Omega, and Theta notations are used to describe the efficiency of an algorithm in terms of time and space as the input size grows.</li>
-      </ul>
-  
-      <h2 class="sub-title">Diagram for Algorithm Complexity</h2>
-      <img src="@/assets/complexity-diagram.png" alt="Algorithm Complexity Diagram" class="algorithm-diagram"/>
-  
-      <h2 class="sub-title">Example Algorithms</h2>
-      <p>Select a category of algorithms to see examples:</p>
-  
-      <div class="button-container">
-        <button @click="showAlgorithm('sorting')" class="example-button">Sorting Algorithms</button>
-        <button @click="showAlgorithm('searching')" class="example-button">Searching Algorithms</button>
-        <button @click="showAlgorithm('greedy')" class="example-button">Greedy Algorithms</button>
-      </div>
-  
-      <pre v-if="algorithmExample">
-        <code>{{ algorithmExample }}</code>
-      </pre>
-  
-      <h2 class="sub-title">Types of Algorithm Analysis</h2>
-      <h3 class="type-title">Worst Case Analysis</h3>
-      <p>Worst-case analysis examines the maximum time an algorithm will take under any possible input of a given size.</p>
-  
-      <h3 class="type-title">Best Case Analysis</h3>
-      <p>Best-case analysis looks at the minimum time an algorithm takes for the most favorable input.</p>
-  
-      <h3 class="type-title">Average Case Analysis</h3>
-      <p>This analyzes the expected time an algorithm will take for random input of a given size.</p>
-  
-      <h2 class="sub-title">Advantages of Algorithm Analysis</h2>
-      <ul>
-        <li>Helps in comparing different algorithms based on their time and space efficiency.</li>
-        <li>Provides insights into potential performance bottlenecks for large input sizes.</li>
-        <li>Allows developers to make informed decisions when choosing algorithms for real-world applications.</li>
-      </ul>
-  
-      <h2 class="sub-title">Disadvantages of Algorithm Analysis</h2>
-      <ul>
-        <li>Asymptotic analysis does not provide precise running time, only the growth rate.</li>
-        <li>It may not account for all factors that affect performance, such as hardware and system architecture.</li>
-        <li>Average case complexity can be difficult to determine for some algorithms.</li>
-      </ul>
-  
-      <h2 class="sub-title">Useful Links</h2>
-      <h3 class="link-title">YouTube Tutorials</h3>
-      <ul>
-        <li><a href="https://www.youtube.com/watch?v=FEnwCHvdW7A" target="_blank">Algorithm Analysis (English)</a></li>
-        <li><a href="https://www.youtube.com/watch?v=6FOeTgI7Kec" target="_blank">Algorithm Analysis in Hindi</a></li>
-      </ul>
+  <div class="algorithm-container">
+    <h1 class="main-title">Analysis of Algorithms</h1>
+    <p class="intro">
+      The analysis of algorithms is a fundamental part of computer science, aimed at determining the computational efficiency of an algorithm in terms of time and space. It helps in understanding how an algorithm will scale with input size.
+    </p>
+
+    <h2 class="sub-title">Key Concepts in Algorithm Analysis</h2>
+    <ul class="characteristics-list">
+      <li><strong>Time Complexity:</strong> The amount of time taken by an algorithm to run as a function of the length of the input.</li>
+      <li><strong>Space Complexity:</strong> The amount of memory space required by an algorithm as a function of the input size.</li>
+      <li><strong>Asymptotic Notation:</strong> Big-O, Omega, and Theta notations are used to describe the efficiency of an algorithm in terms of time and space as the input size grows.</li>
+    </ul>
+
+    <h2 class="sub-title">Diagram for Algorithm Complexity</h2>
+    <img src="@/assets/complexity.png" alt="Algorithm Complexity Diagram" class="algorithm-diagram imageedit" />
+
+    <h2 class="sub-title">Example Algorithms</h2>
+    <p>Select a category of algorithms to see examples:</p>
+    <div class="button-container">
+      <button @click="showAlgorithm('sorting')" class="example-button">Sorting Algorithms</button>
+      <button @click="showAlgorithm('searching')" class="example-button">Searching Algorithms</button>
+      <button @click="showAlgorithm('greedy')" class="example-button">Greedy Algorithms</button>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "AnalysisOfAlgorithm",
-    data() {
-      return {
-        algorithmExample: "",
-      };
+
+    <pre v-if="algorithmExample">
+      <code>{{ algorithmExample }}</code>
+    </pre>
+
+    <h2 class="sub-title">Generative Study Companion</h2>
+    <div class="ai-notes-section">
+      <button 
+        @click="generateAINotes" 
+        class="example-button ai-notes-button" 
+        :disabled="isGenerating"
+      >
+        {{ isGenerating ? "Generating Study Guide..." : "Generate Study Guide" }}
+      </button>
+
+      <div v-if="aiNotesData" class="ai-notes-display">
+        <h3 class="section-title">📘 Comprehensive Study Notes</h3>
+        <div v-html="aiNotesData"></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+
+export default {
+  name: "AnalysisOfAlgorithm",
+  data() {
+    return {
+      algorithmExample: "",
+      aiNotesData: null,
+      isGenerating: false,
+      groqApiKey: "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"
+    };
+  },
+  methods: {
+    showAlgorithm(type) {
+      if (type === "sorting") {
+        this.algorithmExample = `// Example of Bubble Sort Algorithm
+for (int i = 0; i < n-1; i++)
+  for (int j = 0; j < n-i-1; j++)
+    if (arr[j] > arr[j+1])
+      swap(arr[j], arr[j+1]);`;
+      } else if (type === "searching") {
+        this.algorithmExample = `// Example of Binary Search Algorithm
+int binarySearch(int arr[], int l, int r, int x) {
+  while (l <= r) {
+    int m = l + (r - l) / 2;
+    if (arr[m] == x)
+      return m;
+    if (arr[m] < x)
+      l = m + 1;
+    else
+      r = m - 1;
+  }
+  return -1;
+}`;
+      } else if (type === "greedy") {
+        this.algorithmExample = `// Example of Greedy Algorithm (Fractional Knapsack)
+sort(items, by_value_to_weight_ratio);
+for each item in sorted_items:
+  if item fits in knapsack:
+    take item entirely;
+  else:
+    take the fraction that fits;`;
+      }
     },
-    methods: {
-      showAlgorithm(type) {
-        if (type === 'sorting') {
-          this.algorithmExample = `// Example of Bubble Sort Algorithm
-  for (int i = 0; i < n-1; i++)
-    for (int j = 0; j < n-i-1; j++)
-      if (arr[j] > arr[j+1])
-        swap(arr[j], arr[j+1]);`;
-        } else if (type === 'searching') {
-          this.algorithmExample = `// Example of Binary Search Algorithm
-  int binarySearch(int arr[], int l, int r, int x) {
-    while (l <= r) {
-      int m = l + (r - l) / 2;
-      if (arr[m] == x)
-        return m;
-      if (arr[m] < x)
-        l = m + 1;
-      else
-        r = m - 1;
-    }
-    return -1;
-  }`;
-        } else if (type === 'greedy') {
-          this.algorithmExample = `// Example of Greedy Algorithm (Fractional Knapsack)
-  sort(items, by_value_to_weight_ratio);
-  for each item in sorted_items:
-    if item fits in knapsack:
-      take item entirely;
-    else:
-      take the fraction that fits;`;
+
+    async generateAINotes() {
+      this.isGenerating = true;
+      this.aiNotesData = null;
+
+      const prompt = `
+        Generate a detailed study guide on the analysis of algorithms, including:
+        Explanation of key concepts like Time Complexity, Space Complexity, and Asymptotic Notations.
+        Comparison between worst-case, best-case, and average-case analysis with examples.
+        Practical applications and importance of analyzing algorithms.
+        Common challenges faced in algorithm analysis and ways to address them.
+        Key interview questions with solutions and coding challenges.
+        A list of curated learning resources with clickable links.
+      `;
+
+      try {
+        const response = await axios.post(
+          "https://api.groq.com/openai/v1/chat/completions",
+          {
+            model: "mixtral-8x7b-32768",
+            messages: [{ role: "user", content: prompt }],
+            temperature: 0.8,
+            max_tokens: 3000,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.groqApiKey}`,
+              "Content-Type": "application/json"
+            }
+          }
+        );
+
+        if (response.data && response.data.choices && response.data.choices.length > 0) {
+          const formattedResponse = response.data.choices[0].message.content
+            .replace(/\n/g, "<br>")
+            .replace(/(\d\.\s)/g, "<b>$1</b>")
+            .replace(
+              /(https?:\/\/[^\s]+)/g,
+              `<a href="$1" target="_blank" style="color:#00ffcc;">$1</a>`
+            );
+          this.aiNotesData = `<div>${formattedResponse}</div>`;
+        } else {
+          throw new Error("Invalid response from API");
         }
-      },
-    },
-  };
-  </script>
-  
-  <style scoped>
-  .algorithm-container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #121212;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-    font-family: 'Roboto', sans-serif;
-    color: #e0e0e0;
-    line-height: 1.6;
+      } catch (error) {
+        console.error("Error generating AI notes:", error.message);
+        alert("Failed to generate AI notes. Please try again.");
+      } finally {
+        this.isGenerating = false;
+      }
+    }
   }
-  
-  .main-title {
-    font-size: 2.8em;
-    color: #f8f8f8;
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  .sub-title {
-    font-size: 2em;
-    color: #e0ce46;
-    margin-top: 40px;
-    padding-bottom: 10px;
-  }
-  
-  .type-title {
-    font-size: 1.5em;
-    color: #e0ce46;
-    margin-top: 25px;
-  }
-  
-  .intro {
-    font-size: 1.3em;
-    margin-bottom: 25px;
-  }
-  
-  .characteristics-list {
-    margin: 10px 0;
-    padding-left: 20px;
-    font-size: 1.2em;
-  }
-  
-  li {
-    margin-bottom: 15px;
-    line-height: 1.6;
-  }
-  
-  .algorithm-diagram {
-    width: 100%;
-    height: auto;
-    margin: 30px 0;
-    border: 1px solid #444;
-    border-radius: 5px;
-  }
-  
-  pre {
-    background-color: #1f1f1f;
-    padding: 10px;
-    border-radius: 5px;
-    overflow-x: auto;
-    color: #00ff00;
-    font-size: 1.2em;
-  }
-  
-  .button-container {
-    display: flex;
-    justify-content: space-around;
-    margin: 30px 0;
-  }
-  
-  .example-button {
-      background-color: #ffcc00;
-      color: #121212;
-      border: none;
-      border-radius: 5px;
-      padding: 15px 30px;
-      font-size: 1.2em;
-      cursor: pointer;
-      transition: background-color 0.3s;
-  }
-    
-  .example-button:hover {
-    background-color: #ffe066;
-  }
-  
-  a {
-    color: #ddc452;
-    text-decoration: none;
-    font-size: 1.1em;
-  }
-  
-  a:hover {
-    text-decoration: underline;
-  }
-  
-  .link-title {
-    color: #ffffff;
-    margin-top: 30px;
-  }
-  </style>
-  
+};
+</script>
+
+<style scoped>
+.algorithm-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #121212;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  font-family: "Roboto", sans-serif;
+  color: #e0e0e0;
+  line-height: 1.6;
+}
+
+.sub-title {
+font-size: 1.5em;
+color: #0d9bbb;
+margin-top: 20px;
+}
+
+.main-title {
+font-size: 4em;
+color: #ccc;
+text-align: center;
+}
+
+.imageedit {
+  margin: 10px; /* Adds space around each image */
+  padding: 5px; /* Optional: Adds inner space within the image border */
+  border: 1px solid #ccc; /* Optional: Adds a border for better visibility */
+}
+
+.characteristics-list {
+  margin: 10px 0;
+  padding-left: 20px;
+  font-size: 1.2em;
+}
+
+.algorithm-diagram {
+  width: 100%;
+  height: auto;
+  margin: 30px 0;
+  border: 1px solid #444;
+  border-radius: 5px;
+}
+
+pre {
+  background-color: #1f1f1f;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-x: auto;
+  color: #00ff00;
+  font-size: 1.2em;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-around;
+  margin: 30px 0;
+}
+
+.example-button {
+  background-color: #ffcc00;
+  color: #121212;
+  border: none;
+  border-radius: 5px;
+  padding: 15px 30px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.example-button:hover {
+  background-color: #ffe066;
+}
+
+.ai-notes-section {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.ai-notes-display {
+  background-color: #1f1f1f;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  margin-top: 20px;
+}
+
+.ai-notes-display a {
+  color: #00ffcc;
+  text-decoration: underline;
+}
+</style>
