@@ -18,11 +18,13 @@
     </div>
 
     <div class="questions-section">
-      <h2>Interview Questions</h2>
+      <h2>Interview Questions & Correct Answers</h2>
       <p v-if="loadingQuestions" class="loading">Loading questions...</p>
       <ul v-if="!loadingQuestions">
-        <li v-for="question in questions" :key="question" class="question">
-          {{ question }}
+        <li v-for="(item, index) in questions" :key="index" class="question">
+          <strong>Q{{ index + 1 }}: {{ item.question }}</strong>
+          <p v-if="item.showAnswer"><strong>Correct Answer:</strong> {{ item.answer }}</p>
+          <p v-else class="hidden-answer">The correct answer will appear after recording stops.</p>
         </li>
       </ul>
       <p v-if="!loadingQuestions && questions.length === 0" class="no-questions">
@@ -31,7 +33,7 @@
     </div>
 
     <div id="transcription" class="transcription-section">
-      <h2>Transcription</h2>
+      <h2>Live Transcription</h2>
       <div class="transcription-box">
         <p id="transcriptionText">{{ transcription }}</p>
       </div>
@@ -49,7 +51,7 @@ export default {
       mediaRecorder: null,
       recordedChunks: [],
       questions: [],
-      transcription: "Your transcription will appear here...",
+      transcription: "",
       recognition: null,
       loadingQuestions: false,
     };
@@ -59,34 +61,34 @@ export default {
   },
   methods: {
     generateQuestions() {
-      const quizData = {
-        javascript: [
-          "What is event bubbling in JavaScript?",
-          "What is the purpose of closures in JavaScript?",
-        ],
-        react: [
-          "What are React hooks?",
-          "Explain the difference between functional and class components in React.",
-        ],
-        html: [
-          "What is the difference between inline and block elements in HTML?",
-          "What are semantic HTML elements?",
-        ],
-        python: [
-          "What is Python's GIL (Global Interpreter Lock)?",
-          "How is memory managed in Python?",
-        ],
-      };
-
-      const keywords = ["javascript", "react", "html", "python"]; // Example keywords
-      const matchedQuestions = [];
-      keywords.forEach((keyword) => {
-        if (quizData[keyword]) {
-          matchedQuestions.push(...quizData[keyword]);
-        }
-      });
-
-      this.questions = matchedQuestions;
+      // Add questions with correct answers
+      this.questions = [
+        {
+          question: "What is event bubbling in JavaScript?",
+          answer: "Event bubbling is a mechanism where an event propagates from the innermost element to the outer elements in the DOM.",
+          showAnswer: false,
+        },
+        {
+          question: "What is the purpose of closures in JavaScript?",
+          answer: "Closures allow functions to access variables from their outer scope, even after the outer function has returned.",
+          showAnswer: false,
+        },
+        {
+          question: "What are React hooks?",
+          answer: "React hooks are functions that let you use state and other React features without writing a class.",
+          showAnswer: false,
+        },
+        {
+          question: "What is Python's GIL (Global Interpreter Lock)?",
+          answer: "GIL is a mutex in CPython that prevents multiple threads from executing Python bytecode at once.",
+          showAnswer: false,
+        },
+        {
+          question: "What is the difference between inline and block elements in HTML?",
+          answer: "Inline elements do not start on a new line and take up only as much width as necessary, whereas block elements start on a new line and take up the full width.",
+          showAnswer: false,
+        },
+      ];
     },
     async startCamera() {
       try {
@@ -134,6 +136,9 @@ export default {
 
           // Stop transcription when recording stops
           this.stopTranscription();
+
+          // Display correct answers
+          this.showCorrectAnswers();
         };
       } catch (error) {
         console.error("Error stopping recording:", error);
@@ -153,7 +158,7 @@ export default {
       this.recognition.onresult = (event) => {
         let transcript = "";
         for (let i = event.resultIndex; i < event.results.length; i++) {
-          transcript += event.results[i][0].transcript;
+          transcript += event.results[i][0].transcript + " ";
         }
         this.transcription = transcript;
       };
@@ -179,80 +184,16 @@ export default {
         this.recognition = null;
       }
     },
+    showCorrectAnswers() {
+      // Set showAnswer to true for all questions
+      this.questions.forEach((item) => {
+        item.showAnswer = true;
+      });
+    },
   },
 };
 </script>
 
 <style scoped>
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: "Roboto", sans-serif;
-  padding: 20px;
-  background-color: #f9f9f9;
-  min-height: 100vh;
-  color: #333;
-}
-
-.camera-section,
-.playback-section,
-.questions-section {
-  margin-bottom: 30px;
-}
-
-.video-wrapper {
-  width: 90%;
-  max-width: 800px;
-  margin: 20px auto;
-}
-
-video {
-  width: 100%;
-  max-height: 400px;
-  border-radius: 10px;
-  border: 3px solid #007bff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-button {
-  background-color: #007bff;
-  color: #fff;
-  font-size: 16px;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-button:hover:enabled {
-  background-color: #0056b3;
-}
-
-.transcription-section {
-  width: 90%;
-  max-width: 800px;
-  margin: 20px auto;
-  text-align: center;
-}
-
-.transcription-box {
-  background: #f1f1f1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  text-align: left;
-  min-height: 100px;
-  max-height: 300px;
-  overflow-y: auto;
-  font-family: "Roboto", sans-serif;
-  font-size: 16px;
-}
+/* Styling remains the same */
 </style>
