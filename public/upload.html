@@ -1,0 +1,116 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Resume</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            margin-top: 30px;
+        }
+
+        label {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border: 1px solid #007bff;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button {
+            font-size: 1.1rem;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        p {
+            font-size: 1rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Upload Your Resume</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="resume">Choose Resume (PDF/DOCX)</label>
+        <input type="file" id="resume" name="resume" required>
+        <button type="submit">Upload</button>
+    </form>
+    
+    <p>Your skills will be extracted, and questions will follow!</p>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Prevent the default form submission
+    
+            const fileInput = document.getElementById('resume');
+            if (!fileInput.files.length) {
+                alert('Please select a file before uploading.');
+                return;
+            }
+    
+            const formData = new FormData();
+            formData.append('resume', fileInput.files[0]);
+    
+            try {
+                const response = await fetch('http://127.0.0.1:5001/upload', { // Flask typically runs on port 5000
+                    method: 'POST',
+                    body: formData,
+                });
+    
+                if (!response.ok) {
+                    throw new Error(`Failed to upload the resume. Server responded with status: ${response.status}`);
+                }
+    
+                const data = await response.json();
+                if (data.success) {
+                    console.log('Keywords extracted:', data.keywords);
+                    window.location.href = 'http://127.0.0.1:5173/video-capture'; // Redirect to video capture
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while uploading the resume. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

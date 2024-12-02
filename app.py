@@ -1,22 +1,27 @@
-from flask import Flask, jsonify, request
-from flask_cors import CORS  # Import CORS
+from flask import Flask, jsonify, request, session
+from flask_cors import CORS
+from werkzeug.utils import secure_filename
+import os
 import mysql.connector
 from mysql.connector import Error
-from datetime import datetime
 from flask_bcrypt import Bcrypt
-import pytz
+import PyPDF2
+import docx
+import re
+from datetime import datetime
+import random
 import requests
-from bs4 import BeautifulSoup
-#from transformers import pipeline
-#summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
-
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-CORS(app)  # Enable CORS for all routes
+CORS(app)
+app.secret_key = 'your_secret_key'
 
-# Pre-trained summarizer model from HuggingFace
-#summarizer = pipeline("summarization")
+# Upload configurations
+UPLOAD_FOLDER = 'uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['ALLOWED_EXTENSIONS'] = {'pdf', 'doc', 'docx'}
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # MySQL Database connection function
 def get_db_connection():
@@ -27,91 +32,126 @@ def get_db_connection():
         database='get_placed'
     )
 
+# Allowed file types for resume upload
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
-# Existing API endpoints for questions and user handling
-@app.route('/questions', methods=['GET'])
-def get_questions():
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM quiz')
-    questions = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return jsonify(questions)
+# Keyword extraction functions
+def extract_keywords(filepath):
+    ext = filepath.split('.')[-1].lower()
+    if ext == 'pdf':
+        return extract_keywords_from_pdf(filepath)
+    elif ext in ['doc', 'docx']:
+        return extract_keywords_from_doc(filepath)
+    else:
+        raise ValueError("Unsupported file format")
 
-@app.route('/api/aptitude-questions', methods=['GET'])
-def fetch_aptitude_questions():
+def extract_keywords_from_pdf(filepath):
+    with open(filepath, 'rb') as file:
+        reader = PyPDF2.PdfReader(file)
+        text = ''.join([page.extract_text() for page in reader.pages])
+    return process_text(text)
+
+def extract_keywords_from_doc(filepath):
+    doc = docx.Document(filepath)
+    text = ''.join([para.text for para in doc.paragraphs])
+    return process_text(text)
+
+def process_text(text):
+    skill_keywords = [
+        'python', 'java', 'javascript', 'machine learning', 'sql',
+        'c++', 'html', 'css', 'git', 'react', 'node.js', 'django'
+    ]
+    text = text.lower()
+    extracted_skills = set([keyword for keyword in skill_keywords if re.search(r'\b' + re.escape(keyword) + r'\b', text)])
+    return list(extracted_skills)
+
+# Route: Upload resume
+@app.route('/upload', methods=['POST'])
+def upload_resume():
+    if 'resume' not in request.files:
+        return jsonify({'success': False, 'error': 'No file uploaded.'})
+
+    file = request.files['resume']
+    if file.filename == '':
+        return jsonify({'success': False, 'error': 'No selected file.'})
+
+    if not allowed_file(file.filename):
+        return jsonify({'success': False, 'error': 'Invalid file type.'})
+
+    filename = secure_filename(file.filename)
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(file_path)
+
+    # Extract keywords and store in session
+    keywords = extract_keywords(file_path)
+    session['keywords'] = keywords
+
+    return jsonify({'success': True, 'keywords': keywords})
+
+# Route: Fetch interview questions
+@app.route('/api/interview-questions', methods=['POST'])
+def get_interview_questions():
+    data = request.get_json()
+    keywords = data.get('keywords', session.get('keywords', []))
+    if not keywords:
+        return jsonify({"error": "No keywords provided."}), 400
+
+    quiz_data = {
+        "python": [
+            {"question": "What is PEP 8, and why is it important?", "options": ["Code formatting guidelines", "An IDE", "A library", "A compiler"], "answer": "Code formatting guidelines"},
+        ],
+        "javascript": [
+            {"question": "What is event bubbling in JavaScript?", "options": ["A way of propagating events", "A sorting algorithm", "A method of debugging", "None of the above"], "answer": "A way of propagating events"},
+        ],
+    }
+
+    interview_questions = []
+    for keyword in keywords:
+        if keyword.lower() in quiz_data:
+            interview_questions.extend([q['question'] for q in quiz_data[keyword.lower()]])
+    return jsonify(interview_questions)
+
+# Route: Fetch questions from MySQL
+@app.route('/questions/<quiz_type>', methods=['GET'])
+def fetch_quiz_questions(quiz_type):
     try:
-        # URL for iMocha API
-        api_url = "https://apiv3.imocha.io/v3/tests"
-        headers = {
-            'Authorization': 'Bearer YOUR_API_KEY'  # Replace with your iMocha API key
-        }
-        
-        # Making a request to the iMocha API
-        response = requests.get(api_url, headers=headers)
-        
-        # Check if the request was successful
-        if response.status_code == 200:
-            # Return the JSON response to the frontend
-            return jsonify(response.json())
-        else:
-            return jsonify({"error": "Failed to fetch questions"}), 500
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(f'SELECT * FROM {quiz_type}_quiz')
+        questions = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return jsonify(questions)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Route: Track progress
+@app.route('/api/track-progress', methods=['GET'])
+def track_progress():
+    user_results = [
+        {"quiz_type": "python", "score": 4, "time_taken": 3.2, "date_taken": datetime.now()},
+        {"quiz_type": "javascript", "score": 3, "time_taken": 5.0, "date_taken": datetime.now()},
+    ]
+    scores_by_quiz = {}
+    for result in user_results:
+        if result['quiz_type'] not in scores_by_quiz:
+            scores_by_quiz[result['quiz_type']] = []
+        scores_by_quiz[result['quiz_type']].append(result['score'])
 
-@app.route('/arrays-quiz-questions', methods=['GET'])
-def get_arrays_quiz_questions():
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM arrays_quiz')
-    questions = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return jsonify(questions)
-
-@app.route('/algo-quiz-questions', methods=['GET'])
-def get_algo_quiz_questions():
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM algo_quiz')
-    questions = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return jsonify(questions)
-
-@app.route('/os-quiz-questions', methods=['GET'])
-def get_os_quiz_questions():
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM os_quiz')
-    questions = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return jsonify(questions)
-
-@app.route('/dbms-quiz-questions', methods=['GET'])
-def get_dbms_quiz_questions():
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM dbms_quiz')
-    questions = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return jsonify(questions)
-
-@app.route('/oops-quiz-questions', methods=['GET'])
-def get_oops_quiz_questions():
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM oops_quiz')
-    questions = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return jsonify(questions)
+    weak_topics = [quiz for quiz, scores in scores_by_quiz.items() if sum(scores) / len(scores) < 2]
+    total_correct_answers = sum(r['score'] for r in user_results)
+    total_marks = len(user_results) * 5
+    motivational_quotes = [
+        "Keep pushing forward!", "Every effort counts!", "Believe in yourself!"
+    ]
+    return jsonify({
+        "results": user_results,
+        "weak_topics": weak_topics,
+        "quote": random.choice(motivational_quotes),
+        "total_correct_answers": total_correct_answers,
+        "total_marks": total_marks
+    })
 
 @app.route('/apt-quiz-questions', methods=['GET'])
 def get_apt_quiz_questions():
@@ -292,8 +332,5 @@ def login():
         
 
 if __name__ == '__main__':
-    # Uncomment these lines if you want to create table and insert sample data
-    # create_user_progress_table()
-    # insert_sample_data()
+    app.run(host='0.0.0.0', port=5001, debug=True)
 
-    app.run(debug=True)
