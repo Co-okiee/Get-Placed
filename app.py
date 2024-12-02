@@ -289,6 +289,11 @@ def login():
     finally:
         cursor.close()
         conn.close()
+        
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    # Uncomment these lines if you want to create table and insert sample data
+    # create_user_progress_table()
+    # insert_sample_data()
+
+    app.run(debug=True)

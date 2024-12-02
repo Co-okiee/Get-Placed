@@ -15,8 +15,8 @@
         The Entity-Relationship (ER) Model is a high-level data model that defines the data elements (entities) and relationships among them. It is used to visually represent the database's logical structure. Entities can be things, persons, or concepts, and relationships define how entities are linked together.
       </p>
       <div class="diagram-container">
-        <img src="path/to/er_diagram.png" alt="ER Diagram example showing entities and their relationships" />
-        <p class="diagram-caption">Example of an ER diagram showing entities like Student, Course, and Instructor with relationships like enrollment and assignment.</p>
+        <img src="src\assets\Entity-Relationship-Diagram-.jpg" alt="ER Diagram example showing entities and their relationships" />
+        <p class="diagram-caption">Example of an ER diagram.</p>
       </div>
   
       <h2 class="sub-title">Relational Model</h2>
@@ -24,7 +24,7 @@
         The relational model represents data in the form of tables (also called relations). Each table consists of rows (records or tuples) and columns (fields or attributes). In this model, every row in the table is a unique entry and is identified by a primary key. Relationships between tables are established using foreign keys.
       </p>
       <div class="diagram-container">
-        <img src="path/to/relational_model.png" alt="Relational Model Diagram" />
+        <img src="src\assets\dbms2.png" alt="Relational Model Diagram" />
         <p class="diagram-caption">A Relational Model representing a 'Student' and 'Course' table, where 'Student_ID' acts as a primary key in the Student table and a foreign key in the Course table.</p>
       </div>
   

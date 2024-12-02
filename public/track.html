@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Progress Tracking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center p-6">
+    <div class="w-full max-w-4xl bg-white shadow-md rounded-lg p-6">
+        <h1 class="text-2xl font-bold mb-6 text-center">Your Learning Progress</h1>
+        
+        <div class="mb-4">
+            <label for="userIdInput" class="block mb-2">Enter User ID:</label>
+            <input 
+                type="number" 
+                id="userIdInput" 
+                class="w-full p-2 border rounded"
+                placeholder="Enter your user ID"
+            >
+            <button 
+                id="loadProgressBtn" 
+                class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+                Load Progress
+            </button>
+        </div>
+
+        <div id="overallPerformance" class="mb-6 hidden">
+            <h2 class="text-xl font-semibold mb-4">Overall Performance</h2>
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="border p-2">Topic</th>
+                        <th class="border p-2">Subtopic</th>
+                        <th class="border p-2">Average Score</th>
+                        <th class="border p-2">Total Attempts</th>
+                        <th class="border p-2">Last Attempt</th>
+                    </tr>
+                </thead>
+                <tbody id="performanceTableBody"></tbody>
+            </table>
+        </div>
+
+        <div id="topicTrend" class="hidden">
+            <h2 class="text-xl font-semibold mb-4">Topic Performance Trend</h2>
+            <select id="topicSelect" class="w-full p-2 border rounded mb-4">
+                <option value="">Select a Topic</option>
+            </select>
+            <div id="trendChart" class="w-full h-64"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userIdInput = document.getElementById('userIdInput');
+            const loadProgressBtn = document.getElementById('loadProgressBtn');
+            const overallPerformanceDiv = document.getElementById('overallPerformance');
+            const performanceTableBody = document.getElementById('performanceTableBody');
+            const topicTrendDiv = document.getElementById('topicTrend');
+            const topicSelect = document.getElementById('topicSelect');
+
+            loadProgressBtn.addEventListener('click', async () => {
+                const userId = userIdInput.value;
+                if (!userId) {
+                    alert('Please enter a user ID');
+                    return;
+                }
+
+                try {
+                    // Fetch overall performance
+                    const performanceResponse = await fetch(`/userprogress/${userId}`);
+                    const performanceData = await performanceResponse.json();
+
+                    // Populate overall performance table
+                    performanceTableBody.innerHTML = '';
+                    performanceData.forEach(item => {
+                        const row = `
+                            <tr>
+                                <td class="border p-2">${item.topic}</td>
+                                <td class="border p-2">${item.subtopic}</td>
+                                <td class="border p-2">${item.average_score.toFixed(2)}%</td>
+                                <td class="border p-2">${item.total_attempts}</td>
+                                <td class="border p-2">${new Date(item.last_attempt).toLocaleString()}</td>
+                            </tr>
+                        `;
+                        performanceTableBody.innerHTML += row;
+                    });
+
+                    // Populate topic select and prepare for trend
+                    topicSelect.innerHTML = '<option value="">Select a Topic</option>';
+                    const uniqueTopics = [...new Set(performanceData.map(item => item.topic))];
+                    uniqueTopics.forEach(topic => {
+                        const option = document.createElement('option');
+                        option.value = topic;
+                        option.textContent = topic;
+                        topicSelect.appendChild(option);
+                    });
+
+                    // Show performance sections
+                    overallPerformanceDiv.classList.remove('hidden');
+                    topicTrendDiv.classList.remove('hidden');
+                } catch (error) {
+                    console.error('Error fetching performance:', error);
+                    alert('Failed to fetch performance data');
+                }
+            });
+
+            topicSelect.addEventListener('change', async () => {
+                const userId = userIdInput.value;
+                const selectedTopic = topicSelect.value;
+
+                if (!selectedTopic) return;
+
+                try {
+                    // Fetch topic trend
+                    const trendResponse = await fetch(`/topic_trend/${userId}/${selectedTopic}`);
+                    const trendData = await trendResponse.json();
+
+                    // For now, just log the trend data (you could add a charting library later)
+                    console.log('Topic Trend Data:', trendData);
+                    alert('Topic trend data logged to console');
+                } catch (error) {
+                    console.error('Error fetching topic trend:', error);
+                    alert('Failed to fetch topic trend data');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
