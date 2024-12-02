@@ -1,0 +1,32 @@
+ showExample(language) {
+      if (language === 'java') {
+        this.exampleCode = `public class BitwiseExample {
+  public static void main(String[] args) {
+    int a = 5; // 0101
+    int b = 3; // 0011
+    System.out.println(a & b); // Bitwise AND
+    System.out.println(a | b); // Bitwise OR
+    System.out.println(a ^ b); // Bitwise XOR
+    System.out.println(~a); // Bitwise NOT
+  }
+}`;
+      } else if (language === 'c') {
+        this.exampleCode = `#include <stdio.h>
+int main() {
+    int a = 5; // 0101
+    int b = 3; // 0011
+    printf("%d\\n", a & b); // Bitwise AND
+    printf("%d\\n", a | b); // Bitwise OR
+    printf("%d\\n", a ^ b); // Bitwise XOR
+    printf("%d\\n", ~a); // Bitwise NOT
+    return 0;
+}`;
+      } else if (language === 'python') {
+        this.exampleCode = `a = 5  # 0101
+b = 3  # 0011
+print(a & b)  # Bitwise AND
+print(a | b)  # Bitwise OR
+print(a ^ b)  # Bitwise XOR
+print(~a)     # Bitwise NOT`;
+      }
+    },
