@@ -1,0 +1,700 @@
+<template>
+    <div class="network-container">
+      <h1 class="main-title">Networking Experiments</h1>
+      <p class="intro">
+        Networking involves connecting computers and devices to share resources and information. This section explores various networking experiments and implementations using different programming languages.
+      </p>
+
+      <h2 class="sub-title">Let’s Experiment with Networking</h2>
+      <p class="content">
+        Networking experiments allow us to understand and explore different protocols and methodologies used in communication between devices. Here are some experiments that can be conducted.
+      </p>
+  
+      <h2 class="sub-title">Mobile Ad Hoc Network (MANET)</h2>
+      <p class="content">
+        A Mobile Ad Hoc Network (MANET) is a self-configuring network of mobile devices connected wirelessly. MANETs can change locations and links frequently, making them highly dynamic.
+      </p>
+
+      <h2 class="sub-title">Types of MANET</h2>
+      <ul class="characteristics-list">
+        <li><strong>Infrastructure-Based MANET:</strong> Relies on fixed infrastructure like base stations for communication.</li>
+        <li><strong>Infrastructureless MANET:</strong> Devices communicate directly without the need for fixed infrastructure.</li>
+      </ul>
+
+      <h2 class="sub-title">Simple Chat Room using Python</h2>
+      <p class="content">
+        A simple chat room can be implemented in Python using socket programming. It allows multiple clients to communicate through a server.
+      </p>
+      <pre>
+        <code>
+          # Simple Chat Server in Python
+          import socket
+          import threading
+
+          def handle_client(client_socket):
+              while True:
+                  message = client_socket.recv(1024).decode('utf-8')
+                  if message:
+                      print(f"Received: {message}")
+                  else:
+                      break
+              client_socket.close()
+
+          server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+          server.bind(('0.0.0.0', 9999))
+          server.listen(5)
+          print("Server listening on port 9999")
+
+          while True:
+              client, addr = server.accept()
+              print(f"Accepted connection from {addr}")
+              client_handler = threading.Thread(target=handle_client, args=(client,))
+              client_handler.start()
+        </code>
+      </pre>
+  
+      <h2 class="sub-title">Socket Programming in Java</h2>
+      <p class="content">
+        Socket programming in Java allows the establishment of a communication channel between clients and servers.
+      </p>
+      <pre>
+        <code>
+          // Simple Server in Java
+          import java.io.*;
+          import java.net.*;
+
+          public class SimpleServer {
+              public static void main(String[] args) throws IOException {
+                  ServerSocket serverSocket = new ServerSocket(9999);
+                  System.out.println("Server listening on port 9999");
+                  Socket socket = serverSocket.accept();
+                  BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                  String message;
+                  while ((message = in.readLine()) != null) {
+                      System.out.println("Received: " + message);
+                  }
+                  socket.close();
+              }
+          }
+        </code>
+      </pre>
+
+      <h2 class="sub-title">C Program to Find IP Address, Subnet Mask & Default Gateway</h2>
+      <p class="content">
+        The following C program retrieves and displays the IP address, subnet mask, and default gateway of the machine.
+      </p>
+      <pre>
+        <code>
+          #include &lt;stdio.h&gt;
+          #include &lt;stdlib.h&gt;
+          #include &lt;string.h&gt;
+          #include &lt;arpa/inet.h&gt;
+          #include &lt;ifaddrs.h&gt;
+
+          void get_network_info() {
+              struct ifaddrs *ifaddr, *ifa;
+              getifaddrs(&ifaddr);
+              for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
+                  if (ifa->ifa_addr && ifa->ifa_addr->sa_family == AF_INET) {
+                      char ip[INET_ADDRSTRLEN];
+                      inet_ntop(AF_INET, &((struct sockaddr_in *)ifa->ifa_addr)->sin_addr, ip, sizeof(ip));
+                      printf("Interface: %s\tIP Address: %s\n", ifa->ifa_name, ip);
+                  }
+              }
+              freeifaddrs(ifaddr);
+          }
+
+          int main() {
+              get_network_info();
+              return 0;
+          }
+        </code>
+      </pre>
+  
+      <h2 class="sub-title">Introduction to Variable Length Subnet Mask (VLSM)</h2>
+      <p class="content">
+        Variable Length Subnet Masking (VLSM) allows for more efficient use of IP addresses by assigning different subnet masks to different subnets based on their size.
+      </p>
+
+      <h2 class="sub-title">Extracting MAC Address using Python</h2>
+      <p class="content">
+        The following Python script can be used to extract the MAC address of the machine.
+      </p>
+      <pre>
+        <code>
+          import uuid
+
+          mac = ':'.join(['{:02x}'.format((uuid.getnode() >> elements) & 0xff) for elements in range(0,2*6,2)][::-1])
+          print("MAC Address:", mac)
+        </code>
+      </pre>
+      
+      <h2 class="sub-title">Implementation of Diffie-Hellman Algorithm</h2>
+      <p class="content">
+        The Diffie-Hellman algorithm is a method of securely exchanging cryptographic keys over a public channel.
+      </p>
+      <pre>
+        <code>
+          # Simple implementation in Python
+          def diffie_hellman(p, g, a):
+              A = (g ** a) % p
+              return A
+
+          p = 23  # prime number
+          g = 5   # generator
+          a = 6   # private key
+          A = diffie_hellman(p, g, a)
+          print("Public key A:", A)
+        </code>
+      </pre>
+
+      <h2 class="sub-title">Java Implementation of Diffie-Hellman Algorithm between Client and Server</h2>
+      <p class="content">
+        A simple client-server implementation in Java for the Diffie-Hellman key exchange can be done as follows.
+      </p>
+      <pre>
+        <code>
+          // Client and Server implementation would go here.
+        </code>
+      </pre>
+
+      <h2 class="sub-title">Socket Programming in Python</h2>
+      <p class="content">
+        Python allows for easy socket programming to create client-server applications.
+      </p>
+
+      <h2 class="sub-title">Socket Programming with Multi-threading in Python</h2>
+      <p class="content">
+        Using multi-threading in Python enables handling multiple clients simultaneously.
+      </p>
+
+      <h2 class="sub-title">Cyclic Redundancy Check in Python</h2>
+      <p class="content">
+        A simple example of implementing a CRC to check data integrity in Python can be seen below.
+      </p>
+
+      <h2 class="sub-title">Explicitly Assigning Port Number to Client in Socket</h2>
+      <p class="content">
+        Clients can explicitly assign port numbers while creating a socket connection to the server.
+      </p>
+  
+      <h2 class="sub-title">Netstat Command in Linux</h2>
+      <p class="content">
+        The netstat command displays network connections, routing tables, interface statistics, and more.
+      </p>
+
+      <h2 class="sub-title">nslookup Command in Linux with Examples</h2>
+      <p class="content">
+        The nslookup command is used to query the DNS to obtain domain name or IP address mapping. Example: <code>nslookup www.example.com</code>.
+      </p>
+
+      <h2 class="sub-title">UDP Server-Client Implementation in C</h2>
+      <p class="content">
+        Here’s a simple UDP server-client example in C.
+      </p>
+
+      <h2 class="sub-title">C Program for File Transfer using UDP</h2>
+      <p class="content">
+        A program that demonstrates file transfer over UDP can be implemented in C.
+      </p>
+
+      <h2 class="sub-title">Java Program to Find IP Address of Your Computer</h2>
+      <p class="content">
+        Java can be used to find the local IP address of the computer.
+      </p>
+
+      <h2 class="sub-title">Finding IP Address of a URL in Java</h2>
+      <p class="content">
+        The following code snippet in Java demonstrates how to find the IP address of a given URL.
+      </p>
+
+      <h2 class="sub-title">Program to Calculate the Round Trip Time (RTT)</h2>
+      <p class="content">
+        The Round Trip Time (RTT) can be calculated by measuring the time taken for packets to travel to a destination and back.
+      </p>
+
+      <h2 class="sub-title">Network Configuration and Troubleshooting Commands in Linux</h2>
+      <p class="content">
+        Common commands include <code>ifconfig</code>, <code>ping</code>, and <code>traceroute</code> to troubleshoot network issues.
+      </p>
+
+      <h2 class="sub-title">Implementing Checksum Using Java</h2>
+      <p class="content">
+        Checksum can be implemented in Java to ensure data integrity during transmission.
+      </p>
+
+      <h2 class="sub-title">C Program to Display Hostname and IP Address</h2>
+      <p class="content">
+        The following C program retrieves and displays the hostname and corresponding IP address.
+      </p>
+  
+      <h2 class="sub-title">Program to Determine Class, Network, and Host ID of an IPv4 Address</h2>
+      <p class="content">
+        This program determines the class, network ID, and host ID of a given IPv4 address.
+      </p>
+
+      <h2 class="sub-title">Program to Determine Class, Broadcast Address, and Network Address of an IPv4 Address</h2>
+      <p class="content">
+        A program that determines the class, broadcast address, and network address based on an IPv4 address can be useful in networking.
+      </p>
+
+      <h2 class="sub-title">Program for IP Forwarding Table Lookup</h2>
+      <p class="content">
+        IP forwarding can be implemented to route packets from one network to another efficiently.
+      </p>
+
+      <h2 class="sub-title">Wi-Fi Password of All Connected Networks in Windows/Linux</h2>
+      <p class="content">
+        A script can be written to extract the saved Wi-Fi passwords of all networks connected to the system.
+      </p>
+  
+    
+      <h2 class="sub-title">Diagrams</h2>
+      <p>Below are some diagrams that illustrate the concepts discussed:</p>
+      <div class="diagram-container">
+        <img src="src\assets\study_imgs\exp1.png" alt="Diagram illustrating MANET" class="imageedit" />
+        <img src="src\assets\study_imgs\exp2.jpg" alt="Diagram showing socket communication" class="imageedit"/>
+        <img src="src\assets\study_imgs\exp3.png" alt="Diagram of Diffie-Hellman Key Exchange" class="imageedit"/>
+      </div>
+   
+      <h2 class="sub-title">Generative Study Companion</h2>
+  <div class="ai-notes-section">
+    <button 
+      @click="generateAINotes" 
+      class="example-button ai-notes-button" 
+      :disabled="isGenerating"
+    >
+      {{ isGenerating ? 'Generating Study Guide...' : 'Generate Study Guide' }}
+    </button>
+    
+    <div v-if="aiNotesData" class="ai-notes-display">
+  <div class="ai-notes-content">
+    <div class="notes-section">
+      <h3 class="section-title">📘 Comprehensive Study Notes</h3>
+      <p class="notes-text">{{ aiNotesData.studyNotes }}</p>
+    </div>
+
+
+        <div class="notes-section">
+          <h3 class="section-title">🎯 Key Concepts</h3>
+          <ul class="key-concepts-list">
+            <li v-for="(concept, index) in aiNotesData.keyConcepts" :key="index">
+              {{ concept }}
+            </li>
+          </ul>
+        </div>
+
+        <div class="notes-section">
+          <h3 class="section-title">💡 Interview Questions</h3>
+          <div class="interview-questions">
+            <div 
+              v-for="(question, index) in aiNotesData.interviewQuestions" 
+              :key="index" 
+              class="interview-question"
+            >
+              <strong>Q{{ index + 1 }}:</strong> {{ question }}
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-section">
+          <h3 class="section-title">🎥 Recommended Tutorials</h3>
+          <div class="tutorial-links">
+            <a 
+              v-for="(tutorial, index) in aiNotesData.tutorialLinks" 
+              :key="index"
+              :href="tutorial.url"
+              target="_blank"
+              class="tutorial-link"
+            >
+              <span class="tutorial-platform">{{ tutorial.platform }}</span>
+              <span class="tutorial-description">{{ tutorial.description }}</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="notes-actions">
+          <button @click="copyNotes" class="example-button copy-button">
+            📋 Copy Study Guide
+          </button>
+          <button @click="downloadNotesPDF" class="example-button download-button">
+            📥 Download PDF
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</template>
+  
+  <script>
+
+import axios from 'axios';
+import jspdf from 'jspdf';
+
+export default {
+name: "NetworkExp",
+data() {
+  return {
+    exampleCode: "",
+    aiNotesData: null,
+    isGenerating: false,
+    selectedTopic: "",
+    selectedSubtopic: "",
+    loading: false,
+    error: null,
+    
+    // Hardcoded API key (Note: In production, use secure methods)
+    groqApiKey: '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',
+    
+    // Topics and subtopics
+    topics: {
+"Network Experiment": [
+  "Introduction to Networking",
+  "Basic Networking Setup and Configuration",
+  "IP Addressing and Subnetting",
+  "Basic Routing and Switching",
+  "Network Topologies (Bus, Star, Ring, Mesh)",
+  "Configuring Routers and Switches",
+  "Network Performance Testing",
+  "Bandwidth Measurement and Testing",
+  "Ping and Traceroute Commands",
+  "Network Load Balancing",
+  "TCP/IP Protocol Suite",
+  "Packet Switching vs Circuit Switching",
+  "Network Simulation Tools (e.g., Packet Tracer, GNS3)",
+  "Creating Virtual Networks using Virtualization",
+  "Wireshark for Packet Capture and Analysis",
+  "Security in Network Experimentation",
+  "Network Troubleshooting Techniques",
+  "Configuration of Firewalls and Access Control Lists (ACLs)",
+  "Wireless Networking Setup and Configuration",
+  "Testing and Analyzing Network Traffic"
+]
+    },
+    
+    // Expanded topics state
+    expandedTopics: {}
+  };
+
+},
+
+  methods: {
+  
+  // Add this method to the methods section
+generateAINotes() {
+// Choose a default topic and subtopic
+const topic = "Network Experiment";
+const subtopic = "Network Experiment BasicS";
+
+// Call the existing generateNotes method
+this.generateNotes(topic, subtopic);
+},
+  
+  // Generates the AI notes with a comprehensive prompt
+  generatePrompt(topic, subtopic) {
+    return `
+Generate comprehensive programming notes about ${topic} - ${subtopic}.\n\n
+Include the following sections:\n\n
+1. Introduction and Basic Concepts\n\n
+2. Key Features and Characteristics\n\n
+3. Implementation Details\n\n
+4. Common Operations and Time Complexity\n\n
+5. Real-world Applications\n\n
+6. Best Practices and Tips\n\n
+Make the content detailed enough for both beginners and advanced programmers.\n
+`;
+},
+
+  
+  // Toggle topic expansion
+  toggleTopic(topic) {
+    this.$set(this.expandedTopics, topic, !this.expandedTopics[topic]);
+  },
+  
+  // Generates AI notes for a specific topic
+  async generateNotes(topic, subtopic) {
+    if (!this.groqApiKey) {
+      this.error = 'Missing API key. Please provide a valid API key and try again.';
+      return;
+    }
+
+    this.loading = true;
+    this.error = null;
+    this.selectedTopic = `${topic} - ${subtopic}`;
+    this.aiNotesData = null;
+
+    try {
+      const response = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
+        model: "mixtral-8x7b-32768",
+        messages: [
+          {
+            role: "user",
+            content: this.generatePrompt(topic, subtopic)
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 2000
+      }, {
+        headers: {
+          'Authorization': `Bearer ${this.groqApiKey}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.data.choices || response.data.choices.length === 0) {
+        throw new Error('No response generated. Please try again.');
+      }
+
+      const aiResponse = response.data.choices[0].message.content;
+      
+      // Parse and structure the AI response
+      this.aiNotesData = {
+        studyNotes: aiResponse,
+        keyConcepts: this.extractKeyConcepts(aiResponse),
+        interviewQuestions: this.extractInterviewQuestions(aiResponse),
+        tutorialLinks: this.generateTutorialLinks(topic, subtopic)
+      };
+    } catch (error) {
+      console.error('Error generating AI notes:', error);
+      this.error = error.message || 'Failed to generate notes. Please try again.';
+    } finally {
+      this.loading = false;
+    }
+  },
+  
+  // Helper method to extract key concepts
+  extractKeyConcepts(text) {
+    const conceptsMatch = text.match(/Key Features and Characteristics:(.*?)(\n\n|$)/s);
+    if (conceptsMatch) {
+      return conceptsMatch[1].trim().split('\n')
+        .filter(concept => concept.trim() !== '')
+        .slice(0, 5);
+    }
+    return [
+      "Definition and Basic Concepts",
+      "Core Characteristics",
+      "Key Implementation Details",
+      "Important Properties",
+      "Advanced Techniques"
+    ];
+  },
+  
+  // Helper method to extract interview questions
+  extractInterviewQuestions(text) {
+    const questionsMatch = text.match(/Common Interview Questions:(.*?)(\n\n|$)/s);
+    if (questionsMatch) {
+      return questionsMatch[1].trim().split('\n')
+        .filter(q => q.trim() !== '')
+        .slice(0, 3);
+    }
+    return [
+      "What are the core principles of this topic?",
+      "Explain the most important aspects and use cases.",
+      "Discuss advanced implementation techniques."
+    ];
+  },
+  
+  // Generate tutorial links based on topic
+  generateTutorialLinks(topic, subtopic) {
+    return [
+      {
+        platform: 'YouTube',
+        description: `${topic} - ${subtopic} Tutorial`,
+        url: `https://www.youtube.com/results?search_query=${encodeURIComponent(topic + ' ' + subtopic)}`
+      },
+      {
+        platform: 'Coursera',
+        description: `Learn ${topic} in Depth`,
+        url: `https://www.coursera.org/courses?query=${encodeURIComponent(topic)}`
+      }
+    ];
+  },
+
+  // Copy notes to clipboard
+  copyNotes() {
+    if (this.aiNotesData) {
+      const notesText = `
+Study Guide: ${this.selectedTopic}
+
+📘 Study Notes:
+${this.aiNotesData.studyNotes}
+
+🎯 Key Concepts:
+${this.aiNotesData.keyConcepts.map((c, i) => `${i + 1}. ${c}`).join('\n')}
+
+💡 Interview Questions:
+${this.aiNotesData.interviewQuestions.map((q, i) => `Q${i + 1}: ${q}`).join('\n')}
+
+🎥 Recommended Tutorials:
+${this.aiNotesData.tutorialLinks.map(t => `${t.platform}: ${t.description} - ${t.url}`).join('\n')}
+      `;
+
+      navigator.clipboard.writeText(notesText).then(() => {
+        alert('Study guide copied to clipboard!');
+      }).catch(err => {
+        console.error('Failed to copy notes:', err);
+        alert('Failed to copy notes. Please try again.');
+      });
+    }
+  },
+
+  // Download notes as PDF
+  downloadNotesPDF() {
+    if (this.aiNotesData) {
+      const doc = new jspdf();
+      
+      doc.setFontSize(16);
+      doc.text(`Study Guide: ${this.selectedTopic}`, 20, 20);
+      
+      doc.setFontSize(12);
+      let yPos = 30;
+
+      const addSection = (title, content) => {
+        doc.setFontSize(14);
+        doc.setTextColor(0, 0, 255);
+        doc.text(title, 20, yPos);
+        
+        doc.setFontSize(12);
+        doc.setTextColor(0, 0, 0);
+        const splitContent = doc.splitTextToSize(content, 170);
+        doc.text(splitContent, 20, yPos + 10);
+        
+        yPos += 20 + (splitContent.length * 10);
+      };
+
+      addSection('Study Notes', this.aiNotesData.studyNotes);
+      
+      addSection('Key Concepts', 
+        this.aiNotesData.keyConcepts.map((c, i) => `${i + 1}. ${c}`).join('\n')
+      );
+      
+      addSection('Interview Questions', 
+        this.aiNotesData.interviewQuestions.map((q, i) => `Q${i + 1}: ${q}`).join('\n')
+      );
+      
+      addSection('Recommended Tutorials', 
+        this.aiNotesData.tutorialLinks.map(t => `${t.platform}: ${t.description} - ${t.url}`).join('\n')
+      );
+
+      doc.save(`${this.selectedTopic.replace(/\s+/g, '_')}_Study_Guide.pdf`);
+    }
+  }
+}
+};
+</script>
+<style scoped>
+.matrix-container {
+padding: 20px;
+background: #000000;
+border-radius: 10px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+font-family: 'Arial', sans-serif;
+color: #e4e4e4;
+}
+
+.main-title {
+font-size: 4em;
+color: #ccc;
+text-align: center;
+}
+
+.sub-title {
+font-size: 1.5em;
+color: #0d9bbb;
+margin-top: 20px;
+}
+
+.type-title {
+font-size: 1.2em;
+color: #ebe64d;
+margin-top: 10px;
+}
+
+.characteristics-list {
+list-style-type: disc;
+padding-left: 40px;
+}
+
+.notes-text {
+  white-space: pre-wrap; /* Preserves whitespace and newlines */
+}
+
+
+.matrix-diagram {
+display: block;
+margin: 20px auto;
+max-width: 100%;
+border: 1px solid #ddd;
+border-radius: 5px;
+}
+
+.example-button {
+padding: 10px 20px;
+margin: 10px;
+border: none;
+border-radius: 5px;
+background: #007bff;
+color: #fff;
+cursor: pointer;
+font-size: 1em;
+transition: background 0.3s;
+}
+
+.example-button:hover {
+background: #000000;
+}
+
+.ai-notes-display {
+margin-top: 20px;
+background: #313131;
+padding: 20px;
+border-radius: 10px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.imageedit {
+  padding: 10px; /* Adds inner spacing for a cleaner appearance */
+  border: 1px solid #ccc; /* Optional: Adds a subtle border for clarity */
+  width: 600px; /* Adjusted size for larger images */
+  height: auto; /* Maintains the aspect ratio */
+  display: block; /* Centers the image within its container */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds a soft shadow */
+}
+
+
+
+.section-title {
+font-size: 1.3em;
+color: #007bff;
+}
+
+.key-concepts-list {
+list-style-type: decimal;
+padding-left: 40px;
+}
+
+.interview-questions {
+margin: 10px 0;
+}
+
+.tutorial-link {
+display: block;
+margin: 5px 0;
+color: #fbff00;
+text-decoration: none;
+}
+
+.tutorial-link:hover {
+text-decoration: underline;
+}
+
+.copy-button, .download-button {
+margin-right: 10px;
+background: #28a745;
+}
+
+.copy-button:hover, .download-button:hover {
+background: #218838;
+}
+</style>
