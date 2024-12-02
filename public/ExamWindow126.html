@@ -281,8 +281,8 @@
                                                 :class="[ 
                                                     'w-full text-left py-2 px-4 rounded mb-2',
                                                     state.selectedAnswers[index] === key ? 'bg-blue-200' : 'bg-gray-100',
-                                                    state.submitted && question.correctAnswer === key ? 'bg-green-200' : '',
-                                                    state.submitted && state.selectedAnswers[index] === key && key !== question.correctAnswer ? 'bg-red-200' : ''
+                                                    // state.submitted && question.correctAnswer === key ? 'bg-green-200' : '',
+                                                    state.submitted && state.selectedAnswers[index] === key && key !== question.correctAnswer ? 'bg-blue-200' : ''
                                                 ]">
                                                 {{ key }}) {{ option }}
                                             </button>
