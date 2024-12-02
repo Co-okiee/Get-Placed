@@ -154,7 +154,7 @@ export default {
       this.$router.push({ name: "trackprogress" });
     },
     goToMockInterview() {
-      this.$router.push({ name: "mock-interview" });
+      this.$router.push({ name: "upload-resume" });
     },
     logout() {
       localStorage.removeItem('username');

@@ -525,7 +525,7 @@ const router = createRouter({
       name: "quiz-options",
       component: QuizOptions, // Quiz Options component
     },
-[
+
     // Quiz Routes
     {
       path: "/algo_quiz",
@@ -606,8 +606,8 @@ const router = createRouter({
       path: '/dashboard',
       name: 'Dashboard',
       component: Dashboard
-    }
-]
+    },
+    {
       path: "/:pathMatch(.*)*", // Catch-all route for 404 Not Found
       name: "notfound",
       component: NotFound, // Not Found page component
