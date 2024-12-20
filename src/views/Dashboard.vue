@@ -93,6 +93,7 @@
 const UNSPLASH_ACCESS_KEY = '2AJMrapqFME1cYRh2b4a4E6K4GZrr9Cq67VkT7sGh3A'; // Replace with your Unsplash API key
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: "Dashboard",
   data() {
     return {
@@ -151,7 +152,7 @@ export default {
       this.$router.push({ name: "study" });
     },
     goToTrackProgress() {
-      this.$router.push({ name: "trackprogress" });
+      this.$router.push({ name: "track-progress" });
     },
     goToMockInterview() {
       this.$router.push({ name: "upload-resume" });

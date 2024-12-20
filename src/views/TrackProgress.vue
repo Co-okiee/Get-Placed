@@ -1,219 +1,77 @@
+
+
 <template>
-  <div class="progress-tracker">
-    <!-- Header Section with Animated Welcome -->
-    <div class="header-section">
-      <h1 class="text-4xl font-bold mb-6 animate-slide-down">
-        Track Progress
-      </h1>
-      <div class="welcome-card animate-fade-in">
-        <h2 class="text-2xl font-semibold mb-2">Welcome</h2>
-        <p class="text-lg text-gray-200">
-          You're doing great! Keep pushing your limits and improving your scores.
-        </p>
-      </div>
-    </div>
+  <div class="track-progress">
+    <h1>Track Progress</h1>
+    <p v-if="!scores || scores.length === 0">No scores available. Take a quiz!</p>
+    <ul v-else>
+      <li v-for="(score, index) in scores" :key="index">
+        Quiz {{ index + 1 }}: {{ score }}/{{ totalQuestions }}
+      </li>
+    </ul>
 
-    <!-- Main Content Grid -->
-    <div class="content-grid">
-      <!-- Scores Table Section -->
-      <div class="table-section animate-slide-up">
-        <h2 class="text-2xl font-semibold mb-4">Your Progress</h2>
-        <div class="table-container">
-          <table v-if="scores.length" class="modern-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Score</th>
-                <th>Topic</th>
-                <th>Trend</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(score, index) in sortedScores" 
-                  :key="index"
-                  class="score-row"
-                  :class="{'improved': isImproved(score, index)}">
-                <td>{{ formatDate(score.date) }}</td>
-                <td class="score-cell">
-                  <span class="score-value">{{ score.score }}</span>
-                  <div class="score-bar" :style="{ width: `${(score.score/18)*100}%` }"></div>
-                </td>
-                <td>{{ score.topic }}</td>
-                <td>
-                  <span :class="getTrendIcon(score, index)"></span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <p v-else class="no-scores">No scores recorded yet.</p>
+    <div class="ai-topic-wise-container">
+      <div class="content-wrapper">
+        <div class="header-section">
+          <h1 class="main-title">Choose Your Topic</h1>
+          <p class="subtitle">Select a subject to begin your practice</p>
+        </div>
+
+        <div class="fixed-grid">
+          <!-- Data Structures -->
+          <button @click="goToAiDS" class="topic-card">
+            <div class="card-icon">🔷</div>
+            <h3>Tracker</h3>
+            <p>Go</p>
+          </button>
         </div>
       </div>
 
-      <!-- Charts Section -->
-      <div class="charts-section animate-slide-up-delayed">
-        <div v-for="topic in uniqueTopics" 
-             :key="topic" 
-             class="topic-chart">
-          <h3 class="text-xl font-semibold mb-3">{{ topic }}</h3>
-          <div class="chart-container">
-            <canvas :id="`scoreChart-${topic}`"></canvas>
-          </div>
-          <div class="feedback-card" :class="getFeedbackClass(topic)">
-            {{ generateFeedback(topic) }}
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { Chart } from 'chart.js/auto';
+import { useUserStore } from "@/store";
 
 export default {
+  name: "TrackProgress",
   data() {
     return {
-      scores: [
-        {"date": "2024-10-01", "score": 5, "topic": "Arrays"},
-        {"date": "2024-10-02", "score": 5, "topic": "Arrays"},
-        {"date": "2024-10-03", "score": 7, "topic": "Arrays"},
-        {"date": "2024-10-04", "score": 9, "topic": "Arrays"},
-        {"date": "2024-10-03", "score": 3, "topic": "Matrices"},
-        {"date": "2024-10-05", "score": 6, "topic": "Arrays"},
-        {"date": "2024-10-04", "score": 1, "topic": "Matrices"},
-        {"date": "2024-10-05", "score": 5, "topic": "Verbal Ability Quiz 1"},
-        {"date": "2024-10-05", "score": 4, "topic": "Matrices"},
-        {"date": "2024-10-06", "score": 6, "topic": "Matrices"},
-        {"date": "2024-10-07", "score": 8, "topic": "Matrices"},
-        {"date": "2024-10-06", "score": 7, "topic": "Arrays"},
-        {"date": "2024-10-07", "score": 11, "topic": "Arrays"},
-        {"date": "2024-10-07", "score": 4, "topic": "Verbal Ability Quiz 1"},
-        {"date": "2024-10-08", "score": 6, "topic": "Verbal Ability Quiz 1"},
-        {"date": "2024-10-08", "score": 1, "topic": "Matrices"},
-        {"date": "2024-10-08", "score": 15, "topic": "Arrays"}
-      ],
-      charts: {},
+      username: null,
+      name: null,
     };
   },
   computed: {
-    uniqueTopics() {
-      return [...new Set(this.scores.map(score => score.topic))];
+    scores() {
+      const store = useUserStore();
+      return store.scores[store.user];
     },
-    sortedScores() {
-      return [...this.scores].sort((a, b) => new Date(b.date) - new Date(a.date));
-    }
-  },
-  mounted() {
-    this.initializeCharts();
+    totalQuestions() {
+      return 2; // Adjust based on your quiz length
+    },
   },
   methods: {
-    formatDate(dateString) {
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      return new Date(dateString).toLocaleDateString(undefined, options);
+    goToAiDS() {
+      window.location.href = "/track.html";
     },
-    isImproved(score, index) {
-      if (index === this.scores.length - 1) return false;
-      const prevScore = this.scores.find(s => 
-        s.topic === score.topic && 
-        new Date(s.date) < new Date(score.date)
-      );
-      return prevScore && score.score > prevScore.score;
-    },
-    getTrendIcon(score, index) {
-      const improved = this.isImproved(score, index);
-      return {
-        'trend-icon': true,
-        'trend-up': improved,
-        'trend-down': !improved
-      };
-    },
-    getFeedbackClass(topic) {
-      const avgScore = this.getAverageScore(topic);
-      return {
-        'feedback-excellent': avgScore >= 10,
-        'feedback-good': avgScore >= 7 && avgScore < 10,
-        'feedback-needs-work': avgScore < 7
-      };
-    },
-    getAverageScore(topic) {
-      const topicScores = this.scores.filter(s => s.topic === topic);
-      return topicScores.reduce((sum, s) => sum + s.score, 0) / topicScores.length;
-    },
-    generateFeedback(topic) {
-      const avgScore = this.getAverageScore(topic);
-      if (avgScore >= 10) {
-        return `Outstanding progress in ${topic}! You're mastering this topic.`;
-      } else if (avgScore >= 7) {
-        return `Good work in ${topic}! Keep practicing to reach excellence.`;
-      }
-      return `Keep working on ${topic}. Regular practice will help improve your scores.`;
-    },
-    initializeCharts() {
-      this.uniqueTopics.forEach(topic => {
-        const ctx = document.getElementById(`scoreChart-${topic}`).getContext('2d');
-        const topicData = this.scores
-          .filter(score => score.topic === topic)
-          .sort((a, b) => new Date(a.date) - new Date(b.date));
+  },
 
-        this.charts[topic] = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: topicData.map(score => this.formatDate(score.date)),
-            datasets: [{
-              label: 'Score',
-              data: topicData.map(score => score.score),
-              borderColor: '#60A5FA',
-              backgroundColor: 'rgba(96, 165, 250, 0.1)',
-              tension: 0.4,
-              fill: true
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
-              duration: 1500,
-              easing: 'easeInOutQuart'
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                max: 18,
-                grid: {
-                  color: 'rgba(255, 255, 255, 0.1)'
-                },
-                ticks: {
-                  color: '#FFFFFF'
-                }
-              },
-              x: {
-                grid: {
-                  color: 'rgba(255, 255, 255, 0.1)'
-                },
-                ticks: {
-                  color: '#FFFFFF'
-                }
-              }
-            },
-            plugins: {
-              legend: {
-                display: false
-              }
-            }
-          }
-        });
-      });
-    }
-  }
-};
 </script>
-
 <style scoped>
-.progress-tracker {
+.track-progress {
   padding: 2rem;
-  color: white;
+  background-color: #f9f9f9;
+}
+
+.ai-topic-wise-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: linear-gradient(135deg, #000000 0%, #393939 100%);
+}
+
+.content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .header-section {
@@ -322,6 +180,14 @@ export default {
 .feedback-needs-work {
   background: rgba(239, 68, 68, 0.2);
   border-left: 4px solid #ef4444;
+}
+
+.fixed-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.main-title {
+  font-size: 2rem;
 }
 
 /* Animations */

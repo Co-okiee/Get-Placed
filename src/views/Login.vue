@@ -5,79 +5,77 @@
       <form @submit.prevent="loginUser">
         <div class="form-group">
           <label for="email">Email:</label>
-          <input v-model="email" type="email" id="email" required />
+          <input v-model="email" type="email" id="email" placeholder="Enter your email" required />
         </div>
         <div class="form-group">
           <label for="password">Password:</label>
-          <input v-model="password" type="password" id="password" required />
+          <input v-model="password" type="password" id="password" placeholder="Enter your password" required />
         </div>
         <button type="submit" class="login-btn">Login</button>
       </form>
-      <p v-if="username">Welcome, {{ username }}!</p> <!-- Display the username if logged in -->
+      <p v-if="username">Welcome, {{ username }}!</p>
       <p>Don't have an account? <router-link to="/signup">Sign Up</router-link></p>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: "Login",
   data() {
     return {
-      email: '',
-      username:'',
-      password: '',
-      name: '',  // For storing user's name
-      user_id: '' // For storing user's ID
+      email: "",
+      username: "",
+      password: "",
+      name: "", // For storing the user's name
+      user_id: "", // For storing the user's ID
     };
   },
   methods: {
     async loginUser() {
       try {
         // Send a POST request to the Flask login route
-        const response = await axios.post('http://localhost:5000/login', {
-          username: this.email,     // Sending email instead of username
-          password: this.password
+        const response = await axios.post("http://localhost:5000/login", {
+          username: this.email, // Using email for login
+          password: this.password,
         });
 
-        // Assuming the Flask API sends back user_id, name, and username
+        // Process the response
         this.username = response.data.username;
         this.name = response.data.name;
         this.user_id = response.data.user_id;
 
-        // Save data to localStorage for later use
-        localStorage.setItem('username', this.username);
-        localStorage.setItem('name', this.name);
-        localStorage.setItem('user_id', this.user_id);
+        // Save user data to localStorage
+        localStorage.setItem("username", this.username);
+        localStorage.setItem("name", this.name);
+        localStorage.setItem("user_id", this.user_id);
 
-        this.token = response.data.token; // Assuming the token is returned in the response
-        localStorage.setItem('token', this.token);
-        // Redirect to the dashboard after login
-        this.$router.push('/');
+        // Redirect to the dashboard
+        this.$router.push("/");
       } catch (error) {
         if (error.response && error.response.data.error) {
           alert(error.response.data.error);
         } else {
-          alert('Login failed! Please try again.');
+          alert("Login failed! Please try again.");
         }
       }
     },
   },
   mounted() {
-    // Retrieve stored values from localStorage when the component is mounted
-    this.username = localStorage.getItem('username') || '';
-    this.name = localStorage.getItem('name') || '';
-    this.user_id = localStorage.getItem('user_id') || '';
+    // Retrieve stored values from localStorage
+    this.username = localStorage.getItem("username") || "";
+    this.name = localStorage.getItem("name") || "";
+    this.user_id = localStorage.getItem("user_id") || "";
     console.log("Retrieved user_id:", this.user_id);
+
     if (!this.user_id) {
-   console.error("Error: user_id is not defined.");
-   alert("Failed to get user_id. Please log in again.");
-   return;  // Exit the function if user_id is not available
-}
-
-  }
-
+      console.error("Error: user_id is not defined.");
+      alert("Failed to get user_id. Please log in again.");
+    }
+  },
 };
 </script>
 

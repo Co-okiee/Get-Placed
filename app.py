@@ -1,27 +1,64 @@
-from flask import Flask, jsonify, request, session
+# <<<<<<< HEAD
+# from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash, Response
+# =======
+# from flask import Flask, jsonify, request, session
+# >>>>>>> b98a9c89fe0aeffd2d478cdcd5e47c454f76fe38
+# from flask_cors import CORS
+# from flask_migrate import Migrate
+# from werkzeug.utils import secure_filename
+# from models import db, User, QuizResult
+# import os
+# <<<<<<< HEAD
+# import io
+# import random
+# import PyPDF2
+# import docx
+# import re
+# from datetime import datetime, timezone
+# import matplotlib
+# import matplotlib.pyplot as plt
+# =======
+# import mysql.connector
+# from mysql.connector import Error
+# from flask_bcrypt import Bcrypt
+# import PyPDF2
+# import docx
+# import re
+# from datetime import datetime
+# import random
+# import requests
+# >>>>>>> b98a9c89fe0aeffd2d478cdcd5e47c454f76fe38
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash, Response
 from flask_cors import CORS
+from flask_migrate import Migrate
 from werkzeug.utils import secure_filename
-import os
-import mysql.connector
-from mysql.connector import Error
 from flask_bcrypt import Bcrypt
+from models import db, User, QuizResult
+import os
+import io
+import random
 import PyPDF2
 import docx
 import re
-from datetime import datetime
+from datetime import datetime, timezone
+import mysql.connector
+from mysql.connector import Error
+import matplotlib.pyplot as plt
+import pytz
+import requests
 import random
 
 
+# Initialize Flask app
 app = Flask(__name__)
-bcrypt = Bcrypt(app)
-CORS(app)
-app.secret_key = 'your_secret_key'
-
-# Upload configurations
-UPLOAD_FOLDER = 'uploads'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+CORS(app)  # Enable Cross-Origin Resource Sharing
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///quiz.db'
+app.config['SECRET_KEY'] = 'your_secret_key'
+app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'pdf', 'doc', 'docx'}
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+db.init_app(app)
+migrate = Migrate(app, db)
 
 # MySQL Database connection function
 def get_db_connection():
@@ -61,14 +98,60 @@ def extract_keywords_from_doc(filepath):
 
 def process_text(text):
     skill_keywords = [
-        'python', 'java', 'javascript', 'machine learning', 'sql',
-        'c++', 'html', 'css', 'git', 'react', 'node.js', 'django'
+        'python', 'java', 'javascript', 'machine learning', 'deep learning',
+        'sql', 'c++', 'docker', 'html', 'css', 'react', 'node.js', 'django'
     ]
     text = text.lower()
-    extracted_skills = set([keyword for keyword in skill_keywords if re.search(r'\b' + re.escape(keyword) + r'\b', text)])
+    extracted_skills = {keyword for keyword in skill_keywords if re.search(r'\b' + re.escape(keyword) + r'\b', text)}
     return list(extracted_skills)
 
+# Routes for the application
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            flash('User already registered. Please log in.', 'info')
+            return redirect(url_for('login'))
+
+        new_user = User(name=name, email=email, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+        flash('Registration successful! Please log in.', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user = User.query.filter_by(email=email).first()
+
+        if user and user.password == password:
+            session['user_id'] = user.id
+            flash('Login successful!', 'success')
+            return redirect(url_for('quiz'))
+        else:
+            flash('Login failed. Check email or password.', 'danger')
+
+    return render_template('login.html')
+
+
+
 # Route: Upload resume
+# >>>>>>> b98a9c89fe0aeffd2d478cdcd5e47c454f76fe38
+
+
 @app.route('/upload', methods=['POST'])
 def upload_resume():
     if 'resume' not in request.files:
@@ -85,13 +168,10 @@ def upload_resume():
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(file_path)
 
-    # Extract keywords and store in session
     keywords = extract_keywords(file_path)
     session['keywords'] = keywords
-
     return jsonify({'success': True, 'keywords': keywords})
 
-# Route: Fetch interview questions
 @app.route('/api/interview-questions', methods=['POST'])
 def get_interview_questions():
     data = request.get_json()
@@ -100,11 +180,18 @@ def get_interview_questions():
         return jsonify({"error": "No keywords provided."}), 400
 
     quiz_data = {
-        "python": [
-            {"question": "What is PEP 8, and why is it important?", "options": ["Code formatting guidelines", "An IDE", "A library", "A compiler"], "answer": "Code formatting guidelines"},
+        'python': [
+            {"question": "What is PEP 8?", "answer": "Code formatting guidelines"},
         ],
-        "javascript": [
-            {"question": "What is event bubbling in JavaScript?", "options": ["A way of propagating events", "A sorting algorithm", "A method of debugging", "None of the above"], "answer": "A way of propagating events"},
+        'javascript': [
+            {"question": "What is event bubbling?", "answer": "A way of propagating events"},
+# =======
+#         "python": [
+#             {"question": "What is PEP 8, and why is it important?", "options": ["Code formatting guidelines", "An IDE", "A library", "A compiler"], "answer": "Code formatting guidelines"},
+#         ],
+#         "javascript": [
+#             {"question": "What is event bubbling in JavaScript?", "options": ["A way of propagating events", "A sorting algorithm", "A method of debugging", "None of the above"], "answer": "A way of propagating events"},
+# >>>>>>> b98a9c89fe0aeffd2d478cdcd5e47c454f76fe38
         ],
     }
 
@@ -113,6 +200,22 @@ def get_interview_questions():
         if keyword.lower() in quiz_data:
             interview_questions.extend([q['question'] for q in quiz_data[keyword.lower()]])
     return jsonify(interview_questions)
+
+# <<<<<<< HEAD
+# =======
+# # Route: Fetch questions from MySQL
+# @app.route('/questions/<quiz_type>', methods=['GET'])
+# def fetch_quiz_questions(quiz_type):
+#     try:
+#         conn = get_db_connection()
+#         cursor = conn.cursor(dictionary=True)
+#         cursor.execute(f'SELECT * FROM {quiz_type}_quiz')
+#         questions = cursor.fetchall()
+#         cursor.close()
+#         conn.close()
+#         return jsonify(questions)
+#     except Exception as e:
+#         return jsonify({"error": str(e)}), 500
 
 # Route: Fetch questions from MySQL
 @app.route('/questions/<quiz_type>', methods=['GET'])
@@ -128,27 +231,27 @@ def fetch_quiz_questions(quiz_type):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 # Route: Track progress
+# >>>>>>> b98a9c89fe0aeffd2d478cdcd5e47c454f76fe38
 @app.route('/api/track-progress', methods=['GET'])
 def track_progress():
-    user_results = [
-        {"quiz_type": "python", "score": 4, "time_taken": 3.2, "date_taken": datetime.now()},
-        {"quiz_type": "javascript", "score": 3, "time_taken": 5.0, "date_taken": datetime.now()},
-    ]
+    user_results = QuizResult.query.filter_by(user_id=session.get('user_id')).all()
     scores_by_quiz = {}
     for result in user_results:
-        if result['quiz_type'] not in scores_by_quiz:
-            scores_by_quiz[result['quiz_type']] = []
-        scores_by_quiz[result['quiz_type']].append(result['score'])
+        if result.quiz_type not in scores_by_quiz:
+            scores_by_quiz[result.quiz_type] = []
+        scores_by_quiz[result.quiz_type].append(result.score)
 
     weak_topics = [quiz for quiz, scores in scores_by_quiz.items() if sum(scores) / len(scores) < 2]
-    total_correct_answers = sum(r['score'] for r in user_results)
+    total_correct_answers = sum(r.score for r in user_results)
     total_marks = len(user_results) * 5
     motivational_quotes = [
         "Keep pushing forward!", "Every effort counts!", "Believe in yourself!"
     ]
+
     return jsonify({
-        "results": user_results,
+        "results": [{"quiz_type": r.quiz_type, "score": r.score, "date_taken": r.date_taken} for r in user_results],
         "weak_topics": weak_topics,
         "quote": random.choice(motivational_quotes),
         "total_correct_answers": total_correct_answers,
@@ -318,8 +421,18 @@ def login():
     finally:
         cursor.close()
         conn.close()
-      
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(host='0.0.0.0', port=5001, debug=True)
 
+# if __name__ == '__main__':
+# <<<<<<< HEAD
+#     with app.app_context():
+#         db.create_all()
+#     app.run(debug=True)
+# =======
+#     app.run(host='0.0.0.0', port=5001, debug=True)
+
+# >>>>>>> b98a9c89fe0aeffd2d478cdcd5e47c454f76fe38

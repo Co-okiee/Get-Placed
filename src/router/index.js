@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 // Import necessary components
 import Dashboard from "../views/Dashboard.vue"; // Dashboard as home component
 import Study from "../views/Study.vue"; // Study page component
@@ -9,13 +10,14 @@ import Strings from "../views/Strings.vue"; // Matrix page component
 import Login from "../views/Login.vue"; // Login page component
 import Signup from "../views/Signup.vue"; // Signup page component
 import NotFound from "../views/NotFound.vue"; // Not Found page component
-import CompanyCodingPage from "../views/CompanyCodingPage.vue";
-import QuizOptions from "../views/QuizOptions.vue";
-import TopicWise from "../views/TopicWise.vue";
-import ArrayQuiz from "../views/ArrayQuiz.vue";
-import MockInterview from "../views/MockInterview.vue";
-import UploadResume from "../views/UploadResume.vue";
-import VideoCapture from "../views/VideoCapture.vue";
+import CompanyCodingPage from "../views/CompanyCodingPage.vue"; // Company coding questions component
+import QuizOptions from "../views/QuizOptions.vue"; // Quiz options component
+import TopicWise from "../views/TopicWise.vue"; // Topic Wise Quiz component
+import ArrayQuiz from "../views/ArrayQuiz.vue"; // Array Quiz component
+import MockInterview from "../views/MockInterview.vue"; // Mock Interview component
+import UploadResume from "../views/UploadResume.vue"; // Upload Resume component
+import VideoCapture from "../views/VideoCapture.vue"; // Video Capture component
+import TrackProgress from "../views/TrackProgress.vue"; // Track Progress component
 
 // Data Structures Related Imports
 import LinkedLists from "../views/LinkedLists.vue";
@@ -92,7 +94,7 @@ import LLD from "../views/LLD.vue";
 
 // Other Specific Imports
 import AptandResoning from "../views/AptandResoning.vue";
-import TrackProgress from "../views/TrackProgress.vue";
+// import TrackProgress from "../views/TrackProgress.vue";
 import Verbalquizes from "../views/Verbalquizes.vue";
 import VAQuizPage from "../views/VAQuizPage.vue";
 import CompanySpecific from '../views/CompanySpecific.vue';
@@ -195,7 +197,7 @@ const router = createRouter({
     {
       path: "/video-capture",
       name: "video-capture",
-      component: VideoCapture, // Ensure this path is correct
+      component: VideoCapture, // Video Capture component
     },
     {
       path: '/strings', // Add this route for the Matrix component
@@ -513,8 +515,6 @@ const router = createRouter({
       name: 'Apt',
       component: AptandResoning,
     },
-
-
     {
       path: "/topic-wise-quiz",
       name: "topic-wise-quiz",
@@ -525,7 +525,6 @@ const router = createRouter({
       name: "quiz-options",
       component: QuizOptions, // Quiz Options component
     },
-
     // Quiz Routes
     {
       path: "/algo_quiz",
@@ -586,6 +585,11 @@ const router = createRouter({
       path: "/question/:id",
       name: "question",
       component: () => import("../views/Question.vue"),
+    },
+    {
+      path: "/track-progress", // New route for Track Progress
+      name: "track-progress",
+      component: TrackProgress, // Track Progress component
     },
     {
       path: "/quiz-options",
@@ -712,9 +716,6 @@ const router = createRouter({
       path: '/automata',
       component: AutomataPage
     },
-    
-    
-    
   ],
 });
 
