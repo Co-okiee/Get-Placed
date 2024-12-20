@@ -4,6 +4,26 @@ import { defineStore } from "pinia";
 import quizData from '../assets/questions.json'
 import { shuffle, getToday } from '../lib/utils'
 
+// store/user.js or store.js (depends on your project structure)
+
+export const useUserStore = defineStore('user', {
+  state: () => ({
+    user: 'defaultUser', // Default user, or dynamically set it
+    scores: {
+      defaultUser: [7, 8], // Example score list for 'defaultUser'
+    },
+  }),
+  actions: {
+    setUser(username) {
+      this.user = username;
+    },
+    setScores(scores) {
+      this.scores[this.user] = scores;
+    },
+  },
+});
+
+
 export const useCounterStore = defineStore("counter", () => {
   
   let defCount = 0

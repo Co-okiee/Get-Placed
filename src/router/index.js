@@ -571,11 +571,11 @@ const router = createRouter({
       name: "company-coding",
       component: CompanyCodingPage,
     },
-    {
-      path: "/trackprogress",
-      name: "trackprogress",
-      component: TrackProgress,
-    },
+    // {
+    //   path: "/trackprogress",
+    //   name: "trackprogress",
+    //   component: TrackProgress,
+    // },
     {
       path: "/signup",
       name: "signup",
