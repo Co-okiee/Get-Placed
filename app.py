@@ -1,7 +1,38 @@
+# <<<<<<< HEAD
+# from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash, Response
+# =======
+# from flask import Flask, jsonify, request, session
+# >>>>>>> b98a9c89fe0aeffd2d478cdcd5e47c454f76fe38
+# from flask_cors import CORS
+# from flask_migrate import Migrate
+# from werkzeug.utils import secure_filename
+# from models import db, User, QuizResult
+# import os
+# <<<<<<< HEAD
+# import io
+# import random
+# import PyPDF2
+# import docx
+# import re
+# from datetime import datetime, timezone
+# import matplotlib
+# import matplotlib.pyplot as plt
+# =======
+# import mysql.connector
+# from mysql.connector import Error
+# from flask_bcrypt import Bcrypt
+# import PyPDF2
+# import docx
+# import re
+# from datetime import datetime
+# import random
+# import requests
+# >>>>>>> b98a9c89fe0aeffd2d478cdcd5e47c454f76fe38
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash, Response
 from flask_cors import CORS
 from flask_migrate import Migrate
 from werkzeug.utils import secure_filename
+from flask_bcrypt import Bcrypt
 from models import db, User, QuizResult
 import os
 import io
@@ -10,8 +41,11 @@ import PyPDF2
 import docx
 import re
 from datetime import datetime, timezone
-import matplotlib
+import mysql.connector
+from mysql.connector import Error
 import matplotlib.pyplot as plt
+import pytz
+import requests
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -24,7 +58,16 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 db.init_app(app)
 migrate = Migrate(app, db)
 
-# Allowed file extensions
+# MySQL Database connection function
+def get_db_connection():
+    return mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='Ruzan',
+        database='get_placed'
+    )
+
+# Allowed file types for resume upload
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
@@ -99,6 +142,12 @@ def login():
 
     return render_template('login.html')
 
+
+
+# Route: Upload resume
+# >>>>>>> b98a9c89fe0aeffd2d478cdcd5e47c454f76fe38
+
+
 @app.route('/upload', methods=['POST'])
 def upload_resume():
     if 'resume' not in request.files:
@@ -132,6 +181,13 @@ def get_interview_questions():
         ],
         'javascript': [
             {"question": "What is event bubbling?", "answer": "A way of propagating events"},
+# =======
+#         "python": [
+#             {"question": "What is PEP 8, and why is it important?", "options": ["Code formatting guidelines", "An IDE", "A library", "A compiler"], "answer": "Code formatting guidelines"},
+#         ],
+#         "javascript": [
+#             {"question": "What is event bubbling in JavaScript?", "options": ["A way of propagating events", "A sorting algorithm", "A method of debugging", "None of the above"], "answer": "A way of propagating events"},
+# >>>>>>> b98a9c89fe0aeffd2d478cdcd5e47c454f76fe38
         ],
     }
 
@@ -141,6 +197,39 @@ def get_interview_questions():
             interview_questions.extend([q['question'] for q in quiz_data[keyword.lower()]])
     return jsonify(interview_questions)
 
+# <<<<<<< HEAD
+# =======
+# # Route: Fetch questions from MySQL
+# @app.route('/questions/<quiz_type>', methods=['GET'])
+# def fetch_quiz_questions(quiz_type):
+#     try:
+#         conn = get_db_connection()
+#         cursor = conn.cursor(dictionary=True)
+#         cursor.execute(f'SELECT * FROM {quiz_type}_quiz')
+#         questions = cursor.fetchall()
+#         cursor.close()
+#         conn.close()
+#         return jsonify(questions)
+#     except Exception as e:
+#         return jsonify({"error": str(e)}), 500
+
+# Route: Fetch questions from MySQL
+@app.route('/questions/<quiz_type>', methods=['GET'])
+def fetch_quiz_questions(quiz_type):
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(f'SELECT * FROM {quiz_type}_quiz')
+        questions = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return jsonify(questions)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# Route: Track progress
+# >>>>>>> b98a9c89fe0aeffd2d478cdcd5e47c454f76fe38
 @app.route('/api/track-progress', methods=['GET'])
 def track_progress():
     user_results = QuizResult.query.filter_by(user_id=session.get('user_id')).all()
@@ -165,7 +254,194 @@ def track_progress():
         "total_marks": total_marks
     })
 
+@app.route('/apt-quiz-questions', methods=['GET'])
+def get_apt_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM apt_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+@app.route('/cnt-quiz-questions', methods=['GET'])
+def get_cnt_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM cnt_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+@app.route('/systemd-quiz-questions', methods=['GET'])
+def get_systemd_quiz_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM systemd_quiz')
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+
+
+@app.route('/verbal-ability-quiz-questions', methods=['GET'])
+def get_verbal_ability_questions():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT passage, question, option1, option2, option3, option4, answer, explanation FROM verbal_ability_questions LIMIT 8")
+    questions = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(questions)
+
+# Save verbal score
+@app.route('/save_verbal_score', methods=['POST'])
+def save_verbal_score():
+    data = request.json
+    user_id = data.get('user_id')
+    score = data.get('score')
+    topic = data.get('topic')
+
+    if user_id is None or score is None or topic is None:
+        return jsonify({"error": "User ID, score, and topic are required"}), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute('INSERT INTO verbal_score (user_id, score, date, topic) VALUES (%s, %s, NOW(), %s)', (user_id, score, topic))
+        conn.commit()
+        return jsonify({"message": "Score saved successfully!"}), 201
+    except Exception as e:
+        conn.rollback()  # Rollback in case of error
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+# Save score for other quizzes
+@app.route('/save-score', methods=['POST'])
+def save_score():
+    data = request.get_json()
+    score_value = data.get('score')
+    user_id = data.get('user_id')
+
+    ist_timezone = pytz.timezone('Asia/Kolkata')
+    date_value = data.get('date', datetime.now(ist_timezone).isoformat())
+    if score_value is None or user_id is None:
+        return jsonify({"error": "Invalid data"}), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('INSERT INTO scores (score, user_id, date) VALUES (%s, %s, %s)', (score_value, user_id, date_value))
+        conn.commit()
+        return jsonify({"message": "Score saved successfully!"}), 201
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.route('/get-scores', methods=['GET'])
+def get_scores():
+    user_id = request.args.get('user_id')
+
+    if not user_id:
+        return jsonify({'error': 'User ID is required'}), 400
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = '''
+            SELECT score, topic, date 
+            FROM scores 
+            WHERE user_id = %s 
+            ORDER BY date ASC
+        '''
+        cursor.execute(query, (user_id,))
+        scores = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({'scores': scores}), 200
+    except mysql.connector.Error as err:
+        return jsonify({'error': str(err)}), 500
+
+# User signup route
+@app.route('/signup', methods=['POST'])
+def signup():
+    data = request.get_json()
+    name = data.get('name')
+    username = data.get('username')
+    password = data.get('password')
+
+    if name is None or username is None or password is None:
+        return jsonify({"error": "Name, username, and password are required"}), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    try:
+        cursor.execute('SELECT * FROM users WHERE username = %s', (username,))
+        existing_user = cursor.fetchone()
+        if existing_user:
+            return jsonify({"error": "Username already exists"}), 400
+        
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        cursor.execute('INSERT INTO users (name, username, password) VALUES (%s, %s, %s)', (name, username, hashed_password))
+        conn.commit()
+        return jsonify({"message": "User registered successfully!"}), 201
+    except Error as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+# User login route
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    if username is None or password is None:
+        return jsonify({"error": "Username and password are required"}), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    try:
+        cursor.execute('SELECT * FROM users WHERE username = %s', (username,))
+        user = cursor.fetchone()
+
+        if user:
+            if bcrypt.check_password_hash(user['password'], password):
+                return jsonify({"message": "Login successful!", "username": user['username'], "user_id": user['user_id'], "name": user['name']}), 200
+            else:
+                return jsonify({"error": "Invalid username or password"}), 401
+        else:
+            return jsonify({"error": "Invalid username or password"}), 401
+    except Exception as e:
+        return jsonify({"error": "An internal error occurred. Please try again later."}), 500
+    finally:
+        cursor.close()
+        conn.close()
+        
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)
+
+# if __name__ == '__main__':
+# <<<<<<< HEAD
+#     with app.app_context():
+#         db.create_all()
+#     app.run(debug=True)
+# =======
+#     app.run(host='0.0.0.0', port=5001, debug=True)
+
+# >>>>>>> b98a9c89fe0aeffd2d478cdcd5e47c454f76fe38

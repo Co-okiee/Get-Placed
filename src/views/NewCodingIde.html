@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coding IDE</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js/styles/atom-one-dark.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.6.0/lib/core.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.6.0/lib/languages/python.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.6.0/lib/languages/javascript.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.6.0/lib/languages/java.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.6.0/lib/languages/cpp.js"></script>
+</head>
+<body>
+  <div id="coding-ide-app">
+    <div class="coding-ide-container">
+      <div class="nav-header">
+        <button @click="goBack" class="back-button">
+          <span class="back-icon">←</span>
+          Back to Problems
+        </button>
+      </div>
+
+      <h1 class="title">Coding IDE</h1>
+      <p class="description">Write and test your code here!</p>
+
+      <!-- Problem Description -->
+      <div class="problem-description">
+        <p>{{ currentProblem?.description }}</p>
+      </div>
+
+      <!-- Language Dropdown and Run Code Button -->
+      <div class="controls">
+        <select v-model="selectedLanguage" class="language-select">
+          <option value="cpp">C++</option>
+          <option value="python3">Python</option>
+          <option value="java">Java</option>
+          <option value="javascript">JavaScript</option>
+        </select>
+        <button @click="runCode" class="run-button">Run Code</button>
+        <button @click="resetCode" class="reset-button">Reset</button>
+      </div>
+
+      <!-- Code Input Area -->
+      <div class="code-container">
+        <div
+          contenteditable="true"
+          @input="updateCode"
+          @keydown="handleEnter"
+          @focus="clearPlaceholder"
+          class="code-input"
+          ref="codeInput"
+        ></div>
+
+        <!-- Input/Output Section -->
+        <div class="io-container">
+          <h3>Input</h3>
+          <textarea v-model="inputText" rows="5" placeholder="Enter input for the program..." class="input-text"></textarea>
+
+          <h3>Output</h3>
+          <div class="output-text">{{ outputText }}</div>
+        </div>
+      </div>
+
+      <!-- Test Cases -->
+      <h3>Test Cases</h3>
+      <div class="test-case-container">
+        <div v-for="(test, index) in testCases" :key="index" class="test-case">
+          <p><strong>Test Case {{ index + 1 }}:</strong> {{ test.input }}</p>
+          <p><strong>Expected Output:</strong> {{ test.output }}</p>
+          <p><strong>Explanation:</strong> {{ test.explanation }}</p>
+        </div>
+      </div>
+
+      <!-- Hidden Test Cases Results -->
+      <div v-if="hiddenTestResults.length > 0" class="hidden-test-results">
+        <p>You passed {{ passedHiddenTests }} out of {{ hiddenTestCases.length }} hidden test cases.</p>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="navigation-buttons">
+        <button @click="prevProblem" :disabled="currentProblemIndex === 0">Back</button>
+        <button @click="nextProblem" :disabled="currentProblemIndex === problems.length - 1">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    new Vue({
+      el: '#coding-ide-app',
+      data() {
+        return {
+          code: '',
+          outputText: '',
+          inputText: '',
+          selectedLanguage: 'cpp',
+          problems: [],
+          currentProblemIndex: 0,
+          testCases: [],
+          hiddenTestCases: [],
+          hiddenTestResults: [],
+          passedHiddenTests: 0,
+        };
+      },
+      computed: {
+        currentProblem() {
+          return this.problems[this.currentProblemIndex];
+        }
+      },
+      methods: {
+        handleEnter(event) {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            const newLine = document.createElement('div');
+            newLine.innerHTML = '<br>';
+            const selection = window.getSelection();
+            const range = selection.getRangeAt(0);
+            range.insertNode(newLine);
+            range.setStartAfter(newLine);
+            range.setEndAfter(newLine);
+            selection.removeAllRanges();
+            selection.addRange(range);
+          }
+        },
+        updateCode() {
+          this.code = this.$refs.codeInput.innerText;
+          this.highlightCode();
+        },
+        highlightCode() {
+          this.$nextTick(() => {
+            const highlightedCode = hljs.highlight(this.code, { language: this.selectedLanguage }).value;
+            this.$refs.codeInput.innerHTML = highlightedCode;
+            this.$refs.codeInput.contentEditable = true;
+            this.moveCursorToEnd();
+          });
+        },
+        moveCursorToEnd() {
+          const range = document.createRange();
+          const selection = window.getSelection();
+          range.selectNodeContents(this.$refs.codeInput);
+          range.collapse(false);
+          selection.removeAllRanges();
+          selection.addRange(range);
+        },
+        runCode() {
+          const proxyUrl = 'https://thingproxy.freeboard.io/fetch/';
+          const apiUrl = 'https://api.jdoodle.com/v1/execute';
+
+          fetch(proxyUrl + apiUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              script: this.code,
+              stdin: this.inputText,
+              language: this.selectedLanguage,
+              versionIndex: '0',
+              clientId: 'your-client-id',  // Replace with your actual client ID
+              clientSecret: 'your-client-secret'  // Replace with your actual client secret
+            })
+          })
+          .then(response => response.json())
+          .then(data => {
+            this.outputText = data.output || data.error;
+            this.runHiddenTests();
+          });
+        },
+        resetCode() {
+          this.code = '';
+          this.inputText = '';
+          this.outputText = '';
+          this.$refs.codeInput.innerHTML = '';
+        },
+        runHiddenTests() {
+          const hiddenTestResults = [];
+          const hiddenTestPromises = this.hiddenTestCases.map(testCase => {
+            return fetch(`https://api.jdoodle.com/v1/execute`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                script: this.code,
+                stdin: testCase.input,
+                language: this.selectedLanguage,
+                versionIndex: '0',
+                clientId: 'your-client-id',
+                clientSecret: 'your-client-secret',
+              })
+            })
+            .then(response => response.json())
+            .then(data => {
+              const actualOutput = (data.output || data.error).trim();
+              const expectedOutput = testCase.output.trim();
+              hiddenTestResults.push({
+                input: testCase.input,
+                expected: testCase.output,
+                actual: actualOutput,
+                passed: actualOutput === expectedOutput,
+              });
+            });
+          });
+
+          Promise.all(hiddenTestPromises).then(() => {
+            this.hiddenTestResults = hiddenTestResults;
+            this.passedHiddenTests = hiddenTestResults.filter(result => result.passed).length;
+          });
+        },
+        fetchProblems() {
+          // Replace with Groq AI API call
+          // Example:
+          // const problemsData = await fetchGroqAIProblems();
+          // this.problems = problemsData;
+          this.problems = [
+            { description: 'Problem 1: Write a function to sum two numbers...', testCases: [ /* ... */], hiddenTestCases: [ /* ... */] },
+            { description: 'Problem 2: Write a function to check if a number is prime...', testCases: [ /* ... */], hiddenTestCases: [ /* ... */] }
+          ];
+          this.updateTestCases();
+        },
+        updateTestCases() {
+          if (this.currentProblem) {
+            this.testCases = this.currentProblem.testCases;
+            this.hiddenTestCases = this.currentProblem.hiddenTestCases;
+          }
+        },
+        nextProblem() {
+          if (this.currentProblemIndex < this.problems.length - 1) {
+            this.currentProblemIndex++;
+            this.updateTestCases();
+          }
+        },
+        prevProblem() {
+          if (this.currentProblemIndex > 0) {
+            this.currentProblemIndex--;
+            this.updateTestCases();
+          }
+        },
+        goBack() {
+          window.history.back();
+        },
+        clearPlaceholder() {
+          this.$refs.codeInput.placeholder = '';
+        }
+      },
+      mounted() {
+        this.fetchProblems();
+      }
+    });
+  </script>
+
+  <style>
+    /* Overall layout */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f7fb;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Container for IDE */
+.ide-container {
+  width: 80%;
+  max-width: 1200px;
+  margin-top: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+/* Title */
+.ide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ide-header h1 {
+  font-size: 24px;
+  color: #333;
+}
+
+/* Editor area */
+.editor-container {
+  width: 100%;
+  height: 400px;
+  margin-bottom: 20px;
+}
+
+/* Buttons */
+.buttons-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.button:hover {
+  background-color: #45a049;
+}
+
+  </style>
+</body>
+</html>
