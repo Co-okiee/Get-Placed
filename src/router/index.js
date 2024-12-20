@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 // Import necessary components
 import Dashboard from "../views/Dashboard.vue"; // Dashboard as home component
 import Study from "../views/Study.vue"; // Study page component
@@ -14,7 +15,8 @@ import TopicWise from "../views/TopicWise.vue"; // Topic Wise Quiz component
 import ArrayQuiz from "../views/ArrayQuiz.vue"; // Array Quiz component
 import MockInterview from "../views/MockInterview.vue"; // Mock Interview component
 import UploadResume from "../views/UploadResume.vue"; // Upload Resume component
-import VideoCapture from "../views/VideoCapture.vue";
+import VideoCapture from "../views/VideoCapture.vue"; // Video Capture component
+import TrackProgress from "../views/TrackProgress.vue"; // Track Progress component
 
 // Create router instance
 const router = createRouter({
@@ -68,7 +70,7 @@ const router = createRouter({
     {
       path: "/video-capture",
       name: "video-capture",
-      component: VideoCapture, // Ensure this path is correct
+      component: VideoCapture, // Video Capture component
     },
     {
       path: "/topic-wise-quiz",
@@ -94,6 +96,11 @@ const router = createRouter({
       path: "/question/:id", // Dynamic route for questions
       name: "question",
       component: () => import("../views/Question.vue"), // Lazy-loaded Question component
+    },
+    {
+      path: "/track-progress", // New route for Track Progress
+      name: "track-progress",
+      component: TrackProgress, // Track Progress component
     },
     {
       path: "/:pathMatch(.*)*", // Catch-all route for 404 Not Found

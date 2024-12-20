@@ -41,7 +41,7 @@ export default {
       this.$router.push({ name: "study" });
     },
     goToTrackProgress() {
-      this.$router.push({ name: "trackProgress" });
+      this.$router.push({ name: "track-progress" });
     },
     goToMockInterview() {
       this.$router.push({ name: "upload-resume" }); // Use Vue's routing

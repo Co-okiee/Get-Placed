@@ -79,7 +79,7 @@ export default {
 
             // Redirect to VideoCapture and pass keywords as query params
             this.$router.push({
-              name: "video-capture",
+              name: "-capturvideoe",
               query: { keywords: JSON.stringify(this.keywords) }, // Pass keywords as a query parameter
             });
           } else {
