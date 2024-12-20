@@ -17,7 +17,7 @@
         </template>
         <template v-else>
           <router-link to="/login" class="nav-link">Sign in</router-link>
-          <router-link to="/signup" class="nav-link primary">Get started</router-link>
+          <router-link to="/signup" class="nav-link primary">Get started with me</router-link>
         </template>
       </nav>
     </header>
