@@ -14,7 +14,7 @@
     </ul>
 
     <h2 class="sub-title">Diagram of a Matrix</h2>
-    <img src="@/assets/matrix-diagram.jpeg" alt="Matrix Diagram" class="matrix-diagram"/>
+    <img src="@/assets/matrix-diagram.jpeg" alt="Matrix Diagram" class="matrix-diagram imageedit"/>
 
     <h2 class="sub-title">Introduction to Matrices</h2>
     <p>Matrices are widely used in mathematics and its applications. They can be manipulated using various operations, making them fundamental in linear algebra.</p>
@@ -54,14 +54,14 @@
       <code>{{ exampleCode }}</code>
     </pre>
 
-    <h2 class="sub-title">AI-Powered Study Companion</h2>
+    <h2 class="sub-title">Generative Study Companion</h2>
   <div class="ai-notes-section">
     <button 
       @click="generateAINotes" 
       class="example-button ai-notes-button" 
       :disabled="isGenerating"
     >
-      {{ isGenerating ? 'Generating AI Study Guide...' : 'Generate AI Study Guide' }}
+      {{ isGenerating ? 'Generating Study Guide...' : 'Generate Study Guide' }}
     </button>
     
     <div v-if="aiNotesData" class="ai-notes-display">
@@ -397,17 +397,18 @@ font-family: 'Arial', sans-serif;
 color: #e4e4e4;
 }
 
+.sub-title {
+font-size: 1.5em;
+color: #0d9bbb;
+margin-top: 20px;
+}
+
 .main-title {
-font-size: 2em;
-color: #007bff;
+font-size: 4em;
+color: #ccc;
 text-align: center;
 }
 
-.sub-title {
-font-size: 1.5em;
-color: #0056b3;
-margin-top: 20px;
-}
 
 .type-title {
 font-size: 1.2em;
@@ -424,7 +425,11 @@ padding-left: 40px;
   white-space: pre-wrap; /* Preserves whitespace and newlines */
 }
 
-
+.imageedit {
+  margin: 10px; /* Adds space around each image */
+  padding: 5px; /* Optional: Adds inner space within the image border */
+  border: 1px solid #ccc; /* Optional: Adds a border for better visibility */
+}
 .matrix-diagram {
 display: block;
 margin: 20px auto;

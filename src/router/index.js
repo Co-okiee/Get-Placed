@@ -525,7 +525,6 @@ const router = createRouter({
       name: "quiz-options",
       component: QuizOptions, // Quiz Options component
     },
-    
     // Quiz Routes
     {
       path: "/algo_quiz",

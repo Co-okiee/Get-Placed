@@ -163,57 +163,62 @@
                     state.selectedAnswers[questionIndex] = option;
                 };
 
-                const submitQuiz = () => {
+                const submitQuiz = async () => {
                     // Calculate the score for the current quiz (subsection)
                     const currentScore = state.quiz.reduce((score, question, index) => {
                         const isCorrect = state.selectedAnswers[index] === question.correctAnswer;
                         return isCorrect ? score + 1 : score;
                     }, 0);
-        
+                
                     // Store the score for the current subsection in completedSubSections
                     state.completedSubSections[state.selectedSubtopic] = currentScore;
                     state.submitted = true;
-        
-                    // Store user progress in localStorage
-                    const userProgress = JSON.parse(localStorage.getItem('userProgress') || '{}');
-                    
-                    // Use a unique identifier for the logged-in user (you'll need to implement user authentication)
-                    const userId = user_id(); // Implement this function to get current user ID
-                    
-                    if (!userProgress[userId]) {
-                        userProgress[userId] = {};
-                    }
-        
-                    // Store progress for this specific topic
-                    if (!userProgress[userId][state.selectedTopic]) {
-                        userProgress[userId][state.selectedTopic] = [];
-                    }
-        
-                    // Add the current quiz result
-                    userProgress[userId][state.selectedTopic].push({
+                
+                    // Prepare data for backend submission
+                    const payload = {
+                        userId: getCurrentUserId(), // Replace with actual user ID from authentication
+                        topic: state.selectedTopic,
                         subtopic: state.selectedSubtopic,
                         score: currentScore,
                         totalQuestions: state.quiz.length,
-                        date: new Date().toISOString()
-                    });
-                    localStorage.setItem('userProgress', JSON.stringify(userProgress));
-
-            // Only display scores after all 6 subsections are completed
-            if (Object.keys(state.completedSubSections).length === 6) {
-                let totalScore = 0;
-                let resultText = "Scores for each Subsection:\n";
-
-                // Display each subsection score
-                for (const [subsection, score] of Object.entries(state.completedSubSections)) {
-                    resultText += `${subsection}: ${score} / 6\n`;
-                    totalScore += score;
-                }
-
-                // Display final score after all subsections
-                resultText += `\nFinal Score after all subsections: ${totalScore} / 36`; // assuming 6 subsections, 6 questions each
-                alert(resultText);
-            }
-        };
+                        date: new Date().toISOString(),
+                    };
+                
+                    try {
+                        const response = await fetch('https://your-backend-api.com/submit-score', { // Replace with your backend endpoint
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `Bearer your-auth-token`, // Replace with your auth token if needed
+                            },
+                            body: JSON.stringify(payload),
+                        });
+                
+                        if (!response.ok) throw new Error('Failed to submit score.');
+                
+                        const result = await response.json();
+                        console.log('Score submitted successfully:', result);
+                    } catch (error) {
+                        console.error('Error submitting score:', error.message);
+                    }
+                
+                    // Check if all subsections are completed and display final score
+                    if (Object.keys(state.completedSubSections).length === 6) {
+                        let totalScore = 0;
+                        let resultText = "Scores for each Subsection:\n";
+                
+                        // Display each subsection score
+                        for (const [subsection, score] of Object.entries(state.completedSubSections)) {
+                            resultText += `${subsection}: ${score} / 6\n`;
+                            totalScore += score;
+                        }
+                
+                        // Display final score after all subsections
+                        resultText += `\nFinal Score after all subsections: ${totalScore} / 36`; // assuming 6 subsections, 6 questions each
+                        alert(resultText);
+                    }
+                };
+                
 
         const getUserProgress = (userId) => {
             const userProgress = JSON.parse(localStorage.getItem('userProgress') || '{}');

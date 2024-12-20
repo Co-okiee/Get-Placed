@@ -1,0 +1,49 @@
+{
+    "questions": [
+      {
+        "results": [
+          {
+            "question": "What is the main idea of the passage?",
+            "correct_answer": "The importance of biodiversity and the threats it faces.",
+            "incorrect_answers": [
+              "The impact of deforestation on biodiversity.",
+              "The role of biodiversity in human health.",
+              "The efforts of organizations in biodiversity conservation."
+            ],
+            "explanation": "The passage discusses the significance of biodiversity and the various threats it faces due to human activities. It also emphasizes the need for conservation efforts to protect biodiversity, making option 'a' the correct answer."
+          },
+          {
+            "question": "What does the passage suggest about the relationship between biodiversity and ecosystems?",
+            "correct_answer": "Biodiversity is essential for the stability and resilience of ecosystems.",
+            "incorrect_answers": [
+              "Biodiversity is not related to ecosystems.",
+              "Biodiversity is a minor component of ecosystems.",
+              "Biodiversity is harmful to ecosystems."
+            ],
+            "explanation": "The passage states that biodiversity ensures the stability and resilience of ecosystems, indicating that it is essential for maintaining the balance of nature."
+          },
+          {
+            "question": "According to the passage, what is one of the main concerns related to the development of AI?",
+            "correct_answer": "AI could lead to job displacement.",
+            "incorrect_answers": [
+              "AI will not be widely adopted in industries.",
+              "AI will replace all human jobs.",
+              "AI will make education obsolete."
+            ],
+            "explanation": "The passage mentions concerns about job displacement as a result of AI automation, making this the correct answer."
+          },
+          {
+            "question": "What does the passage suggest about the future of work?",
+            "correct_answer": "AI will create new job opportunities that require collaboration with AI systems.",
+            "incorrect_answers": [
+              "AI will eliminate the need for human workers.",
+              "AI will reduce the importance of education and training.",
+              "AI will have little impact on the workforce."
+            ],
+            "explanation": "The passage indicates that as AI evolves, there will be a demand for new skills and roles that involve managing and collaborating with AI systems, suggesting that AI will create new job opportunities."
+          }
+        ]
+      }
+    ]
+  }
+  
