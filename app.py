@@ -130,21 +130,6 @@ def register():
 
     return render_template('register.html')
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        user = User.query.filter_by(email=email).first()
-
-        if user and user.password == password:
-            session['user_id'] = user.id
-            flash('Login successful!', 'success')
-            return redirect(url_for('quiz'))
-        else:
-            flash('Login failed. Check email or password.', 'danger')
-
-    return render_template('login.html')
 
 
 
